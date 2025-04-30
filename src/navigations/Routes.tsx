@@ -11,7 +11,7 @@ const Routes = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{headerShown:false}}>
-        {true?MainStack(Stack):AuthStack(Stack)}
+        {false?MainStack(Stack):AuthStack(Stack)}
       </Stack.Navigator>
     </NavigationContainer>
   );

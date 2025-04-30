@@ -1,3 +1,8 @@
 export default{
     home:require('../assets/images/home2.png'),
+    gradientCircleBg: require('../assets/images/gradientCircle.png'),
+    c_Letter: require('../assets/images/C_Letter.png'),
+    appleIcon: require('../assets/images/appleIcon.png'),
+    googleIcon: require('../assets/images/googleIcon.png'),
+    facebookIcon: require('../assets/images/facebookIcon.png'),
 }

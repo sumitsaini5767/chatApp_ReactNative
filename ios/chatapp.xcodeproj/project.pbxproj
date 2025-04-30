@@ -11,6 +11,18 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		761780ED2CA45674006654EE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761780EC2CA45674006654EE /* AppDelegate.swift */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		C5D534E7C6F44DD5826CB8DA /* CarosSoft.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5B0B055F7EFE4883AD031160 /* CarosSoft.ttf */; };
+		B6DD8810BEAF46648A35625E /* CarosSoftBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F288F26F37B34B01BDDEFA57 /* CarosSoftBold.ttf */; };
+		A4D4913D57F8445FB911EF03 /* CarosSoftExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1B8AFE49ED6B486EA5E27193 /* CarosSoftExtraBold.ttf */; };
+		BAD37FE9656A4BC0BB7D5680 /* CarosSoftExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C15A33A4BC614B15AC596624 /* CarosSoftExtraLight.ttf */; };
+		036C3E73ADB2484C936515CC /* CarosSoftHeavy.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E0EE07A0FADA44B093B72EC9 /* CarosSoftHeavy.ttf */; };
+		5EBF2DD9BBB64A4996E7644D /* CarosSoftLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1DEEACD5FA7547CE8FB99C0F /* CarosSoftLight.ttf */; };
+		3737C0EA7097483A81A85CFC /* CarosSoftMedium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A578F5514B7C444CB665445A /* CarosSoftMedium.ttf */; };
+		7309E966C9094B0EA327C325 /* CarosSoftThin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 90C530A001D4450EAFC58A10 /* CarosSoftThin.ttf */; };
+		0A9B14344AF74760A298A906 /* CircularStd-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F340066B7ECC4B099276F35D /* CircularStd-Black.ttf */; };
+		0B79F4BCB9724B4ABBBF82D0 /* CircularStd-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 001DA5690A8D44CF8C026941 /* CircularStd-Bold.ttf */; };
+		92B98503D14A4450BA1FF565 /* CircularStd-Book.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FB4C6A2AE4384A42BE8A3D75 /* CircularStd-Book.ttf */; };
+		C5820A1C41934281BCEEE397 /* CircularStd-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EE480D308ED5427EABBCF3AC /* CircularStd-Medium.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,6 +47,18 @@
 		761780EC2CA45674006654EE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = chatapp/AppDelegate.swift; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = chatapp/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		5B0B055F7EFE4883AD031160 /* CarosSoft.ttf */ = {isa = PBXFileReference; name = "CarosSoft.ttf"; path = "../src/assets/fonts/CarosSoft.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		F288F26F37B34B01BDDEFA57 /* CarosSoftBold.ttf */ = {isa = PBXFileReference; name = "CarosSoftBold.ttf"; path = "../src/assets/fonts/CarosSoftBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		1B8AFE49ED6B486EA5E27193 /* CarosSoftExtraBold.ttf */ = {isa = PBXFileReference; name = "CarosSoftExtraBold.ttf"; path = "../src/assets/fonts/CarosSoftExtraBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		C15A33A4BC614B15AC596624 /* CarosSoftExtraLight.ttf */ = {isa = PBXFileReference; name = "CarosSoftExtraLight.ttf"; path = "../src/assets/fonts/CarosSoftExtraLight.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		E0EE07A0FADA44B093B72EC9 /* CarosSoftHeavy.ttf */ = {isa = PBXFileReference; name = "CarosSoftHeavy.ttf"; path = "../src/assets/fonts/CarosSoftHeavy.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		1DEEACD5FA7547CE8FB99C0F /* CarosSoftLight.ttf */ = {isa = PBXFileReference; name = "CarosSoftLight.ttf"; path = "../src/assets/fonts/CarosSoftLight.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		A578F5514B7C444CB665445A /* CarosSoftMedium.ttf */ = {isa = PBXFileReference; name = "CarosSoftMedium.ttf"; path = "../src/assets/fonts/CarosSoftMedium.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		90C530A001D4450EAFC58A10 /* CarosSoftThin.ttf */ = {isa = PBXFileReference; name = "CarosSoftThin.ttf"; path = "../src/assets/fonts/CarosSoftThin.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		F340066B7ECC4B099276F35D /* CircularStd-Black.ttf */ = {isa = PBXFileReference; name = "CircularStd-Black.ttf"; path = "../src/assets/fonts/CircularStd-Black.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		001DA5690A8D44CF8C026941 /* CircularStd-Bold.ttf */ = {isa = PBXFileReference; name = "CircularStd-Bold.ttf"; path = "../src/assets/fonts/CircularStd-Bold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		FB4C6A2AE4384A42BE8A3D75 /* CircularStd-Book.ttf */ = {isa = PBXFileReference; name = "CircularStd-Book.ttf"; path = "../src/assets/fonts/CircularStd-Book.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		EE480D308ED5427EABBCF3AC /* CircularStd-Medium.ttf */ = {isa = PBXFileReference; name = "CircularStd-Medium.ttf"; path = "../src/assets/fonts/CircularStd-Medium.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,6 +117,7 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
+				53506579357D4EA69F4D50F2 /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -115,6 +140,26 @@
 			);
 			path = Pods;
 			sourceTree = "<group>";
+		};
+		53506579357D4EA69F4D50F2 /* Resources */ = {
+			isa = "PBXGroup";
+			children = (
+				5B0B055F7EFE4883AD031160 /* CarosSoft.ttf */,
+				F288F26F37B34B01BDDEFA57 /* CarosSoftBold.ttf */,
+				1B8AFE49ED6B486EA5E27193 /* CarosSoftExtraBold.ttf */,
+				C15A33A4BC614B15AC596624 /* CarosSoftExtraLight.ttf */,
+				E0EE07A0FADA44B093B72EC9 /* CarosSoftHeavy.ttf */,
+				1DEEACD5FA7547CE8FB99C0F /* CarosSoftLight.ttf */,
+				A578F5514B7C444CB665445A /* CarosSoftMedium.ttf */,
+				90C530A001D4450EAFC58A10 /* CarosSoftThin.ttf */,
+				F340066B7ECC4B099276F35D /* CircularStd-Black.ttf */,
+				001DA5690A8D44CF8C026941 /* CircularStd-Bold.ttf */,
+				FB4C6A2AE4384A42BE8A3D75 /* CircularStd-Book.ttf */,
+				EE480D308ED5427EABBCF3AC /* CircularStd-Medium.ttf */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+			path = "";
 		};
 /* End PBXGroup section */
 
@@ -185,6 +230,18 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				C5D534E7C6F44DD5826CB8DA /* CarosSoft.ttf in Resources */,
+				B6DD8810BEAF46648A35625E /* CarosSoftBold.ttf in Resources */,
+				A4D4913D57F8445FB911EF03 /* CarosSoftExtraBold.ttf in Resources */,
+				BAD37FE9656A4BC0BB7D5680 /* CarosSoftExtraLight.ttf in Resources */,
+				036C3E73ADB2484C936515CC /* CarosSoftHeavy.ttf in Resources */,
+				5EBF2DD9BBB64A4996E7644D /* CarosSoftLight.ttf in Resources */,
+				3737C0EA7097483A81A85CFC /* CarosSoftMedium.ttf in Resources */,
+				7309E966C9094B0EA327C325 /* CarosSoftThin.ttf in Resources */,
+				0A9B14344AF74760A298A906 /* CircularStd-Black.ttf in Resources */,
+				0B79F4BCB9724B4ABBBF82D0 /* CircularStd-Bold.ttf in Resources */,
+				92B98503D14A4450BA1FF565 /* CircularStd-Book.ttf in Resources */,
+				C5820A1C41934281BCEEE397 /* CircularStd-Medium.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

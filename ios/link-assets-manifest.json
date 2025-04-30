@@ -1,0 +1,53 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "src/assets/fonts/CarosSoft.ttf",
+      "sha1": "3268bbd6e5c646fa1e42ce3bd46d7d379cc1df2f"
+    },
+    {
+      "path": "src/assets/fonts/CarosSoftBold.ttf",
+      "sha1": "28119eba10a2f99afa437ee48673d88e3b97b4c1"
+    },
+    {
+      "path": "src/assets/fonts/CarosSoftExtraBold.ttf",
+      "sha1": "1f7dc7ae86d973c054a52a0e4b5235cbd96b5b6e"
+    },
+    {
+      "path": "src/assets/fonts/CarosSoftExtraLight.ttf",
+      "sha1": "6ba4423e3aa642dee04701f94abcdc76194a5ccf"
+    },
+    {
+      "path": "src/assets/fonts/CarosSoftHeavy.ttf",
+      "sha1": "29024696683feffafc428d7ede16115634cf0a74"
+    },
+    {
+      "path": "src/assets/fonts/CarosSoftLight.ttf",
+      "sha1": "6ffdcf20aca24f3e2e5f38eef5718dac0efeb522"
+    },
+    {
+      "path": "src/assets/fonts/CarosSoftMedium.ttf",
+      "sha1": "8b68b63c197af542129782bbe9afe9dba9a8e8cb"
+    },
+    {
+      "path": "src/assets/fonts/CarosSoftThin.ttf",
+      "sha1": "d1e024bb51d8503b727602ee6996521936c2d8fb"
+    },
+    {
+      "path": "src/assets/fonts/CircularStd-Black.ttf",
+      "sha1": "747d82185122738adaa9297f3e36a187c3f7eb52"
+    },
+    {
+      "path": "src/assets/fonts/CircularStd-Bold.ttf",
+      "sha1": "5835fba2ecaa73eccaa97501aaabb5299bc2ceea"
+    },
+    {
+      "path": "src/assets/fonts/CircularStd-Book.ttf",
+      "sha1": "53e8b5c172c347b9c327673a1522c566a52e6657"
+    },
+    {
+      "path": "src/assets/fonts/CircularStd-Medium.ttf",
+      "sha1": "41c6ce9d98143129b26c2660e4a7fe8695b64df3"
+    }
+  ]
+}

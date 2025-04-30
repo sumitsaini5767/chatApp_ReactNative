@@ -6,8 +6,6 @@ const {width} = Dimensions.get('screen');
 
 export const styles = StyleSheet.create({
     MainContainer:{
-        flex:1,
-        backgroundColor: CommonColors.themeMain,
         paddingHorizontal:50
     },
     bgCircleImage:{
@@ -18,7 +16,6 @@ export const styles = StyleSheet.create({
     },
     LogoContainer:{
         flexDirection:'row',
-        marginTop:25,
         alignItems:'center',
         justifyContent:'center',
         gap:5,
@@ -26,12 +23,14 @@ export const styles = StyleSheet.create({
     cLetterImage:{
         height:19,
         width:19,
+        marginTop:25,
         resizeMode:'contain'
     },
     LogoTitle:{
         color:CommonColors.textWhite,
         fontFamily:FontFamily.CarosSoft,
         fontSize:14,
+        marginTop:25,
     },
     Title:{
         marginTop:50,

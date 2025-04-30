@@ -1,5 +1,60 @@
 import { StyleSheet } from "react-native";
+import FontFamily from "../../../styles/FontFamily";
+import { CommonColors } from "../../../styles/Colors";
 
 export const styles = StyleSheet.create({
-    
+    mainContainerStyle:{
+        paddingHorizontal:24,
+    },
+    topHeading:{
+        textAlign:"center",
+        marginTop:60,
+        fontFamily:FontFamily.CarosSoftBold,
+        fontSize:18
+    },
+    bottomHeading:{
+        textAlign:"center",
+        marginTop:16,
+        width:"80%",
+        alignSelf:"center",
+        fontSize:14,
+        fontFamily:FontFamily.CarosSoft
+    },
+    socialLoginContainer:{
+        marginTop:30,
+        flexDirection:'row',
+        justifyContent:'center',
+        alignItems:'center',
+        gap:20
+    },
+    socialImageContainer:{
+        height:48,
+        width:48,
+        borderRadius:50,
+        borderColor:'black',
+        borderWidth:1,
+        justifyContent:'center',
+        alignItems:'center'
+    },
+    SocialImage:{
+        height:24,
+        width:24,
+        resizeMode:'contain',
+    },
+       OrContainer:{
+            flexDirection:'row',
+            justifyContent:'center',
+            alignItems:'center',
+            marginTop:30,
+            gap:10
+        },
+        orLines:{
+            height:1,
+            backgroundColor:'#CDD1D0',
+            width:'45%',
+            opacity:0.3
+        },
+        orTitle:{
+            color:CommonColors.textSecondary
+        },
 })

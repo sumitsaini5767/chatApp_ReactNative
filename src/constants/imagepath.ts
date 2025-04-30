@@ -5,4 +5,5 @@ export default{
     appleIcon: require('../assets/images/appleIcon.png'),
     googleIcon: require('../assets/images/googleIcon.png'),
     facebookIcon: require('../assets/images/facebookIcon.png'),
+    backArrow: require('../assets/images/backarrow.png'),
 }

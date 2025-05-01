@@ -33,13 +33,12 @@ const WrapperContainer: React.FC<WrapperContainerProps> = ({
     );
   }, [backgroundColor, statusBarStyle]);
 
-  const statusBgColor = statusBarBackgroundColor || backgroundColor;
 
   const Wrapper = useScroll ? ScrollView : View;
 
   return (
     <>
-      <StatusBar barStyle={computedBarStyle} />
+      <StatusBar barStyle={computedBarStyle} translucent={true}/>
       <Wrapper
         style={[
           {

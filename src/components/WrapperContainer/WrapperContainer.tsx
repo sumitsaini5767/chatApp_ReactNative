@@ -6,6 +6,9 @@ import {
   ViewStyle,
   StyleProp,
   Platform,
+  TouchableWithoutFeedback,
+  Keyboard,
+  KeyboardAvoidingView,
 } from 'react-native';
 import {isColorDark} from '../../utils/isColorDark';
 
@@ -38,8 +41,11 @@ const WrapperContainer: React.FC<WrapperContainerProps> = ({
 
   return (
     <>
-      <StatusBar barStyle={computedBarStyle} translucent={true}/>
+      <StatusBar barStyle={computedBarStyle} translucent={false}/>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <Wrapper
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
         style={[
           {
             flex: 1,
@@ -52,6 +58,7 @@ const WrapperContainer: React.FC<WrapperContainerProps> = ({
         contentContainerStyle={useScroll ? contentContainerStyle : undefined}>
         {children}
       </Wrapper>
+      </TouchableWithoutFeedback>
     </>
   );
 };

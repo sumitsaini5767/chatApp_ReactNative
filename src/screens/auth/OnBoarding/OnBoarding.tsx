@@ -4,6 +4,7 @@ import imagepath from '../../../constants/imagepath';
 import {useNavigation} from '@react-navigation/native';
 import WrapperContainer from '../../../components/WrapperContainer/WrapperContainer';
 import {CommonColors} from '../../../styles/Colors';
+import SocialLogin from '../../../components/SocialLogin/SocialLogin';
 
 const OnBoarding = () => {
   const navigation = useNavigation();
@@ -27,20 +28,7 @@ const OnBoarding = () => {
         Our chat app is the perfect way to stay connected with friends and
         family.
       </Text>
-
-      {/* social login seciton */}
-      <View style={styles.socialLoginContainer}>
-        <TouchableOpacity style={styles.socialImageContainer}>
-          <Image source={imagepath.facebookIcon} style={styles.SocialImage} />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.socialImageContainer}>
-          <Image source={imagepath.googleIcon} style={styles.SocialImage} />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.socialImageContainer}>
-          <Image source={imagepath.appleIcon} style={styles.SocialImage} />
-        </TouchableOpacity>
-      </View>
-
+      <SocialLogin/>
       {/* or container */}
       <View style={styles.OrContainer}>
         <View style={styles.orLines} />
@@ -50,7 +38,11 @@ const OnBoarding = () => {
 
       {/* button */}
       <View style={styles.ButtonContainer}>
-        <TouchableOpacity style={styles.Button}>
+        <TouchableOpacity style={styles.Button}
+        onPress={()=>{
+          navigation.navigate('Signup');
+        }}
+        >
           <Text style={styles.ButtonText}>Sign up with mail</Text>
         </TouchableOpacity>
       </View>

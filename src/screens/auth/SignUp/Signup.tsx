@@ -1,12 +1,7 @@
 import React from 'react';
 import WrapperContainer from '../../../components/WrapperContainer/WrapperContainer';
-import {styles} from './style';
-import {useNavigation} from '@react-navigation/native';
 import Backbutton from '../../../components/backbutton/Backbutton';
 import {
-  Image,
-  KeyboardAvoidingView,
-  Platform,
   Text,
   TouchableOpacity,
   View,
@@ -14,9 +9,11 @@ import {
 import SocialLogin from '../../../components/SocialLogin/SocialLogin';
 import UserInput from '../../../components/UserInput/UserInput';
 import Button from '../../../components/Button/Button';
+import {useNavigation} from '@react-navigation/native';
+import { styles } from './styles';
 
-const Login = () => {
-  const navigation = useNavigation();
+const Signup = () => {
+    const navigation=useNavigation();
   return (
     <WrapperContainer
       contentContainerStyle={styles.mainContainerStyle}
@@ -26,24 +23,18 @@ const Login = () => {
           navigation.goBack();
         }}
       />
-      <Text style={styles.topHeading}>Log in to Chatbox</Text>
+      <Text style={styles.topHeading}>Sign up with Email</Text>
       <Text style={styles.bottomHeading}>
-        Welcome back! Sign in using your social account or email to continue us
+      Get chatting with friends and family today by signing up for our chat app!
       </Text>
-      <SocialLogin
-        imageContainerStyle={styles.socialImageContainer}
-        isdark={true}
+      <UserInput
+        inputContainerStyle={styles.inputContainerStyle}
+        lable="Your name"
+        autoFocus
       />
-      {/* or container */}
-      <View style={styles.OrContainer}>
-        <View style={styles.orLines} />
-        <Text style={styles.orTitle}>OR</Text>
-        <View style={styles.orLines} />
-      </View>
       <UserInput
         inputContainerStyle={styles.inputContainerStyle}
         lable="Your email"
-        autoFocus
       />
       <UserInput
         inputContainerStyle={styles.inputContainerStyle}
@@ -51,14 +42,17 @@ const Login = () => {
         secureTextEntry
         focusable
       />
+      <UserInput
+        inputContainerStyle={styles.inputContainerStyle}
+        lable="Confirm Password"
+        secureTextEntry
+        focusable
+      />
       <View style={styles.buttonStyle}>
-        <Button lable='Log in'/>
-        <TouchableOpacity style={styles.forgetPassword}>
-          <Text style={styles.forgetPasswordText} >Forgot Password?</Text>
-        </TouchableOpacity>
+        <Button lable='Create an account'/>
       </View>
     </WrapperContainer>
-  );
-};
+  )
+}
 
-export default Login;
+export default Signup

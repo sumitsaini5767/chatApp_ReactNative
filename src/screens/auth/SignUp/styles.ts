@@ -21,25 +21,6 @@ export const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: FontFamily.CarosSoft,
   },
-  socialImageContainer: {
-    borderColor: 'black',
-  },
-  OrContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 30,
-    gap: 10,
-  },
-  orLines: {
-    height: 1,
-    backgroundColor: '#CDD1D0',
-    width: '45%',
-    opacity: 0.3,
-  },
-  orTitle: {
-    color: CommonColors.textSecondary,
-  },
   inputContainerStyle:{
     marginTop:30
   },
@@ -49,12 +30,4 @@ export const styles = StyleSheet.create({
     top:height-180,
     width:'100%'
   },
-  forgetPassword:{
-    marginTop:16
-  },
-  forgetPasswordText:{
-    textAlign:'center',
-    color:CommonColors.inputTextColor,
-    fontFamily:FontFamily.CircularStd_Regular
-  }
 });

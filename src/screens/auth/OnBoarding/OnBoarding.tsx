@@ -1,16 +1,36 @@
-import {View, Text, Image, TouchableOpacity} from 'react-native';
+import {View, Text, Image, TouchableOpacity, ScrollView} from 'react-native';
 import {styles} from './styles';
 import imagepath from '../../../constants/imagepath';
 import {useNavigation} from '@react-navigation/native';
 import { WrapperContainer, SocialLogin} from '../../../components/Componets'; 
 import {CommonColors} from '../../../styles/Colors';
+import { useTranslation } from 'react-i18next';
+import '../../../localization/i18n';
+import { changeAppLanguage } from '../../../utils/languageUtils';
 
 const OnBoarding = () => {
   const navigation = useNavigation();
+  const { t } = useTranslation(); 
   return (
     <WrapperContainer
-      backgroundColor={CommonColors.themeMain}
-      contentContainerStyle={styles.MainContainer}>
+      backgroundColor={CommonColors.themeMain}>
+      
+      
+
+      {/* language change icon */}
+      <View style={styles.TopContainer}>
+        <TouchableOpacity onPress={()=>{
+          changeAppLanguage('hi')
+        }} style={styles.translateImageContainer}
+        >
+          <Image source={imagepath.translate} style={styles.translateImage}/>
+        </TouchableOpacity>
+      </View>
+      
+      <ScrollView
+      style={styles.MainContainer}
+      >
+        
       {/* logo section */}
       <Image source={imagepath.gradientCircleBg} style={styles.bgCircleImage} />
       <View style={styles.LogoContainer}>
@@ -52,9 +72,10 @@ const OnBoarding = () => {
           onPress={() => {
             navigation.navigate('Login');
           }}>
-          <Text style={styles.LoginButtontext}>Login</Text>
+          <Text style={styles.LoginButtontext}>{t('login')}</Text>
         </TouchableOpacity>
       </View>
+      </ScrollView>
     </WrapperContainer>
   );
 };

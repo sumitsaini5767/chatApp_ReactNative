@@ -14,11 +14,30 @@ export const styles = StyleSheet.create({
     margin: 0,
     width: width,
   },
+  TopContainer:{
+    flexDirection:'row',
+  },
   LogoContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     gap: 5,
+  },
+  translateImageContainer:{
+    position:"absolute",
+    right:15,
+    top:15,
+    padding:10,
+    borderRadius:60,
+    backgroundColor:CommonColors.textWhite,
+    justifyContent:'center',
+    alignItems:'center',
+    zIndex: 99,
+  },  
+  translateImage:{
+    resizeMode:'contain',
+    height: 15,
+    width: 15,
   },
   cLetterImage: {
     height: 19,

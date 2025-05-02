@@ -7,4 +7,5 @@ export default{
     googleIcon: require('../assets/images/googleIcon.png'),
     facebookIcon: require('../assets/images/facebookIcon.png'),
     backArrow: require('../assets/images/backarrow.png'),
+    translate: require('../assets/images/translate.png'),
 }

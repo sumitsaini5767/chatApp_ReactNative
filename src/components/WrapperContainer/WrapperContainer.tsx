@@ -41,7 +41,7 @@ const WrapperContainer: React.FC<WrapperContainerProps> = ({
 
   return (
     <>
-      <StatusBar barStyle={computedBarStyle} translucent={false}/>
+      <StatusBar barStyle={computedBarStyle} translucent={true}/>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <Wrapper
         showsVerticalScrollIndicator={false}

@@ -1,8 +1,7 @@
 import React from 'react';
-import WrapperContainer from '../../../components/WrapperContainer/WrapperContainer';
+import { WrapperContainer ,Backbutton ,SocialLogin ,UserInput , Button} from '../../../components/Componets'; 
 import {styles} from './style';
 import {useNavigation} from '@react-navigation/native';
-import Backbutton from '../../../components/backbutton/Backbutton';
 import {
   Image,
   KeyboardAvoidingView,
@@ -11,9 +10,6 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import SocialLogin from '../../../components/SocialLogin/SocialLogin';
-import UserInput from '../../../components/UserInput/UserInput';
-import Button from '../../../components/Button/Button';
 
 const Login = () => {
   const navigation = useNavigation();

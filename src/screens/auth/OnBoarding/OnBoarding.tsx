@@ -2,9 +2,8 @@ import {View, Text, Image, TouchableOpacity} from 'react-native';
 import {styles} from './styles';
 import imagepath from '../../../constants/imagepath';
 import {useNavigation} from '@react-navigation/native';
-import WrapperContainer from '../../../components/WrapperContainer/WrapperContainer';
+import { WrapperContainer, SocialLogin} from '../../../components/Componets'; 
 import {CommonColors} from '../../../styles/Colors';
-import SocialLogin from '../../../components/SocialLogin/SocialLogin';
 
 const OnBoarding = () => {
   const navigation = useNavigation();

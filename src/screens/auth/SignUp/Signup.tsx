@@ -1,14 +1,11 @@
 import React from 'react';
-import WrapperContainer from '../../../components/WrapperContainer/WrapperContainer';
-import Backbutton from '../../../components/backbutton/Backbutton';
+import { WrapperContainer, UserInput, Button ,SocialLogin } from '../../../components/Componets';
+import {Backbutton} from '../../../components/Componets';
 import {
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
-import SocialLogin from '../../../components/SocialLogin/SocialLogin';
-import UserInput from '../../../components/UserInput/UserInput';
-import Button from '../../../components/Button/Button';
 import {useNavigation} from '@react-navigation/native';
 import { styles } from './styles';
 

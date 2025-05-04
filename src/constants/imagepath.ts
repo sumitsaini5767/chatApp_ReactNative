@@ -8,4 +8,7 @@ export default{
     facebookIcon: require('../assets/images/facebookIcon.png'),
     backArrow: require('../assets/images/backarrow.png'),
     translate: require('../assets/images/translate.png'),
+    user:require('../assets/images/User.png'),
+    message:require('../assets/images/Message.png'),
+    search:require('../assets/images/Search.png'),
 }

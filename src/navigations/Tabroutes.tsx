@@ -6,17 +6,17 @@ import Home from '../screens/Home/Home';
 const Tab = createBottomTabNavigator();
 
 const TabRoutes = () => {
-  let options= (img:any)=>{
+  let options= (img:any,title?:string)=>{
     return{
     tabBarIcon: ({ focused  }:any) => (
       <Image source={img} style={focused ? { 
         tintColor: "#8E6CEF",} : null} />
     ),
-    title:""
+    title:title
   }}
   return (
     <Tab.Navigator screenOptions={{headerShown: false}} >
-      <Tab.Screen name="Home" component={Home} options={options(imagepath.home)}/>
+      <Tab.Screen name="Home" component={Home} options={options(imagepath.message,'Message')}/>
     </Tab.Navigator>
   );
 };

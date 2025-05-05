@@ -1,7 +1,6 @@
 import {
   View,
   Text,
-  ScrollView,
   Image,
   TouchableOpacity,
   FlatList,
@@ -14,35 +13,106 @@ import imagepath from '../../constants/imagepath';
 
 interface User {
   id: number;
-  image: any; // Replace 'any' with proper image type from your imagepath
+  image: any;
   name: string;
+  isMyStatus?: boolean;
+}
+
+interface ChatMessage {
+  id: number;
+  user: User;
+  message: string;
+  timestamp: string;
+  unreadCount?: number;
 }
 
 export default function Home() {
-  const users: User[] = [
+  const statusList: User[] = [
     {
       id: 1,
       image: imagepath.user,
-      name: 'Alice Johnson',
+      name: 'My status',
+      isMyStatus: true,
     },
     {
       id: 2,
       image: imagepath.user,
-      name: 'Bob Smith',
+      name: 'Adil',
     },
     {
       id: 3,
       image: imagepath.user,
-      name: 'Charlie Davis',
+      name: 'Marina',
     },
     {
       id: 4,
       image: imagepath.user,
-      name: 'Charlie Davis',
+      name: 'Dean',
+    },
+    {
+      id: 5,
+      image: imagepath.user,
+      name: 'Max',
     },
   ];
 
-  const renderUsers: ListRenderItem<User> = useCallback(({item}) => {
+  const chatMessages: ChatMessage[] = [
+    {
+      id: 1,
+      user: {
+        id: 1,
+        image: imagepath.user,
+        name: 'Alex Linderson',
+      },
+      message: 'How are you today?',
+      timestamp: '2 min ago',
+      unreadCount: 3,
+    },
+    {
+      id: 2,
+      user: {
+        id: 2,
+        image: imagepath.user,
+        name: 'Team Align',
+      },
+      message: "Don't miss to attend the meeting.",
+      timestamp: '2 min ago',
+      unreadCount: 4,
+    },
+    {
+      id: 3,
+      user: {
+        id: 3,
+        image: imagepath.user,
+        name: 'John Ahraham',
+      },
+      message: 'Hey! Can you join the meeting?',
+      timestamp: '2 min ago',
+      unreadCount: 1,
+    },
+    {
+      id: 4,
+      user: {
+        id: 4,
+        image: imagepath.user,
+        name: 'Sabila Sayma',
+      },
+      message: 'How are you today?',
+      timestamp: '2 min ago',
+    },
+    {
+      id: 5,
+      user: {
+        id: 5,
+        image: imagepath.user,
+        name: 'John Borino',
+      },
+      message: 'Have a good day ❤️',
+      timestamp: '2 min ago',
+    },
+  ];
+
+  const renderStatus: ListRenderItem<User> = useCallback(({item}) => {
     return (
       <TouchableOpacity 
         style={styles.statusContainer}
@@ -50,44 +120,80 @@ export default function Home() {
         accessibilityLabel={`View ${item.name}'s status`}
         accessibilityRole="button"
       >
-        <Image 
-          source={item.image} 
-          style={styles.statusImage}
-        />
+        <View style={styles.statusImageContainer}>
+          <Image 
+            source={item.image} 
+            style={styles.statusImage}
+          />
+          {item.isMyStatus && (
+            <View style={styles.addStatusButton}>
+              <Text style={styles.plusIcon}>+</Text>
+            </View>
+          )}
+        </View>
+        <Text style={styles.statusName} numberOfLines={1}>{item.name}</Text>
       </TouchableOpacity>
     );
   }, []);
 
-  const keyExtractor = useCallback((item: User) => item.id.toString(), []);
+  const renderChatItem: ListRenderItem<ChatMessage> = useCallback(({item}) => {
+    return (
+      <TouchableOpacity style={styles.chatItemContainer}>
+        <Image source={item.user.image} style={styles.chatUserImage} />
+        <View style={styles.chatContentContainer}>
+          <View style={styles.chatHeader}>
+            <Text style={styles.chatUserName}>{item.user.name}</Text>
+            <Text style={styles.chatTimestamp}>{item.timestamp}</Text>
+          </View>
+          <View style={styles.chatMessageContainer}>
+            <Text style={styles.chatMessage} numberOfLines={1}>{item.message}</Text>
+            {item.unreadCount && (
+              <View style={styles.unreadBadge}>
+                <Text style={styles.unreadCount}>{item.unreadCount}</Text>
+              </View>
+            )}
+          </View>
+        </View>
+      </TouchableOpacity>
+    );
+  }, []);
+
+  const keyExtractor = useCallback((item: User | ChatMessage) => item.id.toString(), []);
 
   return (
     <WrapperContainer backgroundColor="#000000">
-      {/* Upper Header */}
       <View style={styles.upperContainer}>
         <TouchableOpacity style={styles.searchContainer}>
-          <Image source={imagepath.search} style={styles.Searchimage} />
+          <Image source={imagepath.search} style={styles.searchImage} />
         </TouchableOpacity>
         <Text style={styles.headline}>Home</Text>
         <TouchableOpacity>
-          <Image source={imagepath.user} style={styles.Userimage} />
+          <Image source={imagepath.user} style={styles.userImage} />
         </TouchableOpacity>
       </View>
-      {/* users Status */}
-      <View>
-      <FlatList 
-        data={users}
-        renderItem={renderUsers}
-        keyExtractor={keyExtractor}
-        horizontal={true}
-        showsHorizontalScrollIndicator={false}
-        style={styles.Userstatusbar}
-        contentContainerStyle={styles.flatlistContainer}
-        ItemSeparatorComponent={() => <View style={{ width: 13 }} />} 
-      />
+
+      <View style={styles.statusSection}>
+        <FlatList 
+          data={statusList}
+          renderItem={renderStatus}
+          keyExtractor={keyExtractor}
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.statusListContainer}
+          ItemSeparatorComponent={() => <View style={{ width: 16 }} />}
+        />
       </View>
-      {/* Lower Chat Container */}
-      <ScrollView style={styles.lowerContainer}>
-      </ScrollView>
+
+      <View style={styles.chatSection}>
+        <FlatList 
+          data={chatMessages}
+          renderItem={renderChatItem}
+          keyExtractor={keyExtractor}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.chatListContainer}
+          ItemSeparatorComponent={() => <View style={{ height: 16 }} />}
+        />
+      </View>
     </WrapperContainer>
   );
 }

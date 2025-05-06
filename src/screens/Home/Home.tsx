@@ -10,21 +10,8 @@ import React, {useCallback} from 'react';
 import {WrapperContainer} from '../../components/Componets';
 import {styles} from './styles';
 import imagepath from '../../constants/imagepath';
-
-interface User {
-  id: number;
-  image: any;
-  name: string;
-  isMyStatus?: boolean;
-}
-
-interface ChatMessage {
-  id: number;
-  user: User;
-  message: string;
-  timestamp: string;
-  unreadCount?: number;
-}
+import { ChatMessage, User } from '../../constants/Allinterface';
+import ChatItem from '../../components/ChatItem/ChatItem';
 
 export default function Home() {
   const statusList: User[] = [
@@ -136,25 +123,14 @@ export default function Home() {
     );
   }, []);
 
-  const renderChatItem: ListRenderItem<ChatMessage> = useCallback(({item}) => {
+  const renderChatItem : ListRenderItem<ChatMessage> = useCallback(({item}) => {
     return (
-      <TouchableOpacity style={styles.chatItemContainer}>
-        <Image source={item.user.image} style={styles.chatUserImage} />
-        <View style={styles.chatContentContainer}>
-          <View style={styles.chatHeader}>
-            <Text style={styles.chatUserName}>{item.user.name}</Text>
-            <Text style={styles.chatTimestamp}>{item.timestamp}</Text>
-          </View>
-          <View style={styles.chatMessageContainer}>
-            <Text style={styles.chatMessage} numberOfLines={1}>{item.message}</Text>
-            {item.unreadCount && (
-              <View style={styles.unreadBadge}>
-                <Text style={styles.unreadCount}>{item.unreadCount}</Text>
-              </View>
-            )}
-          </View>
-        </View>
-      </TouchableOpacity>
+      <ChatItem
+        user={item.user}
+        message={item.message}
+        timestamp={item.timestamp}
+        unreadCount={item.unreadCount}
+      />
     );
   }, []);
 

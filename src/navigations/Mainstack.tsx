@@ -1,11 +1,15 @@
 import React from 'react';
 import TabRoutes from './Tabroutes';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import { MainStackParamList } from './types';
 
-const MainStack = (Stack : any) => {
+const Stack = createNativeStackNavigator<MainStackParamList>();
+
+const MainStack = () => {
   return (
-    <>
+    <Stack.Navigator screenOptions={{headerShown:false}}>
       <Stack.Screen name="Home" component={TabRoutes} />
-    </>
+    </Stack.Navigator>
   );
 };
 

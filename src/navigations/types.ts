@@ -11,6 +11,7 @@ export type AuthStackScreenProps<T extends keyof AuthStackParamList> =
 
 export type MainStackParamList = {
   Home: undefined;
+  Chat: { user: any };
 };
 
 export type MainStackScreenProps<T extends keyof MainStackParamList> = 

@@ -134,7 +134,7 @@ export default function Home() {
     );
   }, []);
 
-  const keyExtractor = useCallback((item: User | ChatMessage) => item.id.toString(), []);
+  const keyExtractor = useCallback((item: User | ChatMessage) => item.id ? item.id.toString() : '', []);
 
   return (
     <WrapperContainer backgroundColor="#000000">

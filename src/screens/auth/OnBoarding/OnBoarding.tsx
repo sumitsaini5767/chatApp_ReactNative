@@ -1,16 +1,17 @@
 import {View, Text, Image, TouchableOpacity, ScrollView} from 'react-native';
 import {styles} from './styles';
 import imagepath from '../../../constants/imagepath';
-import {useNavigation} from '@react-navigation/native';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {WrapperContainer, SocialLogin} from '../../../components/Componets';
 import {CommonColors} from '../../../styles/Colors';
 import {useTranslation} from 'react-i18next';
 import '../../../localization/i18n';
 import {changeAppLanguage} from '../../../utils/languageUtils';
 import { getLanguage } from '../../../localStorage/mmkv';
+import { AuthStackParamList } from '../../../navigations/types';
 
 const OnBoarding = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProp<AuthStackParamList>>();
   const {t} = useTranslation();
   const selectedLanguage=getLanguage();
   console.log(selectedLanguage,"dfdfdfdf");
@@ -62,7 +63,7 @@ const OnBoarding = () => {
         </View>
 
         <View style={styles.ExistingAccountContainer}>
-          <Text style={styles.ExistingAccountText}>Existing account?</Text>
+          <Text style={styles.ExistingAccountText}>{t('ExistingAccount')}</Text>
           <TouchableOpacity
             onPress={() => {
               navigation.navigate('Login');

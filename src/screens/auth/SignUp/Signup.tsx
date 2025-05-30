@@ -6,11 +6,12 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {useNavigation} from '@react-navigation/native';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
 import { styles } from './styles';
+import { AuthStackParamList } from '../../../navigations/types';
 
 const Signup = () => {
-    const navigation=useNavigation();
+    const navigation=useNavigation<NavigationProp<AuthStackParamList>>();
   return (
     <WrapperContainer
       contentContainerStyle={styles.mainContainerStyle}

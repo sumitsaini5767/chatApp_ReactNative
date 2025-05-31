@@ -1,33 +1,32 @@
 import {Dimensions, StyleSheet} from 'react-native';
 import FontFamily from '../../../styles/FontFamily';
-import {CommonColors} from '../../../styles/Colors';
+import { height, moderateScale, verticalScale } from '../../../styles/scaling';
 
-const height=Dimensions.get('screen').height;
 export const styles = StyleSheet.create({
   mainContainerStyle: {
-    paddingHorizontal: 24,
+    paddingHorizontal: moderateScale(24),
   },
   topHeading: {
     textAlign: 'center',
-    marginTop: 60,
+    marginTop: verticalScale(60),
     fontFamily: FontFamily.CarosSoftBold,
-    fontSize: 18,
+    fontSize: moderateScale(18),
   },
   bottomHeading: {
     textAlign: 'center',
-    marginTop: 16,
+    marginTop: verticalScale(16),
     width: '80%',
     alignSelf: 'center',
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontFamily: FontFamily.CarosSoft,
   },
   inputContainerStyle:{
-    marginTop:30
+    marginTop: verticalScale(30)
   },
   buttonStyle:{
-    marginHorizontal:30,
+    marginHorizontal: moderateScale(30),
     position:'absolute',
-    top:height-180,
+    top:height- verticalScale(120),
     width:'100%'
   },
 });

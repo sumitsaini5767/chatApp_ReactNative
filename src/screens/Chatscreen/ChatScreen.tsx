@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -6,13 +6,22 @@ import {
   TouchableOpacity,
   FlatList,
   TextInput,
-  KeyboardAvoidingView,
-  Platform,
+  Keyboard,
 } from 'react-native';
 import { styles } from './styles'; // Create a styles file for ChatScreen
 import imagepath from '../../constants/imagepath';
+import { Backbutton, WrapperContainer } from '../../components/Componets';
+import { height } from '../../styles/commonStyle';
+import { CommonColors } from '../../styles/Colors';
 
-const messages = [
+interface Message {
+  id: string;
+  type: 'sent' | 'received';
+  text: string;
+  time: string;
+}
+
+const messages: Message[] = [
   {
     id: '1',
     type: 'sent',
@@ -44,29 +53,54 @@ const messages = [
     time: '09:25 AM',
   },
   {
-    id: '6',
-    type: 'voice',
-    duration: '00:16',
+    id: '4',
+    type: 'received',
+    text: 'Have a great working week!!',
+    time: '09:25 AM',
+  },
+  {
+    id: '5',
+    type: 'received',
+    text: 'Hope you like it',
     time: '09:25 AM',
   },
 ];
 
 export default function ChatScreen() {
-  const inputRef = useRef<TextInput>(null);
+  const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
+  const flatListRef = useRef<FlatList>(null);
 
-  const renderMessage = ({ item }) => {
-    if (item.type === 'voice') {
-      return (
-        <View style={styles.voiceMessageContainer}>
-          <TouchableOpacity style={styles.playButton}>
-            <Image source={imagepath.play} style={styles.playIcon} />
-          </TouchableOpacity>
-          <View style={styles.voiceBar} />
-          <Text style={styles.voiceDuration}>{item.duration}</Text>
-          <Text style={styles.time}>{item.time}</Text>
-        </View>
-      );
+  const scrollToEnd = () => {
+    if (flatListRef.current) {
+      flatListRef.current.scrollToEnd({ animated: true });
     }
+  };
+
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      (e) => {
+        setIsKeyboardVisible(true);
+        setKeyboardHeight(e.endCoordinates.height);
+        scrollToEnd();
+      }
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      () => {
+        setIsKeyboardVisible(false);
+        setKeyboardHeight(0);
+      }
+    );
+
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, []);
+
+  const renderMessage = ({ item }: { item: Message }) => {
     return (
       <View
         style={[
@@ -74,61 +108,52 @@ export default function ChatScreen() {
           item.type === 'sent' ? styles.sent : styles.received,
         ]}
       >
-        <Text style={styles.messageText}>{item.text}</Text>
-        <Text style={styles.time}>{item.time}</Text>
+        <Text style={[
+          styles.messageText,
+          item.type === 'sent' ? styles.sent : styles.received,
+        ]}>{item.text}</Text>
+        <Text style={[styles.time,
+        item.type === 'sent' ? styles.sent : styles.received,
+        ]}>{item.time}</Text>
       </View>
     );
   };
 
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1, backgroundColor: '#fff' }}
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-    >
+    <WrapperContainer>
       {/* Header */}
-      <View style={styles.header}>
-        <TouchableOpacity>
-          <Image source={imagepath.back} style={styles.icon} />
-        </TouchableOpacity>
-        <Image source={imagepath.user} style={styles.avatar} />
-        <View style={{ flex: 1, marginLeft: 10 }}>
-          <Text style={styles.username}>Jhon Abraham</Text>
-          <Text style={styles.status}>Active now</Text>
+      <View style={{ height: isKeyboardVisible ? height - keyboardHeight : height }}>
+        <View style={styles.header}>
+          <Backbutton />
+          <Image source={imagepath.user} style={styles.avatar} />
+          <View style={{ flex: 1, marginLeft: 10 }}>
+            <Text style={styles.username}>Jhon Abraham</Text>
+            <Text style={styles.status}>Active now</Text>
+          </View>
         </View>
-        <TouchableOpacity>
-          <Image source={imagepath.call} style={styles.icon} />
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <Image source={imagepath.video} style={styles.icon} />
-        </TouchableOpacity>
-      </View>
-
-      {/* Messages */}
-      <FlatList
-        data={messages}
-        renderItem={renderMessage}
-        keyExtractor={item => item.id}
-        contentContainerStyle={styles.messagesContainer}
-        inverted
-      />
-
-      {/* Input Bar */}
-      <View style={styles.inputBar}>
-        <TouchableOpacity>
-          <Image source={imagepath.attach} style={styles.icon} />
-        </TouchableOpacity>
-        <TextInput
-          ref={inputRef}
-          style={styles.input}
-          placeholder="Write your message"
+        {/* Messages */}
+        <FlatList
+          ref={flatListRef}
+          data={messages}
+          renderItem={renderMessage}
+          keyExtractor={item => item.id}
+          showsHorizontalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.messagesContainer}
+          onContentSizeChange={scrollToEnd}
+          onLayout={scrollToEnd}
         />
-        <TouchableOpacity>
-          <Image source={imagepath.camera} style={styles.icon} />
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <Image source={imagepath.send} style={styles.icon} />
-        </TouchableOpacity>
+        <View style={styles.inputBar}>
+          <TextInput
+            style={styles.input}
+            placeholder="Write your message"
+            placeholderTextColor={CommonColors.black}
+          />
+          <TouchableOpacity>
+            <Image source={imagepath.send} style={styles.icon} />
+          </TouchableOpacity>
+        </View>
       </View>
-    </KeyboardAvoidingView>
+    </WrapperContainer>
   );
 }

@@ -3,13 +3,11 @@ import { WrapperContainer ,Backbutton ,SocialLogin ,UserInput , Button} from '..
 import {styles} from './style';
 import {useNavigation} from '@react-navigation/native';
 import {
-  Image,
-  KeyboardAvoidingView,
-  Platform,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
+import setUserAction from '../../../Redux/actions/userDetail';
 
 const Login = () => {
   const navigation = useNavigation();
@@ -48,7 +46,7 @@ const Login = () => {
         focusable
       />
       <View style={styles.buttonStyle}>
-        <Button lable='Log in'/>
+        <Button lable='Log in' onPress={()=>{setUserAction(true);}} />
         <TouchableOpacity style={styles.forgetPassword}>
           <Text style={styles.forgetPasswordText} >Forgot Password?</Text>
         </TouchableOpacity>

@@ -4,13 +4,16 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {NavigationContainer} from '@react-navigation/native';
 import MainStack from './Mainstack';
 import AuthStack from './Authstack';
+import { useSelector } from 'react-redux';
+import { RootState } from '../Redux/store';
 
 const Stack = createNativeStackNavigator();
 
 const Routes = () => {
+  const user = useSelector((state: RootState) => state.userDetail);
   return (
     <NavigationContainer>
-        {false?<AuthStack/>:<MainStack/>}
+        {!user?<AuthStack/>:<MainStack/>}
     </NavigationContainer>
   );
 };

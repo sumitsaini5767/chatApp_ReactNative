@@ -2,7 +2,8 @@ import React from 'react';
 import TabRoutes from './Tabroutes';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import { MainStackParamList } from './types';
-import ChatScreen from '../screens/Chatscreen/ChatScreen';
+import ChatScreen from '../screens/main/Chatscreen/ChatScreen';
+
 
 const Stack = createNativeStackNavigator<MainStackParamList>();
 

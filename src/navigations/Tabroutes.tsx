@@ -6,8 +6,9 @@ import {
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import imagepath from '../constants/imagepath';
-import Home from '../screens/Home/Home';
+
 import { CommonColors } from '../styles/Colors';
+import Home from '../screens/main/Home/Home';
 
 const Tab = createBottomTabNavigator();
 

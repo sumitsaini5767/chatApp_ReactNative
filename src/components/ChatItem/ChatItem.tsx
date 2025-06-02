@@ -2,12 +2,21 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import {styles} from './style';
 import { ChatMessage } from '../../constants/Allinterface';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { MainStackParamList } from '../../navigations/types';
 
-
+type NavigationProp = NativeStackNavigationProp<MainStackParamList, 'Chat'>;
 
 const ChatItem = (item:ChatMessage) => {
+  const navigation = useNavigation<NavigationProp>();
+
+  const handleChatPress = () => {
+    navigation.navigate('Chat', { user: item.user });
+  };
+
   return (
-    <TouchableOpacity style={styles.chatItemContainer}>
+    <TouchableOpacity style={styles.chatItemContainer} onPress={handleChatPress}>
             <Image source={item?.user?.image} style={styles.chatUserImage} />
             <View style={styles.chatContentContainer}>
               <View style={styles.chatHeader}>

@@ -11,4 +11,5 @@ export default{
     user:require('../assets/images/User.png'),
     message:require('../assets/images/Message.png'),
     search:require('../assets/images/Search.png'),
+    send:require('../assets/images/send.png'),
 }

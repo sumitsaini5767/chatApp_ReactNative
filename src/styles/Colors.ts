@@ -7,5 +7,6 @@ export const CommonColors= {
     inputTextColor:'#24786D',
     buttonBackground:'#F3F6F6',
     buttonTextColor:'#797C7B',
-    white:'#ffffff'
+    white:'#ffffff',
+    tabbarFocusColour:"#8E6CEF"
 }

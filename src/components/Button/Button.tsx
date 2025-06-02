@@ -4,10 +4,11 @@ import { styles } from './styles'
 interface Props {
     containerStyle?:ViewStyle,
     lable:string,
+    onPress?:()=>void
 }
-const Button:React.FC<Props> = ({containerStyle,lable}) => {
+const Button:React.FC<Props> = ({containerStyle,lable,onPress}) => {
   return (
-    <TouchableOpacity style={[styles.container,containerStyle]}>
+    <TouchableOpacity style={[styles.container,containerStyle]} onPress={onPress}>
         <Text style={styles.textStyle}>{lable}</Text>
     </TouchableOpacity>
   )

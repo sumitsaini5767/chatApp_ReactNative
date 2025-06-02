@@ -14,6 +14,7 @@ import {
 import { styles } from './style';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
+import setUserAction from '../../../Redux/actions/userDetail';
 
 const Login = () => {
   const navigation = useNavigation();
@@ -64,6 +65,7 @@ const Login = () => {
       <View style={styles.buttonStyle}>
         <Button lable={t('login')} />
 
+        <Button lable='Log in' onPress={()=>{setUserAction(true);}} />
         <TouchableOpacity style={styles.forgetPassword}>
           <Text style={styles.forgetPasswordText}>{t('ForgotPassword')}</Text>
         </TouchableOpacity>

@@ -1,16 +1,15 @@
 import React from 'react';
-import {useColorScheme} from 'react-native';
-import {Colors} from 'react-native/Libraries/NewAppScreen';
 import Routes from './src/navigations/Routes';
-
+import { LogBox } from 'react-native';
+import { Provider } from 'react-redux';
+import store from './src/Redux/store';
+// Ignore all logs
+LogBox.ignoreAllLogs(true);
 function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
   return (
+    <Provider store={store}>
       <Routes/>
+    </Provider>
   );
 }
 export default App;

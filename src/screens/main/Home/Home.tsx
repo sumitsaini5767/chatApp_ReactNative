@@ -7,11 +7,11 @@ import {
   ListRenderItem,
 } from 'react-native';
 import React, {useCallback} from 'react';
-import {WrapperContainer} from '../../components/Componets';
+import {WrapperContainer} from '../../../components/Componets';
 import {styles} from './styles';
-import imagepath from '../../constants/imagepath';
-import { ChatMessage, User } from '../../constants/Allinterface';
-import ChatItem from '../../components/ChatItem/ChatItem';
+import imagepath from '../../../constants/imagepath';
+import { ChatMessage, User } from '../../../constants/Allinterface';
+import ChatItem from '../../../components/ChatItem/ChatItem';
 
 export default function Home() {
   const statusList: User[] = [

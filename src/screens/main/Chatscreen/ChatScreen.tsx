@@ -9,10 +9,11 @@ import {
   Keyboard,
 } from 'react-native';
 import { styles } from './styles'; // Create a styles file for ChatScreen
-import imagepath from '../../constants/imagepath';
-import { Backbutton, WrapperContainer } from '../../components/Componets';
-import { height } from '../../styles/commonStyle';
-import { CommonColors } from '../../styles/Colors';
+import imagepath from '../../../constants/imagepath';
+import { WrapperContainer } from '../../../components/Componets';
+import Backbutton from '../../../components/backbutton/Backbutton';
+import { height } from '../../../styles/commonStyle';
+import { CommonColors } from '../../../styles/Colors';
 
 interface Message {
   id: string;

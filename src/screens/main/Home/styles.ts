@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
-import { CommonColors } from "../../styles/Colors";
-import FontFamily from "../../styles/FontFamily";
-import { moderateScale, verticalScale } from "../../styles/scaling";
+import { CommonColors } from "../../../styles/Colors";
+import FontFamily from "../../../styles/FontFamily";
+import { moderateScale, verticalScale } from "../../../styles/scaling";
 
 export const styles = StyleSheet.create({
     upperContainer: {

@@ -1,60 +1,75 @@
-import React from 'react';
-import { WrapperContainer ,Backbutton ,SocialLogin ,UserInput , Button} from '../../../components/Componets'; 
-import {styles} from './style';
-import {useNavigation} from '@react-navigation/native';
+import React, { useCallback } from 'react';
 import {
-  Image,
-  KeyboardAvoidingView,
-  Platform,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
+import {
+  WrapperContainer,
+  Backbutton,
+  SocialLogin,
+  UserInput,
+  Button,
+} from '../../../components/Componets';
+import { styles } from './style';
+import { useNavigation } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 
 const Login = () => {
   const navigation = useNavigation();
+  const { t } = useTranslation();
+
+  const handleGoBack = useCallback(() => {
+    navigation.goBack();
+  }, [navigation]);
+
   return (
     <WrapperContainer
       contentContainerStyle={styles.mainContainerStyle}
-      useScroll={true}>
-      <Backbutton
-        onPress={() => {
-          navigation.goBack();
-        }}
-      />
-      <Text style={styles.topHeading}>Log in to Chatbox</Text>
+      useScroll
+    >
+      <Backbutton onPress={handleGoBack} />
+
+      <Text style={styles.topHeading}>{t('LogInToChatbox')}</Text>
+
       <Text style={styles.bottomHeading}>
-        Welcome back! Sign in using your social account or email to continue us
+        {t('WelcomeBack')}
       </Text>
+
       <SocialLogin
         imageContainerStyle={styles.socialImageContainer}
-        isdark={true}
+        isdark
       />
-      {/* or container */}
+
+      {/* OR separator */}
       <View style={styles.OrContainer}>
         <View style={styles.orLines} />
-        <Text style={styles.orTitle}>OR</Text>
+        <Text style={styles.orTitle}>{t('OR')}</Text>
         <View style={styles.orLines} />
       </View>
+
       <UserInput
         inputContainerStyle={styles.inputContainerStyle}
-        lable="Your email"
+        lable={t('YourEmail')}
         autoFocus
       />
+
       <UserInput
         inputContainerStyle={styles.inputContainerStyle}
-        lable="Password"
+        lable={t('Password')}
         secureTextEntry
         focusable
       />
+
       <View style={styles.buttonStyle}>
-        <Button lable='Log in'/>
+        <Button lable={t('login')} />
+
         <TouchableOpacity style={styles.forgetPassword}>
-          <Text style={styles.forgetPasswordText} >Forgot Password?</Text>
+          <Text style={styles.forgetPasswordText}>{t('ForgotPassword')}</Text>
         </TouchableOpacity>
       </View>
     </WrapperContainer>
   );
 };
 
-export default Login;
+export default React.memo(Login);

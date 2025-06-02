@@ -1,4 +1,4 @@
-import React, {useMemo} from 'react';
+import React, { useMemo } from 'react';
 import {
   View,
   StatusBar,
@@ -10,7 +10,7 @@ import {
   Keyboard,
   KeyboardAvoidingView,
 } from 'react-native';
-import {isColorDark} from '../../utils/isColorDark';
+import { isColorDark } from '../../utils/isColorDark';
 
 interface WrapperContainerProps {
   backgroundColor?: string;
@@ -36,31 +36,44 @@ const WrapperContainer: React.FC<WrapperContainerProps> = ({
     );
   }, [backgroundColor, statusBarStyle]);
 
-
-  const Wrapper = useScroll ? ScrollView : View;
+  const baseStyle = useMemo(
+    () => ({
+      flex: 1,
+      backgroundColor,
+      paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight || 0 : 0,
+    }),
+    [backgroundColor]
+  );
 
   return (
     <>
-      <StatusBar barStyle={computedBarStyle} translucent={true}/>
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <Wrapper
-        showsVerticalScrollIndicator={false}
-        showsHorizontalScrollIndicator={false}
-        style={[
-          {
-            flex: 1,
-            backgroundColor,
-            paddingTop:
-              Platform.OS === 'android' ? StatusBar.currentHeight || 0 : 0,
-          },
-          !useScroll && contentContainerStyle,
-        ]}
-        contentContainerStyle={useScroll ? contentContainerStyle : undefined}>
-        {children}
-      </Wrapper>
-      </TouchableWithoutFeedback>
+      <StatusBar
+        barStyle={computedBarStyle}
+        backgroundColor={statusBarBackgroundColor || backgroundColor}
+        translucent
+      />
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        style={{ flex: 1 }}>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+          {useScroll ? (
+            <ScrollView
+              keyboardShouldPersistTaps="handled"
+              showsVerticalScrollIndicator={false}
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={contentContainerStyle}
+              style={baseStyle}>
+              {children}
+            </ScrollView>
+          ) : (
+            <View style={[baseStyle, contentContainerStyle]}>
+              {children}
+            </View>
+          )}
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
     </>
   );
 };
 
-export default WrapperContainer;
+export default React.memo(WrapperContainer);

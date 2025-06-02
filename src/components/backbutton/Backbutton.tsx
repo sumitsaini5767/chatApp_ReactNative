@@ -7,10 +7,20 @@ interface props {
   onPress?: () => void;
   style?: ViewStyle;
 }
-const Backbutton: React.FC<props> = ({onPress,style}) => {
+
+const Backbutton: React.FC<props> = ({ onPress, style }) => {
   const navigation = useNavigation();
+
+  const handlePress = () => {
+    if (onPress) {
+      onPress();
+    } else {
+      navigation.goBack();
+    }
+  };
+
   return (
-    <TouchableOpacity style={[styles.backButton, style]} onPress={() => navigation.goBack()}>
+    <TouchableOpacity style={[styles.backButton, style]} onPress={handlePress}>
       <Image source={imagepath.backArrow} resizeMode="contain" />
     </TouchableOpacity>
   );

@@ -12,8 +12,13 @@ import {styles} from './styles';
 import imagepath from '../../../constants/imagepath';
 import { ChatMessage, User } from '../../../constants/Allinterface';
 import ChatItem from '../../../components/ChatItem/ChatItem';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { MainStackParamList } from '../../../navigations/types';
+type NavigationProp = NativeStackNavigationProp<MainStackParamList, 'UserStatus'>;
 
 export default function Home() {
+  const navigation=useNavigation<NavigationProp>();
   const statusList: User[] = [
     {
       id: 1,
@@ -42,7 +47,6 @@ export default function Home() {
       name: 'Max',
     },
   ];
-
   const chatMessages: ChatMessage[] = [
     {
       id: 1,
@@ -106,6 +110,7 @@ export default function Home() {
         accessible={true}
         accessibilityLabel={`View ${item.name}'s status`}
         accessibilityRole="button"
+        onPress={()=>{navigation.navigate('UserStatus')}}
       >
         <View style={styles.statusImageContainer}>
           <Image 
@@ -147,7 +152,6 @@ export default function Home() {
           <Image source={imagepath.user} style={styles.userImage} />
         </TouchableOpacity>
       </View>
-
       <View style={styles.statusSection}>
         <FlatList 
           data={statusList}

@@ -6,9 +6,10 @@ import { useNavigation } from '@react-navigation/native';
 interface props {
   onPress?: () => void;
   style?: ViewStyle;
+  tintColor?:string
 }
 
-const Backbutton: React.FC<props> = ({ onPress, style }) => {
+const Backbutton: React.FC<props> = ({ onPress, style,tintColor }) => {
   const navigation = useNavigation();
 
   const handlePress = () => {
@@ -21,7 +22,7 @@ const Backbutton: React.FC<props> = ({ onPress, style }) => {
 
   return (
     <TouchableOpacity style={[styles.backButton, style]} onPress={handlePress}>
-      <Image source={imagepath.backArrow} resizeMode="contain" />
+      <Image source={imagepath.backArrow} resizeMode="contain"  tintColor={tintColor}/>
     </TouchableOpacity>
   );
 };

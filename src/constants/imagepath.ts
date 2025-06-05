@@ -12,4 +12,5 @@ export default{
     message:require('../assets/images/Message.png'),
     search:require('../assets/images/Search.png'),
     send:require('../assets/images/send.png'),
+    status:require('../assets/images/status.jpg'),
 }

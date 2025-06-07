@@ -8,4 +8,6 @@ export default {
     YourEmail: 'Your email',
     Password: 'Password',
     ForgotPassword: 'Forgot Password?',
+    Search:'Search',
+    People:'People' 
 };

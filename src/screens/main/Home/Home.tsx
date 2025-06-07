@@ -6,115 +6,33 @@ import {
   FlatList,
   ListRenderItem,
 } from 'react-native';
-import React, {useCallback} from 'react';
-import {WrapperContainer} from '../../../components/Componets';
-import {styles} from './styles';
+import React, { useCallback } from 'react';
+import { WrapperContainer } from '../../../components/Componets';
+import { styles } from './styles';
 import imagepath from '../../../constants/imagepath';
 import { ChatMessage, User } from '../../../constants/Allinterface';
 import ChatItem from '../../../components/ChatItem/ChatItem';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { MainStackParamList } from '../../../navigations/types';
+import { chatMessages, statusList } from '../../../constants/DummyData';
+import { CommonColors } from '../../../styles/Colors';
 type NavigationProp = NativeStackNavigationProp<MainStackParamList, 'UserStatus'>;
 
 export default function Home() {
-  const navigation=useNavigation<NavigationProp>();
-  const statusList: User[] = [
-    {
-      id: 1,
-      image: imagepath.user,
-      name: 'My status',
-      isMyStatus: true,
-    },
-    {
-      id: 2,
-      image: imagepath.user,
-      name: 'Adil',
-    },
-    {
-      id: 3,
-      image: imagepath.user,
-      name: 'Marina',
-    },
-    {
-      id: 4,
-      image: imagepath.user,
-      name: 'Dean',
-    },
-    {
-      id: 5,
-      image: imagepath.user,
-      name: 'Max',
-    },
-  ];
-  const chatMessages: ChatMessage[] = [
-    {
-      id: 1,
-      user: {
-        id: 1,
-        image: imagepath.user,
-        name: 'Alex Linderson',
-      },
-      message: 'How are you today?',
-      timestamp: '2 min ago',
-      unreadCount: 3,
-    },
-    {
-      id: 2,
-      user: {
-        id: 2,
-        image: imagepath.user,
-        name: 'Team Align',
-      },
-      message: "Don't miss to attend the meeting.",
-      timestamp: '2 min ago',
-      unreadCount: 4,
-    },
-    {
-      id: 3,
-      user: {
-        id: 3,
-        image: imagepath.user,
-        name: 'John Ahraham',
-      },
-      message: 'Hey! Can you join the meeting?',
-      timestamp: '2 min ago',
-      unreadCount: 1,
-    },
-    {
-      id: 4,
-      user: {
-        id: 4,
-        image: imagepath.user,
-        name: 'Sabila Sayma',
-      },
-      message: 'How are you today?',
-      timestamp: '2 min ago',
-    },
-    {
-      id: 5,
-      user: {
-        id: 5,
-        image: imagepath.user,
-        name: 'John Borino',
-      },
-      message: 'Have a good day ❤️',
-      timestamp: '2 min ago',
-    },
-  ];
-
-  const renderStatus: ListRenderItem<User> = useCallback(({item}) => {
+  const navigation = useNavigation<NavigationProp>();
+  const renderStatus: ListRenderItem<User> = useCallback(({ item }) => {
     return (
-      <TouchableOpacity 
+      <TouchableOpacity
         style={styles.statusContainer}
         accessible={true}
         accessibilityLabel={`View ${item.name}'s status`}
         accessibilityRole="button"
-        onPress={()=>{navigation.navigate('UserStatus')}}
+        onPress={() => { navigation.navigate('UserStatus') }}
       >
         <View style={styles.statusImageContainer}>
-          <Image 
-            source={item.image} 
+          <Image
+            source={item.image}
             style={styles.statusImage}
           />
           {item.isMyStatus && (
@@ -127,8 +45,7 @@ export default function Home() {
       </TouchableOpacity>
     );
   }, []);
-
-  const renderChatItem : ListRenderItem<ChatMessage> = useCallback(({item}) => {
+  const renderChatItem: ListRenderItem<ChatMessage> = useCallback(({ item }) => {
     return (
       <ChatItem
         user={item.user}
@@ -138,13 +55,13 @@ export default function Home() {
       />
     );
   }, []);
-
-  const keyExtractor = useCallback((item: User | ChatMessage) => item.id ? item.id.toString() : '', []);
-
+  const keyExtractor =
+    useCallback((item: User | ChatMessage) => item.id ? item.id.toString() : '', []);
   return (
-    <WrapperContainer backgroundColor="#000000">
+    <WrapperContainer backgroundColor={CommonColors.black}>
       <View style={styles.upperContainer}>
-        <TouchableOpacity style={styles.searchContainer}>
+        <TouchableOpacity style={styles.searchContainer}
+          onPress={() => navigation.navigate('SearchUser')}>
           <Image source={imagepath.search} style={styles.searchImage} />
         </TouchableOpacity>
         <Text style={styles.headline}>Home</Text>
@@ -153,7 +70,7 @@ export default function Home() {
         </TouchableOpacity>
       </View>
       <View style={styles.statusSection}>
-        <FlatList 
+        <FlatList
           data={statusList}
           renderItem={renderStatus}
           keyExtractor={keyExtractor}
@@ -163,9 +80,8 @@ export default function Home() {
           ItemSeparatorComponent={() => <View style={{ width: 16 }} />}
         />
       </View>
-
       <View style={styles.chatSection}>
-        <FlatList 
+        <FlatList
           data={chatMessages}
           renderItem={renderChatItem}
           keyExtractor={keyExtractor}

@@ -13,6 +13,7 @@ export type MainStackParamList = {
   Home: undefined;
   Chat: { user: any };
   UserStatus: undefined;
+  SearchUser: undefined;
 };
 
 export type MainStackScreenProps<T extends keyof MainStackParamList> = 

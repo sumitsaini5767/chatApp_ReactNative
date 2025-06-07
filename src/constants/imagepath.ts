@@ -13,4 +13,5 @@ export default{
     search:require('../assets/images/Search.png'),
     send:require('../assets/images/send.png'),
     status:require('../assets/images/status.jpg'),
+    cross:require('../assets/images/cross.png'),
 }

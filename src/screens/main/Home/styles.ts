@@ -23,6 +23,7 @@ export const styles = StyleSheet.create({
         tintColor: '#FFFFFF',
     },
     headline: {
+        fontFamily: FontFamily.CarosSoftBold,
         fontSize: moderateScale(20),
         fontWeight: '600',
         color: '#FFFFFF',
@@ -34,7 +35,7 @@ export const styles = StyleSheet.create({
     },
     statusSection: {
         marginTop: verticalScale(10),
-        marginBottom: verticalScale(20),
+        marginBottom: verticalScale(10),
         paddingVertical: verticalScale(12),
     },
     statusListContainer: {
@@ -52,8 +53,7 @@ export const styles = StyleSheet.create({
         width: moderateScale(60),
         height: moderateScale(60),
         borderRadius: moderateScale(30),
-        borderWidth: moderateScale(2),
-        borderColor: '#0088CC',
+        padding: moderateScale(2),
     },
     addStatusButton: {
         position: 'absolute',
@@ -69,7 +69,7 @@ export const styles = StyleSheet.create({
         borderColor: '#000000',
     },
     plusIcon: {
-        textAlign:"center",
+        textAlign: "center",
         color: CommonColors.black,
         fontSize: moderateScale(13),
         fontWeight: 'bold',
@@ -142,4 +142,10 @@ export const styles = StyleSheet.create({
         fontSize: moderateScale(12),
         fontWeight: '600',
     },
+    statusBar: {
+        borderRadius:moderateScale(50),
+        padding:moderateScale(2.5),
+        borderWidth: moderateScale(3),
+        borderColor: '#0088CC',
+    }
 });

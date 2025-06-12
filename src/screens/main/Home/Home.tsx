@@ -17,6 +17,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { MainStackParamList } from '../../../navigations/types';
 import { chatMessages, statusList } from '../../../constants/DummyData';
 import { CommonColors } from '../../../styles/Colors';
+import { t } from 'i18next';
 type NavigationProp = NativeStackNavigationProp<MainStackParamList, 'UserStatus'>;
 
 export default function Home() {
@@ -31,10 +32,12 @@ export default function Home() {
         onPress={() => { navigation.navigate('UserStatus') }}
       >
         <View style={styles.statusImageContainer}>
-          <Image
-            source={item.image}
-            style={styles.statusImage}
-          />
+          <View style={styles.statusBar}>
+            <Image
+              source={item.image}
+              style={styles.statusImage}
+            />
+          </View>
           {item.isMyStatus && (
             <View style={styles.addStatusButton}>
               <Text style={styles.plusIcon}>+</Text>
@@ -64,7 +67,7 @@ export default function Home() {
           onPress={() => navigation.navigate('SearchUser')}>
           <Image source={imagepath.search} style={styles.searchImage} />
         </TouchableOpacity>
-        <Text style={styles.headline}>Home</Text>
+        <Text style={styles.headline}>{t("Home")}</Text>
         <TouchableOpacity>
           <Image source={imagepath.user} style={styles.userImage} />
         </TouchableOpacity>

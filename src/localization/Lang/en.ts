@@ -9,5 +9,11 @@ export default {
     Password: 'Password',
     ForgotPassword: 'Forgot Password?',
     Search:'Search',
-    People:'People' 
+    People:'People',
+    Home:'Home',
+    Message:"Message",
+    Settings:"Settings",
+    Logout:"Logout",
+    editProfile:"Edit Profile",
+    changeLanguage:"Change Language",
 };

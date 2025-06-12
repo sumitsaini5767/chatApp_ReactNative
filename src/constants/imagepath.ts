@@ -14,4 +14,8 @@ export default{
     send:require('../assets/images/send.png'),
     status:require('../assets/images/status.jpg'),
     cross:require('../assets/images/cross.png'),
+    settings:require('../assets/images/settings.png'),
+    logout:require('../assets/images/turn-off.png'),
+    Profile:require('../assets/images/Profile.png'),
+    Language:require('../assets/images/language.png'),
 }

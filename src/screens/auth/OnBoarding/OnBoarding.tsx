@@ -14,7 +14,6 @@ const OnBoarding = () => {
   const navigation = useNavigation<NavigationProp<AuthStackParamList>>();
   const {t} = useTranslation();
   const selectedLanguage=getLanguage();
-  console.log(selectedLanguage,"dfdfdfdf");
   return (
     <WrapperContainer backgroundColor={CommonColors.themeMain}>
       {/* language change icon */}

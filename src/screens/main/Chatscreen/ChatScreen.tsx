@@ -14,6 +14,7 @@ import { WrapperContainer } from '../../../components/Componets';
 import Backbutton from '../../../components/backbutton/Backbutton';
 import { height } from '../../../styles/commonStyle';
 import { CommonColors } from '../../../styles/Colors';
+import { useTranslation } from 'react-i18next';
 
 interface Message {
   id: string;
@@ -71,7 +72,7 @@ export default function ChatScreen() {
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
   const [keyboardHeight, setKeyboardHeight] = useState(0);
   const flatListRef = useRef<FlatList>(null);
-
+  const {t}=useTranslation();
   const scrollToEnd = () => {
     if (flatListRef.current) {
       flatListRef.current.scrollToEnd({ animated: true });
@@ -147,7 +148,7 @@ export default function ChatScreen() {
         <View style={styles.inputBar}>
           <TextInput
             style={styles.input}
-            placeholder="Write your message"
+            placeholder={t("WriteYourMessage")}
             placeholderTextColor={CommonColors.black}
           />
           <TouchableOpacity>

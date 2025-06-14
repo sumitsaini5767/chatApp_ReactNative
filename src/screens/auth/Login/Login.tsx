@@ -13,13 +13,12 @@ import {
 } from '../../../components/Componets';
 import { styles } from './style';
 import { useNavigation } from '@react-navigation/native';
-import { useTranslation } from 'react-i18next';
 import setUserAction from '../../../Redux/actions/userDetail';
+import { useTranslation } from 'react-i18next';
 
 const Login = () => {
   const navigation = useNavigation();
-  const { t } = useTranslation();
-
+  const {t}=useTranslation();
   const handleGoBack = useCallback(() => {
     navigation.goBack();
   }, [navigation]);
@@ -63,7 +62,7 @@ const Login = () => {
       />
 
       <View style={styles.buttonStyle}>
-        <Button lable='Log in' onPress={()=>{setUserAction(true);}} />
+        <Button lable={t('login')} onPress={()=>{setUserAction(true);}} />
         <TouchableOpacity style={styles.forgetPassword}>
           <Text style={styles.forgetPasswordText}>{t('ForgotPassword')}</Text>
         </TouchableOpacity>

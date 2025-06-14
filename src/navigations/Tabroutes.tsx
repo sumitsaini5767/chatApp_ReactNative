@@ -9,13 +9,13 @@ import imagepath from '../constants/imagepath';
 
 import { CommonColors } from '../styles/Colors';
 import Home from '../screens/main/Home/Home';
-import SearchUser from '../screens/main/SearchUser/SearchUser';
-import { t } from 'i18next';
 import Settings from '../screens/main/Settings/Settings';
+import { useTranslation } from 'react-i18next';
 
 const Tab = createBottomTabNavigator();
 
 const TabRoutes = () => {
+  const{t}=useTranslation();
   let options = (
     img: any,
     title?: string,

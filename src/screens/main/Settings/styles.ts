@@ -50,22 +50,23 @@ export const styles = StyleSheet.create({
         color: CommonColors.black,
     },
     icon:{
-        width: moderateScale(24),
-        height: moderateScale(24),
-        marginRight: moderateScale(16),
+        width: moderateScale(30),
+        height: moderateScale(30),
     },
     container:{
+        marginBottom:verticalScale(10),
+        marginHorizontal:moderateScale(16),
         flexDirection: 'row',
         alignItems: 'center',
-        paddingHorizontal: moderateScale(26),
-        paddingVertical: verticalScale(12),
-        borderBottomColor: CommonColors.buttonBackground,
-        marginBottom: verticalScale(16),
     },
     lable:{
+        padding:moderateScale(10),
         fontFamily: FontFamily.CarosSoftMedium,
         fontSize: moderateScale(15),
         color: CommonColors.black,
         alignSelf: 'center',
+    },
+    dropdown:{
+        width:'95%',
     }
 })

@@ -17,11 +17,11 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { MainStackParamList } from '../../../navigations/types';
 import { chatMessages, statusList } from '../../../constants/DummyData';
 import { CommonColors } from '../../../styles/Colors';
-import { t } from 'i18next';
+import { useTranslation } from 'react-i18next';
 type NavigationProp = NativeStackNavigationProp<MainStackParamList, 'UserStatus'>;
-
 export default function Home() {
   const navigation = useNavigation<NavigationProp>();
+  const {t}=useTranslation();
   const renderStatus: ListRenderItem<User> = useCallback(({ item }) => {
     return (
       <TouchableOpacity

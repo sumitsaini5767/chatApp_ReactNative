@@ -1,79 +1,77 @@
-import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React, { useState } from 'react'
+import {
+    FlatList,
+    Modal,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    TouchableWithoutFeedback,
+    View,
+    ViewStyle,
+} from 'react-native';
+import React, { useState } from 'react';
+import { styles } from './style';
 import { CommonColors } from '../../styles/Colors';
-import { moderateScale, verticalScale } from '../../styles/scaling';
-import FontFamily from '../../styles/FontFamily';
 
-const Dropdown = () => {
-    const [isDropDown, setIsDropdown] = useState(true);
-    const data = [
-        'Option 1',
-        'Option 2',
-        'Option 3',
-        'Option 5',
-        'Option 6',
-        'Option 7',
-        'Option 8',
-        'Option 9',
-        'Option 9',
-        'Option 10',
-    ];
-    const renderItem = ({ item }: { item: string }) => (
-        <TouchableOpacity style={styles.options}>
-            <Text style={styles.optionText}>{item}</Text>
-        </TouchableOpacity>
-    );
-    const keyExtractor = (item: string) => item;
-    return (
-        <>
-            <TouchableOpacity
-                onPress={() => setIsDropdown(!isDropDown)}
-                style={styles.dropdownContainer}>
-                <Text style={styles.optionText}>Select</Text>
-                <Text style={styles.optionText}>▼</Text>
-            </TouchableOpacity>
-            <FlatList
-                showsVerticalScrollIndicator={false}
-                showsHorizontalScrollIndicator={false}
-                data={data}
-                renderItem={renderItem}
-                keyExtractor={keyExtractor}
-                style={{
-                    ...styles.dropdownItem,
-                    display: isDropDown ? 'flex' : 'none'
-                }}
-            />
-        </>
-    )
+interface Props {
+    placeHolder?: string;
+    options: Array<string>;
+    onSelect?: (selected: string) => void;
+    containerStyle?: ViewStyle;
 }
 
-export default Dropdown
+const Dropdown: React.FC<Props> = ({
+    placeHolder = 'Select',
+    options,
+    onSelect,
+    containerStyle,
+}) => {
+    const [isVisible, setIsVisible] = useState(false);
+    const [selectedValue, setSelectedValue] = useState<string | null>(null);
+    const handleSelect = (item: string) => {
+        setSelectedValue(item);
+        onSelect?.(item);
+        setIsVisible(false);
+    };
+    return (
+        <View style={[styles.mainContainer, containerStyle]}>
+            <TouchableOpacity
+                onPress={() => setIsVisible(true)}
+                style={styles.dropdownContainer}>
+                <Text style={styles.placeholderText}>{selectedValue || placeHolder}</Text>
+                <Text style={styles.placeholderText}>▼</Text>
+            </TouchableOpacity>
+            <Modal
+                visible={isVisible}
+                transparent
+                animationType="fade"
+                onRequestClose={() => setIsVisible(false)}>
+                <TouchableWithoutFeedback onPress={() => setIsVisible(false)}>
+                    <View style={styles.modalBackdrop}>
+                        <View style={styles.dropdownItem}>
+                            <FlatList
+                                data={options}
+                                renderItem={({ item }) => (
+                                    <TouchableOpacity
+                                        style={styles.options}
+                                        onPress={() => handleSelect(item)}
+                                    >
+                                        <Text style={{
+                                            ...styles.optionText,
+                                            color: item === selectedValue ?
+                                                CommonColors.inputTextColor
+                                                : styles.optionText.color
+                                        }}>{item}</Text>
+                                    </TouchableOpacity>
+                                )}
+                                keyExtractor={(item, index) => `${item}-${index}`}
+                                showsVerticalScrollIndicator={false}
+                            />
+                        </View>
+                    </View>
+                </TouchableWithoutFeedback>
+            </Modal>
+        </View>
+    );
+};
 
-const styles = StyleSheet.create({
-    dropdownContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        padding: moderateScale(10),
-        backgroundColor: CommonColors.buttonBackground,
-        borderRadius: moderateScale(5),
-        marginBottom: verticalScale(5),
-        marginHorizontal: moderateScale(10),
-    },
-    dropdownItem: {
-        marginHorizontal: moderateScale(10),
-        height: verticalScale(100),
-        borderRadius: moderateScale(10),
-        backgroundColor: CommonColors.textSecondary,
-    },
-    options: {
-        backgroundColor: CommonColors.buttonBackground,
-        borderBottomWidth: moderateScale(1),
-        borderColor: CommonColors.gray,
-        padding: moderateScale(10),
-        marginBottom: verticalScale(0),
-    },
-    optionText: {
-        fontFamily: FontFamily.CarosSoftBold,
-        fontSize: moderateScale(16),
-    },
-})
+export default Dropdown;

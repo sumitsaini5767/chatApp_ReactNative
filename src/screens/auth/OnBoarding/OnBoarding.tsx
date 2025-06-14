@@ -12,8 +12,8 @@ import { AuthStackParamList } from '../../../navigations/types';
 
 const OnBoarding = () => {
   const navigation = useNavigation<NavigationProp<AuthStackParamList>>();
-  const {t} = useTranslation();
   const selectedLanguage=getLanguage();
+  const{t}=useTranslation();
   return (
     <WrapperContainer backgroundColor={CommonColors.themeMain}>
       {/* language change icon */}
@@ -34,19 +34,16 @@ const OnBoarding = () => {
       </View>
       <ScrollView style={styles.MainContainer}>
         {/* title section */}
-        <Text style={styles.Title}>Connect friends</Text>
-        <Text style={styles.Title1}>easily & quickly</Text>
+        <Text style={styles.Title}>{t("ConnectFriends")}</Text>
+        <Text style={styles.Title1}>{t('Easily_Quickly')}</Text>
 
         {/* subtitile section */}
-        <Text style={styles.subtitle}>
-          Our chat app is the perfect way to stay connected with friends and
-          family.
-        </Text>
+        <Text style={styles.subtitle}>{t("Our_Chat")}</Text>
         <SocialLogin />
         {/* or container */}
         <View style={styles.OrContainer}>
           <View style={styles.orLines} />
-          <Text style={styles.orTitle}>OR</Text>
+          <Text style={styles.orTitle}>{t('OR')}</Text>
           <View style={styles.orLines} />
         </View>
 
@@ -57,7 +54,7 @@ const OnBoarding = () => {
             onPress={() => {
               navigation.navigate('Signup');
             }}>
-            <Text style={styles.ButtonText}>Sign up with mail</Text>
+            <Text style={styles.ButtonText}>{t("SignUpWithMail")}</Text>
           </TouchableOpacity>
         </View>
 

@@ -9,9 +9,11 @@ import {
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import { styles } from './styles';
 import { AuthStackParamList } from '../../../navigations/types';
+import { useTranslation } from 'react-i18next';
 
 const Signup = () => {
     const navigation=useNavigation<NavigationProp<AuthStackParamList>>();
+    const {t}=useTranslation();
   return (
     <WrapperContainer
       contentContainerStyle={styles.mainContainerStyle}
@@ -21,33 +23,31 @@ const Signup = () => {
           navigation.goBack();
         }}
       />
-      <Text style={styles.topHeading}>Sign up with Email</Text>
-      <Text style={styles.bottomHeading}>
-      Get chatting with friends and family today by signing up for our chat app!
-      </Text>
+      <Text style={styles.topHeading}>{t("SignUpWith")}</Text>
+      <Text style={styles.bottomHeading}>{t('Get_Chatting_With')}</Text>
       <UserInput
         inputContainerStyle={styles.inputContainerStyle}
-        lable="Your name"
+        lable={t("YourName")}
         autoFocus
       />
       <UserInput
         inputContainerStyle={styles.inputContainerStyle}
-        lable="Your email"
+        lable={t("YourEmail")}
       />
       <UserInput
         inputContainerStyle={styles.inputContainerStyle}
-        lable="Password"
+        lable={t("Password")}
         secureTextEntry
         focusable
       />
       <UserInput
         inputContainerStyle={styles.inputContainerStyle}
-        lable="Confirm Password"
+        lable={t("ConfirmPassword")}
         secureTextEntry
         focusable
       />
       <View style={styles.buttonStyle}>
-        <Button lable='Create an account'/>
+        <Button lable={t('CreateAnAccount')}/>
       </View>
     </WrapperContainer>
   )

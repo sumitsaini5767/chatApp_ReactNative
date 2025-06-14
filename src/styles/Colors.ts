@@ -8,5 +8,6 @@ export const CommonColors= {
     buttonBackground:'#F3F6F6',
     buttonTextColor:'#797C7B',
     white:'#ffffff',
-    tabbarFocusColour:"#8E6CEF"
+    tabbarFocusColour:"#8E6CEF",
+    darkWhite:'#ebe6e6'
 }

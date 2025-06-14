@@ -12,11 +12,12 @@ import { Backbutton, WrapperContainer } from '../../../components/Componets'
 import { CommonColors } from '../../../styles/Colors'
 import imagepath from '../../../constants/imagepath'
 import { styles } from './styles'
-import { t } from 'i18next'
 import { chatMessages } from '../../../constants/DummyData'
 import { ChatMessage, User } from '../../../constants/Allinterface'
 import ChatItem from '../../../components/ChatItem/ChatItem'
+import { useTranslation } from 'react-i18next'
 const SearchUser = () => {
+    const{t}=useTranslation();
     const renderChatItem: ListRenderItem<ChatMessage> = useCallback(({ item }) => {
         return (
             <ChatItem

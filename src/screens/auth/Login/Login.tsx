@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   Text,
   TouchableOpacity,
@@ -13,29 +13,39 @@ import {
 } from '../../../components/Componets';
 import { styles } from './style';
 import { useNavigation } from '@react-navigation/native';
-import setUserAction from '../../../Redux/actions/userDetail';
+import { login} from '../../../Redux/actions/userDetail';
 import { useTranslation } from 'react-i18next';
 
 const Login = () => {
   const navigation = useNavigation();
-  const {t}=useTranslation();
+  const { t } = useTranslation();
   const handleGoBack = useCallback(() => {
     navigation.goBack();
   }, [navigation]);
-
+  const [state, setState] = useState({
+    email: '',
+    password: '',
+  })
+  const { email, password } = state;
+  const updateState = (key: string, value: string) => {
+    setState((prevState) => ({
+      ...prevState,
+      [key]: value,
+    }));
+  };
+  const onLogin = () => {
+    login(state)
+  }
   return (
     <WrapperContainer
       contentContainerStyle={styles.mainContainerStyle}
       useScroll
     >
       <Backbutton onPress={handleGoBack} />
-
       <Text style={styles.topHeading}>{t('LogInToChatbox')}</Text>
-
       <Text style={styles.bottomHeading}>
         {t('WelcomeBack')}
       </Text>
-
       <SocialLogin
         imageContainerStyle={styles.socialImageContainer}
         isdark
@@ -51,18 +61,21 @@ const Login = () => {
       <UserInput
         inputContainerStyle={styles.inputContainerStyle}
         lable={t('YourEmail')}
-        autoFocus
+        value={email}
+        onChangeText={(text) => updateState('email', text)}
       />
 
       <UserInput
         inputContainerStyle={styles.inputContainerStyle}
         lable={t('Password')}
         secureTextEntry
+        value={password}
+        onChangeText={(text) => updateState('password', text)}
         focusable
       />
 
       <View style={styles.buttonStyle}>
-        <Button lable={t('login')} onPress={()=>{setUserAction(true);}} />
+        <Button lable={t('login')} onPress={onLogin} />
         <TouchableOpacity style={styles.forgetPassword}>
           <Text style={styles.forgetPasswordText}>{t('ForgotPassword')}</Text>
         </TouchableOpacity>

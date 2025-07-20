@@ -2,7 +2,7 @@ import { StyleSheet } from "react-native";
 
 export const styles=StyleSheet.create({
     socialLoginContainer:{
-        marginTop:50,
+        marginTop:25,
         flexDirection:'row',
         justifyContent:'center',
         alignItems:'center',

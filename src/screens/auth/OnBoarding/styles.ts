@@ -1,17 +1,14 @@
 import {Dimensions, StyleSheet} from 'react-native';
 import {CommonColors} from '../../../styles/Colors';
 import FontFamily from '../../../styles/FontFamily';
-
-const {width} = Dimensions.get('screen');
-
+import { moderateScale, verticalScale, width } from '../../../styles/scaling';
 export const styles = StyleSheet.create({
   MainContainer: {
-    paddingHorizontal: 50,
+    paddingHorizontal:moderateScale(40),
   },
   bgCircleImage: {
     position: 'absolute',
-    height: 500,
-    margin: 0,
+    height: verticalScale(500),
     width: width,
   },
   TopContainer:{
@@ -25,10 +22,10 @@ export const styles = StyleSheet.create({
   },
   translateImageContainer:{
     position:"absolute",
-    right:15,
-    top:15,
-    padding:10,
-    borderRadius:60,
+    right:moderateScale(15),
+    top:moderateScale(15),
+    padding:moderateScale(10),
+    borderRadius:moderateScale(50),
     backgroundColor:CommonColors.textWhite,
     justifyContent:'center',
     alignItems:'center',
@@ -36,52 +33,52 @@ export const styles = StyleSheet.create({
   },  
   translateImage:{
     resizeMode:'contain',
-    height: 15,
-    width: 15,
+    height: verticalScale(15),
+    width: moderateScale(15),
   },
   cLetterImage: {
-    height: 19,
-    width: 19,
-    marginTop: 25,
+    height: verticalScale(19),
+    width: moderateScale(19),
+    marginTop: verticalScale(25),
     resizeMode: 'contain',
   },
   LogoTitle: {
     color: CommonColors.textWhite,
     fontFamily: FontFamily.CarosSoft,
-    fontSize: 14,
-    marginTop: 25,
+    fontSize: moderateScale(14),
+    marginTop: verticalScale(25),
   },
   Title: {
-    marginTop: 50,
+    marginTop: verticalScale(20),
     color: CommonColors.textWhite,
     fontFamily: FontFamily.CarosSoft,
-    fontSize: 68,
+    fontSize: moderateScale(58),
     // textAlign:'center'
   },
   Title1: {
     color: CommonColors.textWhite,
     fontFamily: FontFamily.CarosSoftMedium,
-    fontSize: 68,
+    fontSize: moderateScale(58),
     // textAlign:'center'
   },
   subtitle: {
-    marginTop: 10,
+    marginTop: verticalScale(10),
     color: CommonColors.textSecondary,
-    lineHeight: 26,
-    fontSize: 16,
+    lineHeight: verticalScale(18),
+    fontSize: moderateScale(16),
     fontFamily: FontFamily.CircularStd_Regular,
   },
   OrContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 30,
+    marginTop:verticalScale(30),
     gap: 10,
   },
   orLines: {
-    height: 1,
+    height: verticalScale(1),
     backgroundColor: '#CDD1D0',
-    width: 100,
+    width: moderateScale(100),
     opacity: 0.3,
   },
   orTitle: {
@@ -90,34 +87,34 @@ export const styles = StyleSheet.create({
   ButtonContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 30,
+    marginTop: verticalScale(30),
   },
   Button: {
     backgroundColor: CommonColors.textWhite,
-    padding: 13,
-    borderRadius: 16,
+    padding: moderateScale(13),
+    borderRadius: moderateScale(16),
     width: '100%',
   },
   ButtonText: {
     textAlign: 'center',
-    fontSize: 16,
+    fontSize: moderateScale(16),
     fontFamily: FontFamily.CarosSoftMedium,
   },
   ExistingAccountContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 30,
+    marginTop: verticalScale(30),
     gap: 5,
   },
   ExistingAccountText: {
     color: CommonColors.textSecondary,
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontFamily: FontFamily.CircularStd_Regular,
   },
   LoginButtontext: {
     color: CommonColors.textWhite,
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontFamily: FontFamily.CircularStd_Medium,
   },
 });

@@ -1,6 +1,7 @@
 import {StyleSheet} from 'react-native';
 import FontFamily from '../../styles/FontFamily';
 import { CommonColors } from '../../styles/Colors';
+import { verticalScale } from '../../styles/scaling';
 
 export const styles = StyleSheet.create({
   containerStyle: {
@@ -15,4 +16,9 @@ export const styles = StyleSheet.create({
     marginVertical:8,
     color:CommonColors.black
   },
+  validation:{
+    color:CommonColors.red,
+    marginVertical:verticalScale(10)
+  }
+
 });

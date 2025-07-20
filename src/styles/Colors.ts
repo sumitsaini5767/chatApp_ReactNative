@@ -9,5 +9,6 @@ export const CommonColors= {
     buttonTextColor:'#797C7B',
     white:'#ffffff',
     tabbarFocusColour:"#8E6CEF",
-    darkWhite:'#ebe6e6'
+    darkWhite:'#ebe6e6',
+    red:'#fc0000'
 }

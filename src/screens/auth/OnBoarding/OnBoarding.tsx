@@ -1,26 +1,34 @@
-import {View, Text, Image, TouchableOpacity, ScrollView} from 'react-native';
-import {styles} from './styles';
+import { View, Text, Image, TouchableOpacity, ScrollView } from 'react-native';
+import { styles } from './styles';
 import imagepath from '../../../constants/imagepath';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {WrapperContainer, SocialLogin} from '../../../components/Componets';
-import {CommonColors} from '../../../styles/Colors';
-import {useTranslation} from 'react-i18next';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { WrapperContainer, SocialLogin } from '../../../components/Componets';
+import { CommonColors } from '../../../styles/Colors';
+import { useTranslation } from 'react-i18next';
 import '../../../localization/i18n';
-import {changeAppLanguage} from '../../../utils/languageUtils';
-import { getLanguage } from '../../../localStorage/mmkv';
+import { changeAppLanguage } from '../../../utils/languageUtils';
+import { getItem, getLanguage } from '../../../localStorage/mmkv';
 import { AuthStackParamList } from '../../../navigations/types';
+import { useEffect } from 'react';
+import { getFcmToken } from '../../../utils/helperFunction';
 
 const OnBoarding = () => {
   const navigation = useNavigation<NavigationProp<AuthStackParamList>>();
-  const selectedLanguage=getLanguage();
-  const{t}=useTranslation();
+  const selectedLanguage = getLanguage();
+  const { t } = useTranslation();
+  console.log(getItem('fcmToken'), "FCM Token in OnBoarding");
+  useEffect(() => {
+    if(getItem('fcmToken') === undefined) {  
+      getFcmToken();
+    } 
+  }, [])
   return (
     <WrapperContainer backgroundColor={CommonColors.themeMain}>
       {/* language change icon */}
       <View style={styles.TopContainer}>
         <TouchableOpacity
           onPress={() => {
-            changeAppLanguage(selectedLanguage=='hi'?'en':'hi');
+            changeAppLanguage(selectedLanguage == 'hi' ? 'en' : 'hi');
           }}
           style={styles.translateImageContainer}>
           <Image source={imagepath.translate} style={styles.translateImage} />
@@ -57,7 +65,6 @@ const OnBoarding = () => {
             <Text style={styles.ButtonText}>{t("SignUpWithMail")}</Text>
           </TouchableOpacity>
         </View>
-
         <View style={styles.ExistingAccountContainer}>
           <Text style={styles.ExistingAccountText}>{t('ExistingAccount')}</Text>
           <TouchableOpacity

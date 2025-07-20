@@ -10,14 +10,14 @@ export const styles = StyleSheet.create({
   },
   topHeading: {
     textAlign: 'center',
-    marginTop: verticalScale(60),
+    marginTop: verticalScale(30),
     fontFamily: FontFamily.CarosSoftBold,
     fontSize: moderateScale(18),
   },
   bottomHeading: {
     textAlign: 'center',
     marginTop: verticalScale(16),
-    width: '80%',
+    // width: '80%',
     alignSelf: 'center',
     fontSize: moderateScale(14),
     fontFamily: FontFamily.CarosSoft,

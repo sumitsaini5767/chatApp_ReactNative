@@ -16,12 +16,6 @@ const OnBoarding = () => {
   const navigation = useNavigation<NavigationProp<AuthStackParamList>>();
   const selectedLanguage = getLanguage();
   const { t } = useTranslation();
-  console.log(getItem('fcmToken'), "FCM Token in OnBoarding");
-  useEffect(() => {
-    if(getItem('fcmToken') === undefined) {  
-      getFcmToken();
-    } 
-  }, [])
   return (
     <WrapperContainer backgroundColor={CommonColors.themeMain}>
       {/* language change icon */}

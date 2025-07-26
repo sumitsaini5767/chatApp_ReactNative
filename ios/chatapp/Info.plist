@@ -62,5 +62,9 @@
 		<string>CircularStd-Book.ttf</string>
 		<string>CircularStd-Medium.ttf</string>
 	</array>
+	<key>NSUserNotificationAlertUsageDescription</key>
+<string>We use notifications to alert you about important updates.</string>
+<key>FirebaseAppDelegateProxyEnabled</key>
+<false/>
 </dict>
 </plist>

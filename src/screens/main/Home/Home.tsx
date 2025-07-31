@@ -6,7 +6,7 @@ import {
   FlatList,
   ListRenderItem,
 } from 'react-native';
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { WrapperContainer } from '../../../components/Componets';
 import { styles } from './styles';
 import imagepath from '../../../constants/imagepath';
@@ -18,10 +18,18 @@ import { MainStackParamList } from '../../../navigations/types';
 import { chatMessages, statusList } from '../../../constants/DummyData';
 import { CommonColors } from '../../../styles/Colors';
 import { useTranslation } from 'react-i18next';
+import { getAllUsers } from '../../../Redux/actions/userDetail';
 type NavigationProp = NativeStackNavigationProp<MainStackParamList, 'UserStatus'>;
 export default function Home() {
   const navigation = useNavigation<NavigationProp>();
   const {t}=useTranslation();
+  const [allusers,setAllusers]=useState([]);
+  useEffect(()=>{
+    getAllUsers().then(res=>{
+      console.log(res?.allusers,"responce==>");
+      setAllusers(res?.allusers);
+    });
+  },[])
   const renderStatus: ListRenderItem<User> = useCallback(({ item }) => {
     return (
       <TouchableOpacity
@@ -51,7 +59,7 @@ export default function Home() {
   const renderChatItem: ListRenderItem<ChatMessage> = useCallback(({ item }) => {
     return (
       <ChatItem
-        user={item.user}
+        user={item}
         message={item.message}
         timestamp={item.timestamp}
         unreadCount={item.unreadCount}
@@ -59,7 +67,7 @@ export default function Home() {
     );
   }, []);
   const keyExtractor =
-    useCallback((item: User | ChatMessage) => item.id ? item.id.toString() : '', []);
+    useCallback((item: User | ChatMessage) => item._id ? item._id.toString() : '', []);
   return (
     <WrapperContainer backgroundColor={CommonColors.black}>
       <View style={styles.upperContainer}>
@@ -85,7 +93,7 @@ export default function Home() {
       </View>
       <View style={styles.chatSection}>
         <FlatList
-          data={chatMessages}
+          data={allusers}
           renderItem={renderChatItem}
           keyExtractor={keyExtractor}
           showsVerticalScrollIndicator={false}

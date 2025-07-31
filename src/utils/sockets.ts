@@ -1,0 +1,46 @@
+import { io, Socket } from 'socket.io-client';
+let socket: Socket | null = null;
+export const connectSocket = (url: string): Promise<Socket> => {
+    return new Promise((resolve, reject) => {
+        socket = io(url, {
+            transports: ['websocket'],
+            timeout: 10000,
+        });
+        socket.on('connect', () => {
+            console.log('✅ Socket connected');
+            resolve(socket!);
+        });
+        socket.on('connect_error', (err: Error) => {
+            console.log('❌ Connection error:', err.message);
+            reject(err);
+        });
+    });
+};
+
+export const disconnectSocket = (): void => {
+    if (socket) {
+        socket.disconnect();
+        console.log('🚪 Socket disconnected');
+    }
+};
+
+export const joinRoom = (roomId: string): void => {
+    if (socket) {
+        socket.emit('join', roomId);
+        console.log(`📥 Joined room: ${roomId}`);
+    }
+};
+
+export const sendMessage = (data:any): void => {
+    if (socket) {
+        socket.emit('send_message',data);
+    }
+};
+
+type MessageCallback = (data: { sender: string; message: string }) => void;
+
+export const onMessageReceived = (callback: MessageCallback): void => {
+    if (socket) {
+        socket.on('receive_message', callback);
+    }
+};

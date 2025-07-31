@@ -4,9 +4,8 @@ import MainStack from './Mainstack';
 import AuthStack from './Authstack';
 import { useSelector } from 'react-redux';
 import { RootState } from '../Redux/store';
-import { getFcmToken } from '../utils/helperFunction';
 import AlertPopup from '../components/AlertPopup/AlertPopup';
-import { backgroundhandler, forgroundHandler, OnClickNotif } from '../utils/notificationHandler';
+import { backgroundhandler, forgroundHandler, getFcmToken, OnClickNotif } from '../utils/notificationHandler';
 import { requestNotificationPermission } from '../utils/userPermission';
 
 const Routes = () => {

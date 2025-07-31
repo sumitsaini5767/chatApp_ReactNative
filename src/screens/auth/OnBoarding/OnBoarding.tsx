@@ -1,16 +1,14 @@
-import { View, Text, Image, TouchableOpacity, ScrollView } from 'react-native';
-import { styles } from './styles';
-import imagepath from '../../../constants/imagepath';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
-import { WrapperContainer, SocialLogin } from '../../../components/Componets';
-import { CommonColors } from '../../../styles/Colors';
 import { useTranslation } from 'react-i18next';
+import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { SocialLogin, WrapperContainer } from '../../../components/Componets';
+import imagepath from '../../../constants/imagepath';
 import '../../../localization/i18n';
-import { changeAppLanguage } from '../../../utils/languageUtils';
-import { getItem, getLanguage } from '../../../localStorage/mmkv';
+import { getLanguage } from '../../../localStorage/mmkv';
 import { AuthStackParamList } from '../../../navigations/types';
-import { useEffect } from 'react';
-import { getFcmToken } from '../../../utils/helperFunction';
+import { CommonColors } from '../../../styles/Colors';
+import { changeAppLanguage } from '../../../utils/languageUtils';
+import { styles } from './styles';
 
 const OnBoarding = () => {
   const navigation = useNavigation<NavigationProp<AuthStackParamList>>();

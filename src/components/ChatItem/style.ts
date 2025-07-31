@@ -1,5 +1,6 @@
 import { StyleSheet } from "react-native";
 import { CommonColors } from "../../styles/Colors";
+import { moderateScale } from "../../styles/scaling";
 
 export const styles = StyleSheet.create({
     chatItemContainer: {
@@ -7,10 +8,11 @@ export const styles = StyleSheet.create({
         alignItems: 'center',
     },
     chatUserImage: {
-        width: 50,
-        height: 50,
-        borderRadius: 25,
-        marginRight: 12,
+        width: moderateScale(50),
+        height: moderateScale(50),
+        borderRadius: moderateScale(25),
+        marginRight: moderateScale(12),
+        borderWidth:2,
     },
     chatContentContainer: {
         flex: 1,

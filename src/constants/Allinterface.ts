@@ -1,13 +1,13 @@
 export interface ChatMessage {
-    id?: number;
-    user: User;
-    message: string;
-    timestamp: string;
+    _id?: number;
+    user?: any;
+    message?: string;
+    timestamp?: string;
     unreadCount?: number;
 }
 
 export interface User {
-    id: number;
+    _id: number;
     image: any;
     name: string;
     isMyStatus?: boolean;

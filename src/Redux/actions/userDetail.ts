@@ -1,7 +1,7 @@
 import store from "../store";
 import { emptyUserdetails, setUser } from "../reducers/userDetails";
-import { postApi } from "../../utils/apiCall";
-import { LOGIN_URL, SINGUP_URL } from "../../Config/Urls";
+import { getApi, postApi } from "../../utils/apiCall";
+import { GET_MESSAGES, GET_USERS, LOGIN_URL, SINGUP_URL } from "../../Config/Urls";
 import { AxiosRequestHeaders } from "axios";
 import { deleteItem, getItem, setItem } from "../../localStorage/mmkv";
 import { Platform } from "react-native";
@@ -46,4 +46,19 @@ export const login = async (data: any) => {
 export const logout = () => {
     deleteItem('userData');
     store.dispatch(emptyUserdetails());
+}
+export const getAllUsers = async () => {
+    const header = {
+        Accept: 'application/json',
+    };
+    const res = await getApi(GET_USERS,header as AxiosRequestHeaders);
+    return res;
+}
+
+export const getMessages = async (data: any) => {
+    const header = {
+        Accept: 'application/json',
+    };
+    const res = await postApi(GET_MESSAGES, data, header as AxiosRequestHeaders);
+    return res;
 }

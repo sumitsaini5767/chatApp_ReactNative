@@ -4,12 +4,14 @@ interface UserState {
     token?: string;
     name?: string;
     email?: string;
+    _id?:string;
 }
 
 const initialState: UserState = {
     token: undefined,
     name: undefined,
     email: undefined,
+    _id:undefined,
 };
 
 const user = createSlice({

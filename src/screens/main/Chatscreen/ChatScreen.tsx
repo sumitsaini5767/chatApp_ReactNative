@@ -7,72 +7,47 @@ import {
   FlatList,
   TextInput,
   Keyboard,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
-import { styles } from './styles'; // Create a styles file for ChatScreen
+import { styles } from './styles';
 import imagepath from '../../../constants/imagepath';
 import { WrapperContainer } from '../../../components/Componets';
 import Backbutton from '../../../components/backbutton/Backbutton';
 import { height } from '../../../styles/commonStyle';
 import { CommonColors } from '../../../styles/Colors';
 import { useTranslation } from 'react-i18next';
+import { useRoute } from '@react-navigation/native';
+import {
+  disconnectSocket,
+  onMessageReceived,
+  sendMessage,
+} from '../../../utils/sockets';
+import { getMessages } from '../../../Redux/actions/userDetail';
 
 interface Message {
-  id: string;
-  type: 'sent' | 'received';
-  text: string;
-  time: string;
+  receiver:string;
+  sender: string;
+  message: string;
+  timestamp?: string;
 }
 
-const messages: Message[] = [
-  {
-    id: '1',
-    type: 'sent',
-    text: 'Hello! Jhon abraham',
-    time: '09:25 AM',
-  },
-  {
-    id: '2',
-    type: 'received',
-    text: 'Hello ! Nazrul How are you?',
-    time: '09:25 AM',
-  },
-  {
-    id: '3',
-    type: 'sent',
-    text: 'You did your job well!',
-    time: '09:25 AM',
-  },
-  {
-    id: '4',
-    type: 'received',
-    text: 'Have a great working week!!',
-    time: '09:25 AM',
-  },
-  {
-    id: '5',
-    type: 'received',
-    text: 'Hope you like it',
-    time: '09:25 AM',
-  },
-  {
-    id: '4',
-    type: 'received',
-    text: 'Have a great working week!!',
-    time: '09:25 AM',
-  },
-  {
-    id: '5',
-    type: 'received',
-    text: 'Hope you like it',
-    time: '09:25 AM',
-  },
-];
+type RouteParams = {
+  roomId: string;
+  currentUser: any;
+  targetUser: any;
+};
 
 export default function ChatScreen() {
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
   const [keyboardHeight, setKeyboardHeight] = useState(0);
   const flatListRef = useRef<FlatList>(null);
-  const {t}=useTranslation();
+  const { t } = useTranslation();
+  const route = useRoute();
+  const { roomId, currentUser, targetUser } = route.params as RouteParams;
+  const [chatMessages, setChatMessages] = useState<Message[]>([]);
+  const [messageText, setMessageText] = useState('');
+
   const scrollToEnd = () => {
     if (flatListRef.current) {
       flatListRef.current.scrollToEnd({ animated: true });
@@ -80,21 +55,35 @@ export default function ChatScreen() {
   };
 
   useEffect(() => {
-    const keyboardDidShowListener = Keyboard.addListener(
-      'keyboardDidShow',
-      (e) => {
-        setIsKeyboardVisible(true);
-        setKeyboardHeight(e.endCoordinates.height);
-        scrollToEnd();
-      }
-    );
-    const keyboardDidHideListener = Keyboard.addListener(
-      'keyboardDidHide',
-      () => {
-        setIsKeyboardVisible(false);
-        setKeyboardHeight(0);
-      }
-    );
+    const unsubscribe = onMessageReceived((data: any) => {
+      setChatMessages((prev) => [...prev, data]);
+      scrollToEnd();
+    });
+
+    return () => {
+      // if (typeof unsubscribe === 'function') unsubscribe();
+    };
+  }, []);
+
+useEffect(()=>{
+  (async()=>{
+   let data = await getMessages({roomId});
+   console.log(data,"messages==>");
+   setChatMessages(data?.messages)
+  })()
+},[])
+
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', (e) => {
+      setIsKeyboardVisible(true);
+      setKeyboardHeight(e.endCoordinates.height);
+      scrollToEnd();
+    });
+
+    const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
+      setIsKeyboardVisible(false);
+      setKeyboardHeight(0);
+    });
 
     return () => {
       keyboardDidShowListener.remove();
@@ -102,60 +91,88 @@ export default function ChatScreen() {
     };
   }, []);
 
+  const handleSend = () => {
+    if (messageText.trim().length === 0) return;
+
+    const messageData: Message = {
+      receiver:targetUser?._id,
+      sender: currentUser?._id,
+      message: messageText.trim(),
+      timestamp:  new Date().toISOString(),
+    };
+
+    sendMessage(messageData);
+
+    setChatMessages((prev) => [...prev, messageData]);
+    setMessageText('');
+    scrollToEnd();
+  };
+
   const renderMessage = ({ item }: { item: Message }) => {
+    const isCurrentUser = item.sender === currentUser?._id;
+    let date = item?.timestamp ? new Date(item.timestamp) : new Date();
+    const formatted = date.toLocaleString('en-IN', {
+      timeZone: 'Asia/Kolkata', // to get IST time
+      day: '2-digit',
+      month: 'short',
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true,
+    });
     return (
-      <View
-        style={[
-          styles.messageBubble,
-          item.type === 'sent' ? styles.sent : styles.received,
-        ]}
-      >
-        <Text style={[
-          styles.messageText,
-          item.type === 'sent' ? styles.sent : styles.received,
-        ]}>{item.text}</Text>
-        <Text style={[styles.time,
-        item.type === 'sent' ? styles.sent : styles.received,
-        ]}>{item.time}</Text>
+      <View style={[styles.messageBubble, isCurrentUser ? styles.sent : styles.received]}>
+        <Text style={[styles.messageText, isCurrentUser ? styles.sent : styles.received]}>
+          {item.message}
+        </Text>
+        <Text style={[styles.time, isCurrentUser ? styles.sent : styles.received]}>
+          {formatted}
+        </Text>
       </View>
     );
   };
 
   return (
     <WrapperContainer>
-      {/* Header */}
-      <View style={{ height: isKeyboardVisible ? height - keyboardHeight : height }}>
-        <View style={styles.header}>
-          <Backbutton />
-          <Image source={imagepath.user} style={styles.avatar} />
-          <View style={{ flex: 1, marginLeft: 10 }}>
-            <Text style={styles.username}>Jhon Abraham</Text>
-            <Text style={styles.status}>Active now</Text>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        style={{ flex: 1 }}
+      >
+        <View style={{ height: isKeyboardVisible ? height - keyboardHeight : height }}>
+          <View style={styles.header}>
+            <Backbutton />
+            <Image source={imagepath.user} style={styles.avatar} />
+            <View style={{ flex: 1, marginLeft: 10 }}>
+              <Text style={styles.username}>{targetUser?.name || 'User'}</Text>
+              <Text style={styles.status}>Active now</Text>
+            </View>
+          </View>
+
+          <FlatList
+            ref={flatListRef}
+            data={chatMessages}
+            renderItem={renderMessage}
+            keyExtractor={(_, index) => index.toString()}
+            showsHorizontalScrollIndicator={false}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={styles.messagesContainer}
+            onContentSizeChange={scrollToEnd}
+            onLayout={scrollToEnd}
+          />
+
+          <View style={styles.inputBar}>
+            <TextInput
+              style={styles.input}
+              placeholder={t('WriteYourMessage')}
+              placeholderTextColor={CommonColors.black}
+              value={messageText}
+              onChangeText={setMessageText}
+            />
+            <TouchableOpacity onPress={handleSend}>
+              <Image source={imagepath.send} style={styles.icon} />
+            </TouchableOpacity>
           </View>
         </View>
-        {/* Messages */}
-        <FlatList
-          ref={flatListRef}
-          data={messages}
-          renderItem={renderMessage}
-          keyExtractor={item => item.id}
-          showsHorizontalScrollIndicator={false}
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={styles.messagesContainer}
-          onContentSizeChange={scrollToEnd}
-          onLayout={scrollToEnd}
-        />
-        <View style={styles.inputBar}>
-          <TextInput
-            style={styles.input}
-            placeholder={t("WriteYourMessage")}
-            placeholderTextColor={CommonColors.black}
-          />
-          <TouchableOpacity>
-            <Image source={imagepath.send} style={styles.icon} />
-          </TouchableOpacity>
-        </View>
-      </View>
+      </KeyboardAvoidingView>
     </WrapperContainer>
   );
 }

@@ -15,21 +15,28 @@ import ChatItem from '../../../components/ChatItem/ChatItem';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { MainStackParamList } from '../../../navigations/types';
-import { chatMessages, statusList } from '../../../constants/DummyData';
+import { statusList } from '../../../constants/DummyData';
 import { CommonColors } from '../../../styles/Colors';
 import { useTranslation } from 'react-i18next';
-import { getAllUsers } from '../../../Redux/actions/userDetail';
+import { joinRoom, offEvent, onRecentChats } from '../../../utils/sockets';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../Redux/store';
+import { getMyChats } from '../../../Redux/actions/userDetail';
 type NavigationProp = NativeStackNavigationProp<MainStackParamList, 'UserStatus'>;
 export default function Home() {
   const navigation = useNavigation<NavigationProp>();
-  const {t}=useTranslation();
-  const [allusers,setAllusers]=useState([]);
-  useEffect(()=>{
-    getAllUsers().then(res=>{
-      console.log(res?.allusers,"responce==>");
-      setAllusers(res?.allusers);
+  const { t } = useTranslation();
+  const user = useSelector((state: RootState) => state.userDetail);
+  const [allusers, setAllusers] = useState([]);
+  useEffect(() => {
+    getMyChats(`?userId=${user?._id}`).then(res => {
+      setAllusers(res?.allChats);
     });
-  },[])
+    joinRoom(`${user?._id}`);
+    onRecentChats((data: any) => {
+      setAllusers(data);
+    });
+  }, []);
   const renderStatus: ListRenderItem<User> = useCallback(({ item }) => {
     return (
       <TouchableOpacity
@@ -59,8 +66,8 @@ export default function Home() {
   const renderChatItem: ListRenderItem<ChatMessage> = useCallback(({ item }) => {
     return (
       <ChatItem
-        user={item}
-        message={item.message}
+        user={item?.user}
+        lastMessage={item.lastMessage}
         timestamp={item.timestamp}
         unreadCount={item.unreadCount}
       />

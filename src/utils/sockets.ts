@@ -31,16 +31,29 @@ export const joinRoom = (roomId: string): void => {
     }
 };
 
-export const sendMessage = (data:any): void => {
+export const sendMessage = (data: any): void => {
     if (socket) {
-        socket.emit('send_message',data);
+        socket.emit('send_message', data);
     }
 };
-
 type MessageCallback = (data: { sender: string; message: string }) => void;
 
 export const onMessageReceived = (callback: MessageCallback): void => {
     if (socket) {
         socket.on('receive_message', callback);
+    }
+};
+
+export const offEvent = (eventName: string): void => {
+    if (socket) {
+        socket.off(eventName);
+    }
+};
+
+type RecentChatCallback = (chats: any[]) => void;
+
+export const onRecentChats = (callback: RecentChatCallback): void => {
+    if (socket) {
+        socket.on('recent_chats', callback);
     }
 };

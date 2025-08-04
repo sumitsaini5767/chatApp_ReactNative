@@ -1,7 +1,7 @@
 export interface ChatMessage {
     _id?: number;
     user?: any;
-    message?: string;
+    lastMessage?: string;
     timestamp?: string;
     unreadCount?: number;
 }

@@ -1,4 +1,4 @@
-import { StyleSheet, Dimensions } from 'react-native';
+import { StyleSheet, Dimensions, StatusBar } from 'react-native';
 import { CommonColors } from '../../../styles/Colors';
 import { moderateScale,verticalScale } from '../../../styles/scaling';
 
@@ -6,6 +6,10 @@ import { moderateScale,verticalScale } from '../../../styles/scaling';
 const { width } = Dimensions.get('window');
 
 export const styles = StyleSheet.create({
+  mainContainer:{
+    flex:1,
+    backgroundColor:CommonColors.white
+  },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -13,6 +17,7 @@ export const styles = StyleSheet.create({
     borderBottomWidth: moderateScale(1),
     borderBottomColor: '#E5E5E5',
     backgroundColor: '#fff',
+    paddingTop:StatusBar.currentHeight
   },
   icon: {
     width: moderateScale(34),
@@ -103,7 +108,7 @@ export const styles = StyleSheet.create({
   inputBar: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: moderateScale(12),
+    padding: moderateScale(5),
     borderTopWidth: moderateScale(1),
     borderTopColor: '#E5E5E5',
     backgroundColor: '#fff',

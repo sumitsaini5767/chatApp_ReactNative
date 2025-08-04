@@ -22,14 +22,14 @@ const SearchUser = () => {
         return (
             <ChatItem
                 user={item.user}
-                message={item.message}
+                lastMessage={item.lastMessage}
                 timestamp={item.timestamp}
                 unreadCount={item.unreadCount}
             />
         );
     }, []);
     const keyExtractor =
-        useCallback((item: User | ChatMessage) => item.id ? item.id.toString() : '', []);
+        useCallback((item: User | ChatMessage) => item._id ? item._id.toString() : '', []);
     return (
         <WrapperContainer>
             <Backbutton tintColor={CommonColors.black} />

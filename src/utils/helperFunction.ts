@@ -15,3 +15,16 @@ export const resetAllDataToRedux = () => {
         setUserAction(JSON.parse(getItem('userData') || '{}'));
     }
 }
+
+export const DateTimeConversion = (date: string) => {
+    let newDate = date ? new Date(date) : new Date();
+    let formatted = newDate.toLocaleString('en-IN', {
+        timeZone: 'Asia/Kolkata', // to get IST time
+        day: '2-digit',
+        month: 'short',
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true,
+    });
+    return formatted;
+}

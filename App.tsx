@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import store from './src/Redux/store';
 import { resetAllDataToRedux } from './src/utils/helperFunction';
 import { connectSocket, disconnectSocket } from './src/utils/sockets';
+import { initialWindowMetrics, SafeAreaProvider } from 'react-native-safe-area-context';
 // Ignore all logs
 LogBox.ignoreAllLogs(true);
 function App(): React.JSX.Element {
@@ -18,9 +19,12 @@ function App(): React.JSX.Element {
     };
   }, []);
   return (
-    <Provider store={store}>
-      <Routes />
-    </Provider>
+    <SafeAreaProvider initialMetrics={initialWindowMetrics}>
+      <Provider store={store}>
+        <Routes />
+      </Provider>
+
+    </SafeAreaProvider>
   );
 }
 export default App;

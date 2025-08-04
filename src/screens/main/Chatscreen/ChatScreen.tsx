@@ -20,13 +20,15 @@ import { useTranslation } from 'react-i18next';
 import { useRoute } from '@react-navigation/native';
 import {
   disconnectSocket,
+  offEvent,
   onMessageReceived,
   sendMessage,
 } from '../../../utils/sockets';
 import { getMessages } from '../../../Redux/actions/userDetail';
+import { DateTimeConversion } from '../../../utils/helperFunction';
 
 interface Message {
-  receiver:string;
+  receiver: string;
   sender: string;
   message: string;
   timestamp?: string;
@@ -55,23 +57,21 @@ export default function ChatScreen() {
   };
 
   useEffect(() => {
-    const unsubscribe = onMessageReceived((data: any) => {
+    onMessageReceived((data: any) => {
       setChatMessages((prev) => [...prev, data]);
       scrollToEnd();
     });
-
     return () => {
-      // if (typeof unsubscribe === 'function') unsubscribe();
+      offEvent('receive_message');
     };
   }, []);
 
-useEffect(()=>{
-  (async()=>{
-   let data = await getMessages({roomId});
-   console.log(data,"messages==>");
-   setChatMessages(data?.messages)
-  })()
-},[])
+  useEffect(() => {
+    (async () => {
+      let data = await getMessages({ roomId });
+      setChatMessages(data?.messages)
+    })()
+  }, [])
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', (e) => {
@@ -95,14 +95,12 @@ useEffect(()=>{
     if (messageText.trim().length === 0) return;
 
     const messageData: Message = {
-      receiver:targetUser?._id,
+      receiver: targetUser?._id,
       sender: currentUser?._id,
       message: messageText.trim(),
-      timestamp:  new Date().toISOString(),
+      timestamp: new Date().toISOString(),
     };
-
     sendMessage(messageData);
-
     setChatMessages((prev) => [...prev, messageData]);
     setMessageText('');
     scrollToEnd();
@@ -110,15 +108,7 @@ useEffect(()=>{
 
   const renderMessage = ({ item }: { item: Message }) => {
     const isCurrentUser = item.sender === currentUser?._id;
-    let date = item?.timestamp ? new Date(item.timestamp) : new Date();
-    const formatted = date.toLocaleString('en-IN', {
-      timeZone: 'Asia/Kolkata', // to get IST time
-      day: '2-digit',
-      month: 'short',
-      hour: 'numeric',
-      minute: '2-digit',
-      hour12: true,
-    });
+    const formatted = DateTimeConversion(`${item?.timestamp}`);
     return (
       <View style={[styles.messageBubble, isCurrentUser ? styles.sent : styles.received]}>
         <Text style={[styles.messageText, isCurrentUser ? styles.sent : styles.received]}>
@@ -132,10 +122,10 @@ useEffect(()=>{
   };
 
   return (
-    <WrapperContainer>
+    // <WrapperContainer useScroll={true}>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-        style={{ flex: 1 }}
+        style={styles.mainContainer}
       >
         <View style={{ height: isKeyboardVisible ? height - keyboardHeight : height }}>
           <View style={styles.header}>
@@ -146,7 +136,7 @@ useEffect(()=>{
               <Text style={styles.status}>Active now</Text>
             </View>
           </View>
-
+          <View style={{flex:1}}>
           <FlatList
             ref={flatListRef}
             data={chatMessages}
@@ -158,7 +148,7 @@ useEffect(()=>{
             onContentSizeChange={scrollToEnd}
             onLayout={scrollToEnd}
           />
-
+          </View>
           <View style={styles.inputBar}>
             <TextInput
               style={styles.input}
@@ -173,6 +163,6 @@ useEffect(()=>{
           </View>
         </View>
       </KeyboardAvoidingView>
-    </WrapperContainer>
+    //  </WrapperContainer>
   );
 }

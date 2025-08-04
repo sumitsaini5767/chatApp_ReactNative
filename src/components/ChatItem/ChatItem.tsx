@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../Redux/store';
 import imagepath from '../../constants/imagepath';
 import { joinRoom } from '../../utils/sockets';
+import { DateTimeConversion } from '../../utils/helperFunction';
 
 type NavigationProp = NativeStackNavigationProp<MainStackParamList, 'Chat'>;
 
@@ -24,17 +25,17 @@ const ChatItem = (item: ChatMessage) => {
     });
     joinRoom(roomId);
   };
-
+  let formattedDate=DateTimeConversion(`${item?.timestamp}`);
   return (
     <TouchableOpacity style={styles.chatItemContainer} onPress={handleChatPress}>
       <Image source={imagepath.Profile} style={styles.chatUserImage} resizeMode='contain' />
       <View style={styles.chatContentContainer}>
         <View style={styles.chatHeader}>
           <Text style={styles.chatUserName}>{item?.user?.name}</Text>
-          <Text style={styles.chatTimestamp}>{item?.timestamp}</Text>
+          <Text style={styles.chatTimestamp}>{formattedDate}</Text>
         </View>
         <View style={styles.chatMessageContainer}>
-          <Text style={styles.chatMessage} numberOfLines={1}>{item?.message}</Text>
+          <Text style={styles.chatMessage} numberOfLines={1}>{item?.lastMessage}</Text>
           {item?.unreadCount && (
             <View style={styles.unreadBadge}>
               <Text style={styles.unreadCount}>{item?.unreadCount}</Text>

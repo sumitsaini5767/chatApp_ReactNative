@@ -5,6 +5,7 @@ export const CommonColors= {
     black:'#000000',
     gray:"#CDD1D0",
     inputTextColor:'#24786D',
+    inputChatTextColor:'#8de3d7',
     buttonBackground:'#F3F6F6',
     buttonTextColor:'#797C7B',
     white:'#ffffff',

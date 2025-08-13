@@ -50,7 +50,7 @@ export const postApi = async (
     headers: AxiosRequestHeaders | undefined,
 ): Promise<any> => {
     try {
-        console.log(url, "url++++");
+        console.log(url, "url++++",data);
         const res = await axios.post(url, data, { headers });
         setAlert({ text: res.data.message, isSuccess: true });
         setTimeout(() => {

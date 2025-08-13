@@ -24,10 +24,16 @@ export const disconnectSocket = (): void => {
     }
 };
 
-export const joinRoom = (roomId: string): void => {
+export const joinRoom = (roomId: string, userId?: string): void => {
     if (socket) {
-        socket.emit('join', roomId);
+        socket.emit('join', { userId, roomId });
         console.log(`📥 Joined room: ${roomId}`);
+    }
+};
+export const leaveRoom = (roomId: string, userId?: string): void => {
+    if (socket) {
+        socket.emit('leave_room', { userId, roomId });
+        console.log(`📥 leave room: ${roomId}`);
     }
 };
 

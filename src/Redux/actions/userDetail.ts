@@ -45,6 +45,8 @@ export const login = async (data: any) => {
 
 export const logout = () => {
     deleteItem('userData');
+    deleteItem('fcmToken');
+    deleteItem('deviceId');
     store.dispatch(emptyUserdetails());
 }
 export const getMyChats = async (params:string) => {

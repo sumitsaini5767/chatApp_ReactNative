@@ -19,7 +19,7 @@ import { CommonColors } from '../../../styles/Colors';
 import { useTranslation } from 'react-i18next';
 import { useRoute } from '@react-navigation/native';
 import {
-  disconnectSocket,
+  leaveRoom,
   offEvent,
   onMessageReceived,
   sendMessage,
@@ -63,6 +63,7 @@ export default function ChatScreen() {
     });
     return () => {
       offEvent('receive_message');
+      leaveRoom(roomId, currentUser?._id);
     };
   }, []);
 
@@ -123,20 +124,20 @@ export default function ChatScreen() {
 
   return (
     // <WrapperContainer useScroll={true}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-        style={styles.mainContainer}
-      >
-        <View style={{ height: isKeyboardVisible ? height - keyboardHeight : height }}>
-          <View style={styles.header}>
-            <Backbutton />
-            <Image source={imagepath.user} style={styles.avatar} />
-            <View style={{ flex: 1, marginLeft: 10 }}>
-              <Text style={styles.username}>{targetUser?.name || 'User'}</Text>
-              <Text style={styles.status}>Active now</Text>
-            </View>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      style={styles.mainContainer}
+    >
+      <View style={{ height: isKeyboardVisible ? height - keyboardHeight : height }}>
+        <View style={styles.header}>
+          <Backbutton />
+          <Image source={imagepath.user} style={styles.avatar} />
+          <View style={{ flex: 1, marginLeft: 10 }}>
+            <Text style={styles.username}>{targetUser?.name || 'User'}</Text>
+            <Text style={styles.status}>Active now</Text>
           </View>
-          <View style={{flex:1}}>
+        </View>
+        <View style={{ flex: 1 }}>
           <FlatList
             ref={flatListRef}
             data={chatMessages}
@@ -148,21 +149,21 @@ export default function ChatScreen() {
             onContentSizeChange={scrollToEnd}
             onLayout={scrollToEnd}
           />
-          </View>
-          <View style={styles.inputBar}>
-            <TextInput
-              style={styles.input}
-              placeholder={t('WriteYourMessage')}
-              placeholderTextColor={CommonColors.black}
-              value={messageText}
-              onChangeText={setMessageText}
-            />
-            <TouchableOpacity onPress={handleSend}>
-              <Image source={imagepath.send} style={styles.icon} />
-            </TouchableOpacity>
-          </View>
         </View>
-      </KeyboardAvoidingView>
+        <View style={styles.inputBar}>
+          <TextInput
+            style={styles.input}
+            placeholder={t('WriteYourMessage')}
+            placeholderTextColor={CommonColors.black}
+            value={messageText}
+            onChangeText={setMessageText}
+          />
+          <TouchableOpacity onPress={handleSend}>
+            <Image source={imagepath.send} style={styles.icon} />
+          </TouchableOpacity>
+        </View>
+      </View>
+    </KeyboardAvoidingView>
     //  </WrapperContainer>
   );
 }

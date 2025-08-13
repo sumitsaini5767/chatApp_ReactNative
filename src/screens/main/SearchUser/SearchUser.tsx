@@ -14,37 +14,24 @@ import { useTranslation } from 'react-i18next';
 import { searchUser } from '../../../Redux/actions/userDetail';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../Redux/store';
- 
-const debounce = <T extends (...args: any[]) => void>(
-    func: T,
-    delay = 300
-  ): ((...args: Parameters<T>) => void) => {
-    let timeoutId: ReturnType<typeof setTimeout>;
-    return (...args: Parameters<T>) => {
-      clearTimeout(timeoutId);
-      timeoutId = setTimeout(() => func(...args), delay);
-    };
-  };// ✅ import debounce
+import { debounce } from '../../../utils/helperFunction';
 
 const SearchUser = () => {
   const [search, setSearch] = useState('');
   const user = useSelector((state: RootState) => state.userDetail);
-  const [searchUsers,setSearchUsers]=useState([]);
+  const [searchUsers, setSearchUsers] = useState([]);
   const { t } = useTranslation();
 
-  const handleSearch = async(text: string) => {
+  const handleSearch = async (text: string) => {
     try {
-       const res = await searchUser(`?userId=${user?._id}&search=${text}`);
-       setSearchUsers(res?.result);
+      const res = await searchUser(`?userId=${user?._id}&search=${text}`);
+      setSearchUsers(res?.result);
     } catch (error) {
-        console.log(error,"error==>");
+      console.log(error, "error==>");
     }
   };
 
-  const debouncedSearch = useMemo(
-    () => debounce(handleSearch, 500),
-    []
-  );
+  const debouncedSearch = useMemo(() => debounce(handleSearch, 500),[]);
 
   const renderChatItem: ListRenderItem<ChatMessage> = useCallback(({ item }) => {
     return (

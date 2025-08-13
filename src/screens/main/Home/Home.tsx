@@ -12,7 +12,7 @@ import { styles } from './styles';
 import imagepath from '../../../constants/imagepath';
 import { ChatMessage, User } from '../../../constants/Allinterface';
 import ChatItem from '../../../components/ChatItem/ChatItem';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { MainStackParamList } from '../../../navigations/types';
 import { statusList } from '../../../constants/DummyData';
@@ -33,10 +33,15 @@ export default function Home() {
       setAllusers(res?.allChats);
     });
     joinRoom(`${user?._id}`);
+  }, []);
+  useFocusEffect(useCallback(() => {
     onRecentChats((data: any) => {
       setAllusers(data);
     });
-  }, []);
+    return () => {
+      offEvent('recent_chats');
+    }
+  }, []))
   const renderStatus: ListRenderItem<User> = useCallback(({ item }) => {
     return (
       <TouchableOpacity

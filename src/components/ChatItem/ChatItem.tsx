@@ -23,7 +23,7 @@ const ChatItem = (item: ChatMessage) => {
       currentUser: user,
       targetUser: item?.user
     });
-    joinRoom(roomId);
+    joinRoom(roomId,user?._id);
   };
   let formattedDate=DateTimeConversion(`${item?.timestamp}`);
   return (

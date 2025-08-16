@@ -12,17 +12,21 @@ import {
 } from 'react-native';
 import { styles } from './styles';
 import imagepath from '../../../constants/imagepath';
-import { WrapperContainer } from '../../../components/Componets';
 import Backbutton from '../../../components/backbutton/Backbutton';
 import { height } from '../../../styles/commonStyle';
 import { CommonColors } from '../../../styles/Colors';
 import { useTranslation } from 'react-i18next';
 import { useRoute } from '@react-navigation/native';
 import {
+  activeUsers,
   leaveRoom,
   offEvent,
   onMessageReceived,
   sendMessage,
+  stopTyping,
+  typing,
+  typingStatus,
+
 } from '../../../utils/sockets';
 import { getMessages } from '../../../Redux/actions/userDetail';
 import { DateTimeConversion } from '../../../utils/helperFunction';
@@ -49,7 +53,8 @@ export default function ChatScreen() {
   const { roomId, currentUser, targetUser } = route.params as RouteParams;
   const [chatMessages, setChatMessages] = useState<Message[]>([]);
   const [messageText, setMessageText] = useState('');
-
+  const [roomActiveUsers, setroomActiveUsers] = useState<string[]>([]);
+  const [isTyping, setIsTyping] = useState(false);
   const scrollToEnd = () => {
     if (flatListRef.current) {
       flatListRef.current.scrollToEnd({ animated: true });
@@ -57,12 +62,22 @@ export default function ChatScreen() {
   };
 
   useEffect(() => {
+    activeUsers((data: any) => {
+      setroomActiveUsers(data);
+    })
     onMessageReceived((data: any) => {
       setChatMessages((prev) => [...prev, data]);
       scrollToEnd();
     });
+    typingStatus((data: any) => {
+      if (data?.userId === targetUser?._id){
+        setIsTyping(data?.isTyping);
+      }
+    })
     return () => {
       offEvent('receive_message');
+      offEvent('active_user');
+      offEvent('typing_status');
       leaveRoom(roomId, currentUser?._id);
     };
   }, []);
@@ -79,11 +94,13 @@ export default function ChatScreen() {
       setIsKeyboardVisible(true);
       setKeyboardHeight(e.endCoordinates.height);
       scrollToEnd();
+      typing(roomId, currentUser?._id);
     });
 
     const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
       setIsKeyboardVisible(false);
       setKeyboardHeight(0);
+      stopTyping(roomId, currentUser?._id);
     });
 
     return () => {
@@ -123,7 +140,6 @@ export default function ChatScreen() {
   };
 
   return (
-    // <WrapperContainer useScroll={true}>
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       style={styles.mainContainer}
@@ -134,7 +150,9 @@ export default function ChatScreen() {
           <Image source={imagepath.user} style={styles.avatar} />
           <View style={{ flex: 1, marginLeft: 10 }}>
             <Text style={styles.username}>{targetUser?.name || 'User'}</Text>
-            <Text style={styles.status}>Active now</Text>
+            {isTyping ? <Text style={styles.status}>Typing...</Text>
+              : roomActiveUsers.includes(targetUser?._id) ? <Text style={styles.status}>online</Text>
+                : <Text style={{ ...styles.status, color: CommonColors.red }}>offline</Text>}
           </View>
         </View>
         <View style={{ flex: 1 }}>
@@ -164,6 +182,5 @@ export default function ChatScreen() {
         </View>
       </View>
     </KeyboardAvoidingView>
-    //  </WrapperContainer>
   );
 }

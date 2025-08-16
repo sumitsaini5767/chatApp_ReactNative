@@ -63,3 +63,30 @@ export const onRecentChats = (callback: RecentChatCallback): void => {
         socket.on('recent_chats', callback);
     }
 };
+
+type getActiveUser = (isAcive: any) => void;
+
+export const activeUsers = (callback: getActiveUser): void => {
+    if (socket) {
+        socket.on('active_user', callback);
+    }
+};
+
+export const typing = (roomId: string, userId: string): void => {
+    if (socket) {
+        socket.emit('typing', { roomId, userId });
+    }
+};
+export const stopTyping = (roomId: string, userId: string): void => {
+    if (socket) {
+        socket.emit('stop_typing', { roomId, userId });
+    }
+};
+
+type Typing = (isTyping: any) => void;
+
+export const typingStatus = (callback: Typing): void => {
+    if (socket) {
+        socket.on('typing_status', callback);
+    }
+};

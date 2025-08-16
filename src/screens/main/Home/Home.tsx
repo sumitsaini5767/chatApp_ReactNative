@@ -18,7 +18,7 @@ import { MainStackParamList } from '../../../navigations/types';
 import { statusList } from '../../../constants/DummyData';
 import { CommonColors } from '../../../styles/Colors';
 import { useTranslation } from 'react-i18next';
-import { joinRoom, offEvent, onRecentChats } from '../../../utils/sockets';
+import { joinRoom, leaveRoom, offEvent, onRecentChats } from '../../../utils/sockets';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../Redux/store';
 import { getMyChats } from '../../../Redux/actions/userDetail';
@@ -33,6 +33,9 @@ export default function Home() {
       setAllusers(res?.allChats);
     });
     joinRoom(`${user?._id}`);
+    return () => {
+      leaveRoom(`${user?._id}`);
+    }
   }, []);
   useFocusEffect(useCallback(() => {
     onRecentChats((data: any) => {

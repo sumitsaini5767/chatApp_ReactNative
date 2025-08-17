@@ -123,4 +123,16 @@ export const styles = StyleSheet.create({
     marginHorizontal: moderateScale(8),
     fontSize: moderateScale(14),
   },
+  seenImage:{
+    alignSelf:"flex-end",
+    width:moderateScale(12),
+    height:verticalScale(12),
+    marginLeft:moderateScale(5),
+    tintColor:CommonColors.white
+  },
+  messageStatus:{
+    flexDirection:"row",
+    justifyContent:"space-around",
+    alignItems:"center",
+  }
 }); 

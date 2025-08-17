@@ -18,4 +18,6 @@ export default{
     logout:require('../assets/images/turn-off.png'),
     Profile:require('../assets/images/Profile.png'),
     Language:require('../assets/images/language.png'),
+    emptyMessage:require('../assets/images/emptyMessage.png'),
+    seen:require('../assets/images/seen.png'),
 }

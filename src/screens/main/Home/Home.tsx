@@ -114,6 +114,11 @@ export default function Home() {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.chatListContainer}
           ItemSeparatorComponent={() => <View style={{ height: 16 }} />}
+          ListEmptyComponent={() =>
+            <View style={styles.emptyContainer}>
+              <Image source={imagepath.emptyMessage} style={styles.emptyImage} />
+              <Text style={styles.emptyText}>No messages found</Text>
+            </View>}
         />
       </View>
     </WrapperContainer>

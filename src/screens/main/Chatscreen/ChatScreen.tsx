@@ -20,6 +20,8 @@ import { useRoute } from '@react-navigation/native';
 import {
   activeUsers,
   leaveRoom,
+  markAsRead,
+  messageReadStatus,
   offEvent,
   onMessageReceived,
   sendMessage,
@@ -32,10 +34,12 @@ import { getMessages } from '../../../Redux/actions/userDetail';
 import { DateTimeConversion } from '../../../utils/helperFunction';
 
 interface Message {
+  _id?: string;
   receiver: string;
   sender: string;
   message: string;
   timestamp?: string;
+  isRead?:boolean
 }
 
 type RouteParams = {
@@ -68,16 +72,30 @@ export default function ChatScreen() {
     onMessageReceived((data: any) => {
       setChatMessages((prev) => [...prev, data]);
       scrollToEnd();
+      if (data.receiver === currentUser?._id) {
+        handleMessageSeen(data._id);
+      }
     });
     typingStatus((data: any) => {
-      if (data?.userId === targetUser?._id){
+      if (data?.userId === targetUser?._id) {
         setIsTyping(data?.isTyping);
       }
     })
+    messageReadStatus((data: any) => {
+      console.log(data,"data===>")
+      setChatMessages((prev) =>
+        prev.map((msg) =>
+          msg._id === data.messageId
+            ? { ...msg, isRead: data.isRead }
+            : msg
+        )
+      );
+    });
     return () => {
       offEvent('receive_message');
       offEvent('active_user');
       offEvent('typing_status');
+      offEvent('read_update');
       leaveRoom(roomId, currentUser?._id);
     };
   }, []);
@@ -109,6 +127,19 @@ export default function ChatScreen() {
     };
   }, []);
 
+  const handleMessageSeen = (messageId: string) => {
+    markAsRead(roomId, currentUser?._id, messageId);
+  };
+
+  const onViewableItemsChanged = useRef(({ viewableItems }: any) => {
+    viewableItems.forEach((item: any) => {
+      if (!item.item.isRead) {
+        handleMessageSeen(item.item._id);
+      }
+    });
+  }).current;
+
+  const viewabilityConfig = useRef({ itemVisiblePercentThreshold: 60 }).current;
   const handleSend = () => {
     if (messageText.trim().length === 0) return;
 
@@ -119,7 +150,6 @@ export default function ChatScreen() {
       timestamp: new Date().toISOString(),
     };
     sendMessage(messageData);
-    setChatMessages((prev) => [...prev, messageData]);
     setMessageText('');
     scrollToEnd();
   };
@@ -132,9 +162,15 @@ export default function ChatScreen() {
         <Text style={[styles.messageText, isCurrentUser ? styles.sent : styles.received]}>
           {item.message}
         </Text>
-        <Text style={[styles.time, isCurrentUser ? styles.sent : styles.received]}>
-          {formatted}
-        </Text>
+        <View style={styles.messageStatus}>
+          <Text style={[styles.time, isCurrentUser ? styles.sent : styles.received]}>
+            {formatted}
+          </Text>
+          {(isCurrentUser && item?.isRead) && <Image
+            source={imagepath.seen}
+            style={styles.seenImage}
+          />}
+        </View>
       </View>
     );
   };
@@ -151,8 +187,7 @@ export default function ChatScreen() {
           <View style={{ flex: 1, marginLeft: 10 }}>
             <Text style={styles.username}>{targetUser?.name || 'User'}</Text>
             {isTyping ? <Text style={styles.status}>Typing...</Text>
-              : roomActiveUsers.includes(targetUser?._id) ? <Text style={styles.status}>online</Text>
-                : <Text style={{ ...styles.status, color: CommonColors.red }}>offline</Text>}
+              : roomActiveUsers.includes(targetUser?._id) && <Text style={styles.status}>online</Text>}
           </View>
         </View>
         <View style={{ flex: 1 }}>
@@ -166,6 +201,8 @@ export default function ChatScreen() {
             contentContainerStyle={styles.messagesContainer}
             onContentSizeChange={scrollToEnd}
             onLayout={scrollToEnd}
+            onViewableItemsChanged={onViewableItemsChanged}
+            viewabilityConfig={viewabilityConfig}
           />
         </View>
         <View style={styles.inputBar}>

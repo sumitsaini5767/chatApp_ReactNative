@@ -147,5 +147,22 @@ export const styles = StyleSheet.create({
         padding:moderateScale(2.5),
         borderWidth: moderateScale(3),
         borderColor: '#0088CC',
-    }
+    },
+    emptyContainer: {
+        marginHorizontal:moderateScale(16),
+        marginVertical:verticalScale(30),
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    emptyImage: {
+        width: moderateScale(100),
+        height: moderateScale(100),
+        tintColor:CommonColors.textSecondary,
+    },
+    emptyText: {
+        fontSize: moderateScale(16),
+        fontWeight: 'bold',
+        color:CommonColors.textSecondary,
+    },
 });

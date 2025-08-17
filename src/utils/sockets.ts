@@ -90,3 +90,17 @@ export const typingStatus = (callback: Typing): void => {
         socket.on('typing_status', callback);
     }
 };
+
+export const markAsRead = (roomId: string, userId: string, messageId: string) => {
+    if (socket) {
+        socket.emit("mark_as_read", { roomId, userId, messageId });
+    }
+};
+
+type readMessage = (isTyping: any) => void;
+
+export const messageReadStatus = (callback: readMessage): void => {
+    if (socket) {
+        socket.on('read_update', callback);
+    }
+};

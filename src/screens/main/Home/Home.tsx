@@ -5,46 +5,41 @@ import {
   TouchableOpacity,
   FlatList,
   ListRenderItem,
+  ActivityIndicator,
 } from 'react-native';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback} from 'react';
 import { WrapperContainer } from '../../../components/Componets';
 import { styles } from './styles';
 import imagepath from '../../../constants/imagepath';
 import { ChatMessage, User } from '../../../constants/Allinterface';
 import ChatItem from '../../../components/ChatItem/ChatItem';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { MainStackParamList } from '../../../navigations/types';
 import { statusList } from '../../../constants/DummyData';
 import { CommonColors } from '../../../styles/Colors';
 import { useTranslation } from 'react-i18next';
-import { joinRoom, leaveRoom, offEvent, onRecentChats } from '../../../utils/sockets';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../Redux/store';
-import { getMyChats } from '../../../Redux/actions/userDetail';
+import { useChats } from '../../../hooks/useChat';
+import { useSocket } from '../../../hooks/useSocket';
 type NavigationProp = NativeStackNavigationProp<MainStackParamList, 'UserStatus'>;
 export default function Home() {
   const navigation = useNavigation<NavigationProp>();
   const { t } = useTranslation();
   const user = useSelector((state: RootState) => state.userDetail);
-  const [allusers, setAllusers] = useState([]);
-  useEffect(() => {
-    getMyChats(`?userId=${user?._id}`).then(res => {
-      setAllusers(res?.allChats);
-    });
-    joinRoom(`${user?._id}`);
-    return () => {
-      leaveRoom(`${user?._id}`);
-    }
-  }, []);
-  useFocusEffect(useCallback(() => {
-    onRecentChats((data: any) => {
-      setAllusers(data);
-    });
-    return () => {
-      offEvent('recent_chats');
-    }
-  }, []))
+
+  const {
+    allUsers,
+    isLoading,
+    refreshing,
+    handleRefresh,
+    loadMoreChats,
+    setAllusers,
+  } = useChats(user?._id);
+
+  useSocket(user?._id, setAllusers);
+
   const renderStatus: ListRenderItem<User> = useCallback(({ item }) => {
     return (
       <TouchableOpacity
@@ -95,7 +90,7 @@ export default function Home() {
           <Image source={imagepath.user} style={styles.userImage} />
         </TouchableOpacity>
       </View>
-      <View style={styles.statusSection}>
+      {/* <View style={styles.statusSection}>
         <FlatList
           data={statusList}
           renderItem={renderStatus}
@@ -105,15 +100,22 @@ export default function Home() {
           contentContainerStyle={styles.statusListContainer}
           ItemSeparatorComponent={() => <View style={{ width: 16 }} />}
         />
-      </View>
+      </View> */}
       <View style={styles.chatSection}>
         <FlatList
-          data={allusers}
+          data={allUsers}
           renderItem={renderChatItem}
           keyExtractor={keyExtractor}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.chatListContainer}
           ItemSeparatorComponent={() => <View style={{ height: 16 }} />}
+          onEndReached={loadMoreChats}
+          onEndReachedThreshold={0.5}
+          refreshing={refreshing}
+          onRefresh={handleRefresh}
+          ListFooterComponent={
+            isLoading ? <ActivityIndicator size="small" color="#000" /> : null
+          }
           ListEmptyComponent={() =>
             <View style={styles.emptyContainer}>
               <Image source={imagepath.emptyMessage} style={styles.emptyImage} />

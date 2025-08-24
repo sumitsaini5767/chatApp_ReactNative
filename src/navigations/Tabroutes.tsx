@@ -15,7 +15,7 @@ import { useTranslation } from 'react-i18next';
 const Tab = createBottomTabNavigator();
 
 const TabRoutes = () => {
-  const{t}=useTranslation();
+  const { t } = useTranslation();
   let options = (
     img: any,
     title?: string,
@@ -43,7 +43,7 @@ const TabRoutes = () => {
       tabBarHideOnKeyboard: true,
     }} >
       <Tab.Screen name="Home" component={Home}
-        options={options(imagepath.message, t('Message'), "9")} />
+        options={options(imagepath.message, t('Message'))} />
       <Tab.Screen name="Settings" component={Settings}
         options={options(imagepath.settings, t('Settings'))} />
     </Tab.Navigator>

@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React from 'react';
 import {
   View,
   Text,
@@ -6,9 +6,9 @@ import {
   TouchableOpacity,
   FlatList,
   TextInput,
-  Keyboard,
   KeyboardAvoidingView,
   Platform,
+  ActivityIndicator,
 } from 'react-native';
 import { styles } from './styles';
 import imagepath from '../../../constants/imagepath';
@@ -16,22 +16,10 @@ import Backbutton from '../../../components/backbutton/Backbutton';
 import { height } from '../../../styles/commonStyle';
 import { CommonColors } from '../../../styles/Colors';
 import { useTranslation } from 'react-i18next';
-import { useRoute } from '@react-navigation/native';
-import {
-  activeUsers,
-  leaveRoom,
-  markAsRead,
-  messageReadStatus,
-  offEvent,
-  onMessageReceived,
-  sendMessage,
-  stopTyping,
-  typing,
-  typingStatus,
-
-} from '../../../utils/sockets';
-import { getMessages } from '../../../Redux/actions/userDetail';
+import { RouteProp, useRoute } from '@react-navigation/native';
 import { DateTimeConversion } from '../../../utils/helperFunction';
+import { useChatMessages } from '../../../hooks/useChatMessages';
+import { useChatMessageSocket } from '../../../hooks/useSocket';
 
 interface Message {
   _id?: string;
@@ -39,7 +27,7 @@ interface Message {
   sender: string;
   message: string;
   timestamp?: string;
-  isRead?:boolean
+  isRead?: boolean
 }
 
 type RouteParams = {
@@ -49,110 +37,31 @@ type RouteParams = {
 };
 
 export default function ChatScreen() {
-  const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
-  const [keyboardHeight, setKeyboardHeight] = useState(0);
-  const flatListRef = useRef<FlatList>(null);
   const { t } = useTranslation();
-  const route = useRoute();
-  const { roomId, currentUser, targetUser } = route.params as RouteParams;
-  const [chatMessages, setChatMessages] = useState<Message[]>([]);
-  const [messageText, setMessageText] = useState('');
-  const [roomActiveUsers, setroomActiveUsers] = useState<string[]>([]);
-  const [isTyping, setIsTyping] = useState(false);
-  const scrollToEnd = () => {
-    if (flatListRef.current) {
-      flatListRef.current.scrollToEnd({ animated: true });
-    }
-  };
+  const route = useRoute<RouteProp<{ params: RouteParams }, 'params'>>();
+  const {
+    chatMessages,
+    isLoadingMore,
+    isKeyboardVisible,
+    keyboardHeight,
+    currentUser,
+    targetUser,
+    messageText,
+    viewabilityConfig,
+    flatListRef,
+    loadMoreMessages,
+    handleMessageSeen,
+    scrollToEnd,
+    handleSend,
+    setMessageText,
+    onViewableItemsChanged,
+    setChatMessages
+  } = useChatMessages(route.params);
 
-  useEffect(() => {
-    activeUsers((data: any) => {
-      setroomActiveUsers(data);
-    })
-    onMessageReceived((data: any) => {
-      setChatMessages((prev) => [...prev, data]);
-      scrollToEnd();
-      if (data.receiver === currentUser?._id) {
-        handleMessageSeen(data._id);
-      }
-    });
-    typingStatus((data: any) => {
-      if (data?.userId === targetUser?._id) {
-        setIsTyping(data?.isTyping);
-      }
-    })
-    messageReadStatus((data: any) => {
-      console.log(data,"data===>")
-      setChatMessages((prev) =>
-        prev.map((msg) =>
-          msg._id === data.messageId
-            ? { ...msg, isRead: data.isRead }
-            : msg
-        )
-      );
-    });
-    return () => {
-      offEvent('receive_message');
-      offEvent('active_user');
-      offEvent('typing_status');
-      offEvent('read_update');
-      leaveRoom(roomId, currentUser?._id);
-    };
-  }, []);
-
-  useEffect(() => {
-    (async () => {
-      let data = await getMessages({ roomId });
-      setChatMessages(data?.messages)
-    })()
-  }, [])
-
-  useEffect(() => {
-    const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', (e) => {
-      setIsKeyboardVisible(true);
-      setKeyboardHeight(e.endCoordinates.height);
-      scrollToEnd();
-      typing(roomId, currentUser?._id);
-    });
-
-    const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
-      setIsKeyboardVisible(false);
-      setKeyboardHeight(0);
-      stopTyping(roomId, currentUser?._id);
-    });
-
-    return () => {
-      keyboardDidShowListener.remove();
-      keyboardDidHideListener.remove();
-    };
-  }, []);
-
-  const handleMessageSeen = (messageId: string) => {
-    markAsRead(roomId, currentUser?._id, messageId);
-  };
-
-  const onViewableItemsChanged = useRef(({ viewableItems }: any) => {
-    viewableItems.forEach((item: any) => {
-      if (!item.item.isRead) {
-        handleMessageSeen(item.item._id);
-      }
-    });
-  }).current;
-
-  const viewabilityConfig = useRef({ itemVisiblePercentThreshold: 60 }).current;
-  const handleSend = () => {
-    if (messageText.trim().length === 0) return;
-
-    const messageData: Message = {
-      receiver: targetUser?._id,
-      sender: currentUser?._id,
-      message: messageText.trim(),
-      timestamp: new Date().toISOString(),
-    };
-    sendMessage(messageData);
-    setMessageText('');
-    scrollToEnd();
-  };
+  const {
+    roomActiveUsers,
+    isTyping,
+  } = useChatMessageSocket(route.params, setChatMessages, scrollToEnd, handleMessageSeen);
 
   const renderMessage = ({ item }: { item: Message }) => {
     const isCurrentUser = item.sender === currentUser?._id;
@@ -197,10 +106,19 @@ export default function ChatScreen() {
             renderItem={renderMessage}
             keyExtractor={(_, index) => index.toString()}
             showsHorizontalScrollIndicator={false}
+            ListHeaderComponent={() =>
+              isLoadingMore ? <ActivityIndicator size="small" color="#000" /> : null
+            }
             showsVerticalScrollIndicator={false}
             contentContainerStyle={styles.messagesContainer}
             onContentSizeChange={scrollToEnd}
             onLayout={scrollToEnd}
+            onScroll={({ nativeEvent }) => {
+              if (nativeEvent.contentOffset.y <= 0 && !isLoadingMore) {
+                loadMoreMessages();
+              }
+            }}
+            scrollEventThrottle={16}
             onViewableItemsChanged={onViewableItemsChanged}
             viewabilityConfig={viewabilityConfig}
           />

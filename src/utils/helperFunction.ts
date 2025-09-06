@@ -1,14 +1,7 @@
-import {
-    getToken,
-    getMessaging,
-    requestPermission,
-    AuthorizationStatus
-} from '@react-native-firebase/messaging';
-import { getApp } from '@react-native-firebase/app';
-import DeviceInfo from 'react-native-device-info';
-import { getItem, setItem } from '../localStorage/mmkv';
+
+import { getItem } from '../localStorage/mmkv';
 import { setUserAction } from '../Redux/actions/userDetail';
-const messaging = getMessaging(getApp());
+import { clearAlert, setAlert } from '../Redux/actions/alert';
 
 export const resetAllDataToRedux = () => {
     if (getItem('userData')) {
@@ -26,6 +19,8 @@ export const DateTimeConversion = (date: string) => {
         minute: '2-digit',
         hour12: true,
     });
+    console.log(formatted,"data")
+    if(formatted == 'Invalid Date') return false;
     return formatted;
 }
 
@@ -37,3 +32,16 @@ export const debounce = <T extends (...args: any[]) => void>(func: T, delay = 30
         timeoutId = setTimeout(() => func(...args), delay);
     };
 };
+
+export const showSuccess = (message: string) => {
+    setAlert({ text: message, isSuccess: true });
+    setTimeout(() => {
+        clearAlert();
+    }, 1000)
+}
+export const showError = (message: string) => {
+    setAlert({ text: message, isSuccess: false });
+    setTimeout(() => {
+        clearAlert();
+    }, 1000)
+}

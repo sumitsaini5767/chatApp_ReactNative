@@ -75,7 +75,7 @@ const Login = () => {
       />
 
       <View style={styles.buttonStyle}>
-        <Button lable={t('login')} onPress={onLogin} />
+        <Button label={t('login')} onPress={onLogin} />
         <TouchableOpacity style={styles.forgetPassword}>
           <Text style={styles.forgetPasswordText}>{t('ForgotPassword')}</Text>
         </TouchableOpacity>

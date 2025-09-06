@@ -41,7 +41,7 @@ export const styles = StyleSheet.create({
     },
     profileText: {
         marginTop: verticalScale(8),
-        width:"100%",
+        width: "100%",
         textAlign: 'center',
         alignSelf: 'center',
         fontFamily: FontFamily.CarosSoftBold,
@@ -49,24 +49,27 @@ export const styles = StyleSheet.create({
         fontWeight: '600',
         color: CommonColors.black,
     },
-    icon:{
+    profileDecs: {
+        fontFamily: FontFamily.CarosSoftBold,
+    },
+    icon: {
         width: moderateScale(30),
         height: moderateScale(30),
     },
-    container:{
-        marginBottom:verticalScale(10),
-        marginHorizontal:moderateScale(16),
+    container: {
+        marginBottom: verticalScale(10),
+        marginHorizontal: moderateScale(16),
         flexDirection: 'row',
         alignItems: 'center',
     },
-    lable:{
-        padding:moderateScale(10),
+    lable: {
+        padding: moderateScale(10),
         fontFamily: FontFamily.CarosSoftMedium,
         fontSize: moderateScale(15),
         color: CommonColors.black,
         alignSelf: 'center',
     },
-    dropdown:{
-        width:'95%',
+    dropdown: {
+        width: '95%',
     }
 })

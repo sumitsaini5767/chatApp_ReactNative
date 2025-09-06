@@ -20,6 +20,7 @@ import { RouteProp, useRoute } from '@react-navigation/native';
 import { DateTimeConversion } from '../../../utils/helperFunction';
 import { useChatMessages } from '../../../hooks/useChatMessages';
 import { useChatMessageSocket } from '../../../hooks/useSocket';
+import { Avatar } from '../../../components/Componets';
 
 interface Message {
   _id?: string;
@@ -92,8 +93,9 @@ export default function ChatScreen() {
       <View style={{ height: isKeyboardVisible ? height - keyboardHeight : height }}>
         <View style={styles.header}>
           <Backbutton />
-          <Image source={imagepath.user} style={styles.avatar} />
-          <View style={{ flex: 1, marginLeft: 10 }}>
+          {/* <Image source={imagepath.user} style={styles.avatar} /> */}
+          <Avatar name={targetUser?.name as string} size={45} />
+          <View style={{ flex: 1 }}>
             <Text style={styles.username}>{targetUser?.name || 'User'}</Text>
             {isTyping ? <Text style={styles.status}>Typing...</Text>
               : roomActiveUsers.includes(targetUser?._id) && <Text style={styles.status}>online</Text>}

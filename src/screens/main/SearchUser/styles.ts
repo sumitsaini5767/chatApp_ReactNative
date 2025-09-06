@@ -17,12 +17,12 @@ export const styles = StyleSheet.create({
         paddingVertical: verticalScale(5),
     },
     searchContainer: {
-        marginVertical:verticalScale(10),
+        marginVertical: verticalScale(10),
         flexDirection: "row",
-        backgroundColor:CommonColors.buttonBackground,
+        backgroundColor: CommonColors.buttonBackground,
         marginHorizontal: moderateScale(10),
         borderRadius: moderateScale(10),
-        padding:moderateScale(5),
+        padding: moderateScale(5),
         overflow: "hidden",
     },
     crossImage: {
@@ -35,13 +35,21 @@ export const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
     },
-    chatListContainer:{
-        marginTop:verticalScale(15),
-        marginHorizontal:moderateScale(15)
+    chatListContainer: {
+        marginTop: verticalScale(15),
+        marginHorizontal: moderateScale(15)
     },
-    heading:{
-        fontSize:moderateScale(16),
-        fontWeight:'bold',
-        marginVertical:verticalScale(6)
+    heading: {
+        fontSize: moderateScale(16),
+        fontWeight: 'bold',
+        marginVertical: verticalScale(6),
+        marginBottom: moderateScale(20)
+    },
+    emptyImage: {
+        marginTop: moderateScale(100),
+        height: moderateScale(200),
+        width: moderateScale(200),
+        alignSelf: "center",
+        opacity: 0.6,
     }
 });

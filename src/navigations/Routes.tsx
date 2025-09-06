@@ -4,9 +4,9 @@ import MainStack from './Mainstack';
 import AuthStack from './Authstack';
 import { useSelector } from 'react-redux';
 import { RootState } from '../Redux/store';
-import AlertPopup from '../components/AlertPopup/AlertPopup';
 import { backgroundhandler, forgroundHandler, getFcmToken, OnClickNotif } from '../utils/notificationHandler';
 import { requestNotificationPermission } from '../utils/userPermission';
+import { AlertPopup } from '../components/Componets';
 
 const Routes = () => {
   const user = useSelector((state: RootState) => state.userDetail);

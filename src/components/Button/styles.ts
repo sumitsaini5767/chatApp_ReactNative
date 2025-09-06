@@ -4,13 +4,13 @@ import { CommonColors } from "../../styles/Colors";
 
 export const styles=StyleSheet.create({
     container:{
-        backgroundColor:CommonColors.buttonBackground,
+        backgroundColor:CommonColors.inputTextColor,
         padding:20,
         borderRadius:20
     },
     textStyle:{
         textAlign:"center",
-        color:CommonColors.buttonTextColor,
+        color:CommonColors.white,
         fontFamily:FontFamily.CarosSoftBold
     }
 })

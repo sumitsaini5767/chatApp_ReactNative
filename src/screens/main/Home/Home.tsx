@@ -7,12 +7,11 @@ import {
   ListRenderItem,
   ActivityIndicator,
 } from 'react-native';
-import React, { useCallback} from 'react';
-import { WrapperContainer } from '../../../components/Componets';
+import React, { useCallback } from 'react';
+import { Avatar, ChatItem, WrapperContainer } from '../../../components/Componets';
 import { styles } from './styles';
 import imagepath from '../../../constants/imagepath';
 import { ChatMessage, User } from '../../../constants/Allinterface';
-import ChatItem from '../../../components/ChatItem/ChatItem';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { MainStackParamList } from '../../../navigations/types';
@@ -23,12 +22,12 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../Redux/store';
 import { useChats } from '../../../hooks/useChat';
 import { useSocket } from '../../../hooks/useSocket';
+import Feather from 'react-native-vector-icons/Feather';
 type NavigationProp = NativeStackNavigationProp<MainStackParamList, 'UserStatus'>;
 export default function Home() {
   const navigation = useNavigation<NavigationProp>();
   const { t } = useTranslation();
   const user = useSelector((state: RootState) => state.userDetail);
-
   const {
     allUsers,
     isLoading,
@@ -87,7 +86,7 @@ export default function Home() {
         </TouchableOpacity>
         <Text style={styles.headline}>{t("Home")}</Text>
         <TouchableOpacity>
-          <Image source={imagepath.user} style={styles.userImage} />
+          <Avatar name={user?.name as string} />
         </TouchableOpacity>
       </View>
       {/* <View style={styles.statusSection}>
@@ -102,27 +101,33 @@ export default function Home() {
         />
       </View> */}
       <View style={styles.chatSection}>
-        <FlatList
-          data={allUsers}
-          renderItem={renderChatItem}
-          keyExtractor={keyExtractor}
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={styles.chatListContainer}
-          ItemSeparatorComponent={() => <View style={{ height: 16 }} />}
-          onEndReached={loadMoreChats}
-          onEndReachedThreshold={0.5}
-          refreshing={refreshing}
-          onRefresh={handleRefresh}
-          ListFooterComponent={
-            isLoading ? <ActivityIndicator size="small" color="#000" /> : null
-          }
-          ListEmptyComponent={() =>
-            <View style={styles.emptyContainer}>
-              <Image source={imagepath.emptyMessage} style={styles.emptyImage} />
-              <Text style={styles.emptyText}>No messages found</Text>
-            </View>}
-        />
+        {isLoading ?
+          <ActivityIndicator size={'large'} color={CommonColors.black} />
+          : <FlatList
+            data={allUsers}
+            renderItem={renderChatItem}
+            keyExtractor={keyExtractor}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={styles.chatListContainer}
+            ItemSeparatorComponent={() => <View style={{ height: 16 }} />}
+            onEndReached={loadMoreChats}
+            onEndReachedThreshold={0.5}
+            refreshing={refreshing}
+            onRefresh={handleRefresh}
+            ListFooterComponent={
+              isLoading ? <ActivityIndicator size="small" color="#000" /> : null
+            }
+            ListEmptyComponent={() =>
+              <View style={styles.emptyContainer}>
+                <Image source={imagepath.emptyMessage} style={styles.emptyImage} />
+                <Text style={styles.emptyText}>No messages yet!</Text>
+                <Text style={styles.emptyText}>Start chatting with your friends now.</Text>
+              </View>}
+          />}
       </View>
+      <TouchableOpacity style={styles.fab} onPress={() => navigation.navigate('SearchUser')}>
+        <Feather name="plus" size={30} color="white" />
+      </TouchableOpacity>
     </WrapperContainer>
   );
 }

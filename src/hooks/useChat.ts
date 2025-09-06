@@ -11,16 +11,13 @@ export const useChats = (userId?: string) => {
     const fetchChats = useCallback(async () => {
         if (!userId || pageNo > totalPages) return;
         setIsLoading(true);
-
         const res = await getMyChats(`?userId=${userId}&pageNo=${pageNo}`);
-
         if (pageNo === 1) {
             setAllusers(res?.allChats?.chats ?? []);
             setTotalPages(res?.allChats?.totalPages);
         } else {
             setAllusers((prev) => [...prev, ...(res?.allChats?.chats ?? [])]);
         }
-
         setIsLoading(false);
         setRefreshing(false);
     }, [pageNo, userId, totalPages]);

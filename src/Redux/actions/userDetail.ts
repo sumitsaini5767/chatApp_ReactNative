@@ -11,7 +11,7 @@ export const setUserAction = (user: any) => {
     store.dispatch(setUser(user));
 }
 
-export const signUp = (data: any) => {
+export const signUp = async (data: any) => {
     const header = {
         Accept: 'application/json',
     };
@@ -23,9 +23,11 @@ export const signUp = (data: any) => {
             fcmToken: getItem('fcmToken'),
         }
     }
-    const res = postApi(SINGUP_URL, newData, header as AxiosRequestHeaders);
+    const res = await postApi(SINGUP_URL, newData, header as AxiosRequestHeaders);
+    setUserAction(res?.data);
     return res;
 }
+
 export const login = async (data: any) => {
     const header = {
         Accept: 'application/json',
@@ -45,15 +47,13 @@ export const login = async (data: any) => {
 
 export const logout = () => {
     deleteItem('userData');
-    deleteItem('fcmToken');
-    deleteItem('deviceId');
     store.dispatch(emptyUserdetails());
 }
-export const getMyChats = async (params:string) => {
+export const getMyChats = async (params: string) => {
     const header = {
         Accept: 'application/json',
     };
-    const res = await getApi(GET_CHATS+params,header as AxiosRequestHeaders);
+    const res = await getApi(GET_CHATS + params, header as AxiosRequestHeaders);
     return res;
 }
 
@@ -68,6 +68,6 @@ export const searchUser = async (data: any) => {
     const header = {
         Accept: 'application/json',
     };
-    const res = await getApi(FIND_USER+data, header as AxiosRequestHeaders);
+    const res = await getApi(FIND_USER + data, header as AxiosRequestHeaders);
     return res;
 }

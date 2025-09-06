@@ -20,4 +20,5 @@ export default{
     Language:require('../assets/images/language.png'),
     emptyMessage:require('../assets/images/emptyMessage.png'),
     seen:require('../assets/images/seen.png'),
+    emptySearch:require('../assets/images/emptySearch.png'),
 }

@@ -1,37 +1,42 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import {
   View, Text, Image, TextInput,
-  TouchableOpacity, FlatList, ListRenderItem
+  TouchableOpacity, FlatList, ListRenderItem,
+  ActivityIndicator
 } from 'react-native';
-import { Backbutton, WrapperContainer } from '../../../components/Componets';
+import { Backbutton, WrapperContainer, ChatItem } from '../../../components/Componets';
 import { CommonColors } from '../../../styles/Colors';
 import imagepath from '../../../constants/imagepath';
 import { styles } from './styles';
-import { chatMessages } from '../../../constants/DummyData';
 import { ChatMessage, User } from '../../../constants/Allinterface';
-import ChatItem from '../../../components/ChatItem/ChatItem';
 import { useTranslation } from 'react-i18next';
 import { searchUser } from '../../../Redux/actions/userDetail';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../Redux/store';
 import { debounce } from '../../../utils/helperFunction';
+import { moderateScale } from '../../../styles/scaling';
 
 const SearchUser = () => {
   const [search, setSearch] = useState('');
   const user = useSelector((state: RootState) => state.userDetail);
   const [searchUsers, setSearchUsers] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const { t } = useTranslation();
 
   const handleSearch = async (text: string) => {
     try {
+      if(!text) return;
+      setIsLoading(true);
       const res = await searchUser(`?userId=${user?._id}&search=${text}`);
       setSearchUsers(res?.result);
     } catch (error) {
       console.log(error, "error==>");
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  const debouncedSearch = useMemo(() => debounce(handleSearch, 500),[]);
+  const debouncedSearch = useMemo(() => debounce(handleSearch, 500), []);
 
   const renderChatItem: ListRenderItem<ChatMessage> = useCallback(({ item }) => {
     return (
@@ -65,29 +70,34 @@ const SearchUser = () => {
           placeholderTextColor={CommonColors.black}
           value={search}
           onChangeText={(text) => {
-            setSearch(text);
-            debouncedSearch(text); // ✅ correct way
+            setSearch(text.trim());
+            debouncedSearch(text.trim()); // ✅ correct way
           }}
         />
-        <TouchableOpacity style={styles.crossImageContainer} onPress={() => setSearch('')}>
+        {!!search && <TouchableOpacity style={styles.crossImageContainer} onPress={() => setSearch('')}>
           <Image
             source={imagepath.cross}
             style={styles.crossImage}
             resizeMode="contain"
           />
-        </TouchableOpacity>
+        </TouchableOpacity>}
       </View>
-      <FlatList
-        data={searchUsers}
-        renderItem={renderChatItem}
-        keyExtractor={keyExtractor}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.chatListContainer}
-        ItemSeparatorComponent={() => <View style={{ height: 18 }} />}
-        ListHeaderComponent={() => (
-          <Text style={styles.heading}>{t('People')}</Text>
-        )}
-      />
+      {isLoading ?
+        <ActivityIndicator size={'large'} color={CommonColors.black} />
+        : <FlatList
+          data={searchUsers}
+          renderItem={renderChatItem}
+          keyExtractor={keyExtractor}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.chatListContainer}
+          ItemSeparatorComponent={() => <View style={{ height: moderateScale(18) }} />}
+          ListHeaderComponent={() => (
+            searchUsers?.length > 0 && <Text style={styles.heading}>{t('People')}</Text>
+          )}
+          ListEmptyComponent={() => (
+            <Image source={imagepath.emptySearch} style={styles.emptyImage} />
+          )}
+        />}
     </WrapperContainer>
   );
 };

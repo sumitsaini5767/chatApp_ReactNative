@@ -5,3 +5,6 @@ export {default as UserInput} from './UserInput/UserInput';
 export {default as WrapperContainer} from './WrapperContainer/WrapperContainer';
 export {default as StatusProgressbar} from './StatusProgessbar/StatusProgessbar';
 export {default as Dropdown} from './Dropdown/Dropdown';
+export {default as ChatItem} from './ChatItem/ChatItem';
+export {default as AlertPopup} from './AlertPopup/AlertPopup';
+export {default as Avatar} from './Avatar/Avatar';

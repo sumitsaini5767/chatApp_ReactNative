@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { WrapperContainer, UserInput, Button, SocialLogin } from '../../../components/Componets';
 import { Backbutton } from '../../../components/Componets';
 import {
+  KeyboardAvoidingView,
   Text,
   TouchableOpacity,
   View,
@@ -35,46 +36,48 @@ const Signup = () => {
     <WrapperContainer
       contentContainerStyle={styles.mainContainerStyle}
       useScroll={true}>
-      <Backbutton
-        onPress={() => {
-          navigation.goBack();
-        }}
-      />
-      <Text style={styles.topHeading}>{t("SignUpWith")}</Text>
-      <Text style={styles.bottomHeading}>{t('Get_Chatting_With')}</Text>
-      <UserInput
-        inputContainerStyle={styles.inputContainerStyle}
-        lable={t("YourName")}
-        value={name}
-        onChangeText={(text) => updateState('name', text)}
-        focusable
-      />
-      <UserInput
-        inputContainerStyle={styles.inputContainerStyle}
-        lable={t("YourEmail")}
-        value={email}
-        onChangeText={(text) => updateState('email', text)}
-        focusable
-      />
-      <UserInput
-        inputContainerStyle={styles.inputContainerStyle}
-        lable={t("Password")}
-        secureTextEntry
-        value={password}
-        onChangeText={(text) => updateState('password', text)}
-        focusable
-      />
-      <UserInput
-        inputContainerStyle={styles.inputContainerStyle}
-        lable={t("ConfirmPassword")}
-        secureTextEntry 
-        value={confirmPassword}
-        onChangeText={(text) => updateState('confirmPassword', text)}
-        focusable
-      />
-      <View style={styles.buttonStyle}>
-        <Button lable={t('CreateAnAccount')} onPress={onSingUp} />
-      </View>
+      <KeyboardAvoidingView>
+        <Backbutton
+          onPress={() => {
+            navigation.goBack();
+          }}
+        />
+        <Text style={styles.topHeading}>{t("SignUpWith")}</Text>
+        <Text style={styles.bottomHeading}>{t('Get_Chatting_With')}</Text>
+        <UserInput
+          inputContainerStyle={styles.inputContainerStyle}
+          lable={t("YourName")}
+          value={name}
+          onChangeText={(text) => updateState('name', text)}
+          focusable
+        />
+        <UserInput
+          inputContainerStyle={styles.inputContainerStyle}
+          lable={t("YourEmail")}
+          value={email}
+          onChangeText={(text) => updateState('email', text)}
+          focusable
+        />
+        <UserInput
+          inputContainerStyle={styles.inputContainerStyle}
+          lable={t("Password")}
+          secureTextEntry
+          value={password}
+          onChangeText={(text) => updateState('password', text)}
+          focusable
+        />
+        <UserInput
+          inputContainerStyle={styles.inputContainerStyle}
+          lable={t("ConfirmPassword")}
+          secureTextEntry
+          value={confirmPassword}
+          onChangeText={(text) => updateState('confirmPassword', text)}
+          focusable
+        />
+        <View style={styles.buttonStyle}>
+          <Button label={t('CreateAnAccount')} onPress={onSingUp} />
+        </View>
+      </KeyboardAvoidingView>
     </WrapperContainer>
   )
 }

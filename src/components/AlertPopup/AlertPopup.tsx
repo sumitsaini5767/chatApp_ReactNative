@@ -3,26 +3,34 @@ import React, { useEffect, useRef } from 'react'
 import { styles } from './style'
 import { useSelector } from 'react-redux';
 import { RootState } from '../../Redux/store';
+import Feather from 'react-native-vector-icons/Feather';
+
 const AlertPopup = () => {
-    const fadeAnim = useRef(new Animated.Value(0)).current;
-    const alert = useSelector((state:RootState)=>state.alert);
+    const alert = useSelector((state: RootState) => state.alert);
+    const moveAnim = useRef(new Animated.Value(0)).current;
+
     useEffect(() => {
-        Animated.timing(
-            fadeAnim,
-            {
-                toValue: 1,
-                duration: 2000,
-                useNativeDriver: true
-            }
-        ).start();
-    }, [fadeAnim]);
+        const bounce = Animated.sequence([
+            Animated.timing(moveAnim, {
+                toValue: 20,
+                duration: 500,
+                useNativeDriver: true,
+            }),
+            Animated.timing(moveAnim, {
+                toValue: 10,
+                duration: 500,
+                useNativeDriver: true,
+            }),
+        ]);
+
+        Animated.loop(bounce).start();
+    }, [moveAnim]);
+
     return (
-        <Animated.View style={{
-            ...styles.container
-            , backgroundColor: alert?.isSuccess ?
-                'rgba(64, 198, 57, 0.75)' :
-                'rgba(197, 39, 15, 0.75)'
-        }}>
+        <Animated.View style={[styles.container, { transform: [{ translateY: moveAnim }] }]}>
+            {alert?.isSuccess
+                ? <Feather name="check-circle" size={20} color="green" />
+                : <Feather name="x-circle" size={20} color="red" />}
             <Text style={styles.text}>{alert?.text}</Text>
         </Animated.View>
     )

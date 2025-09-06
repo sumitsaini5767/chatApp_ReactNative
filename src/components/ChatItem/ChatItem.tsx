@@ -10,6 +10,7 @@ import { RootState } from '../../Redux/store';
 import imagepath from '../../constants/imagepath';
 import { joinRoom } from '../../utils/sockets';
 import { DateTimeConversion } from '../../utils/helperFunction';
+import { Avatar } from '../Componets';
 
 type NavigationProp = NativeStackNavigationProp<MainStackParamList, 'Chat'>;
 
@@ -23,20 +24,22 @@ const ChatItem = (item: ChatMessage) => {
       currentUser: user,
       targetUser: item?.user
     });
-    joinRoom(roomId,user?._id);
+    joinRoom(roomId, user?._id);
   };
-  let formattedDate=DateTimeConversion(`${item?.timestamp}`);
+  let formattedDate = DateTimeConversion(`${item?.timestamp}`);
   return (
     <TouchableOpacity style={styles.chatItemContainer} onPress={handleChatPress}>
-      <Image source={imagepath.Profile} style={styles.chatUserImage} resizeMode='contain' />
+      <Avatar name={item?.user?.name} />
       <View style={styles.chatContentContainer}>
         <View style={styles.chatHeader}>
           <Text style={styles.chatUserName}>{item?.user?.name}</Text>
-          <Text style={styles.chatTimestamp}>{formattedDate}</Text>
+          {!!formattedDate &&
+            <Text style={styles.chatTimestamp}>{formattedDate}</Text>}
         </View>
         <View style={styles.chatMessageContainer}>
-          <Text style={styles.chatMessage} numberOfLines={1}>{item?.lastMessage}</Text>
-          {item?.unreadCount && (
+          {!!item?.lastMessage &&
+            <Text style={styles.chatMessage} numberOfLines={1}>{item?.lastMessage}</Text>}
+          {!!item?.unreadCount && (
             <View style={styles.unreadBadge}>
               <Text style={styles.unreadCount}>{item?.unreadCount}</Text>
             </View>

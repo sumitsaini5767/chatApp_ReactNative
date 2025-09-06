@@ -9,6 +9,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   KeyboardAvoidingView,
+  ActivityIndicator,
 } from 'react-native';
 import { isColorDark } from '../../utils/isColorDark';
 

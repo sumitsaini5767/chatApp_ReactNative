@@ -4,6 +4,7 @@ import { height, moderateScale, verticalScale } from '../../../styles/scaling';
 
 export const styles = StyleSheet.create({
   mainContainerStyle: {
+    flex: 1,
     paddingHorizontal: moderateScale(24),
   },
   topHeading: {
@@ -23,7 +24,8 @@ export const styles = StyleSheet.create({
     marginTop: verticalScale(30)
   },
   buttonStyle: {
-    marginTop: verticalScale(40),
+    marginTop: verticalScale(50),
+    marginBottom: verticalScale(10),
     width: '100%'
   },
 });

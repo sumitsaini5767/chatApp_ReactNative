@@ -11,7 +11,7 @@ export const styles = StyleSheet.create({
         alignItems: 'center',
         right: moderateScale(10),
         padding: moderateScale(10),
-        borderRadius: moderateScale(10),
+        borderRadius: moderateScale(6),
         zIndex: 1,
         backgroundColor: CommonColors.white,
         // iOS shadow

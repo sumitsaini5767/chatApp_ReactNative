@@ -11,21 +11,25 @@ interface Props extends TextInputProps {
   textStyle?: ViewStyle;
   inputStyle?: ViewStyle;
   lable: string,
+  error?: string,
 }
 const UserInput: React.FC<Props> = ({
   inputContainerStyle,
   textStyle,
   inputStyle,
   lable,
+  error,
+  secureTextEntry = false,
   ...rest
 }) => {
   return (
     <>
       <View style={[styles.containerStyle, inputContainerStyle]}>
         <Text style={[styles.textStyle, textStyle]}>{lable}</Text>
-        <TextInput style={[styles.inputStyle, inputStyle]} {...rest} />
+        <TextInput style={[styles.inputStyle, inputStyle]} secureTextEntry={secureTextEntry} {...rest} />
+
       </View>
-      {/* <Text style={styles.validation}>hello</Text> */}
+      {!!error && <Text style={styles.validation}>{error}</Text>}
     </>
   );
 };

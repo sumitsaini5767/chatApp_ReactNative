@@ -68,22 +68,6 @@ export const styles = StyleSheet.create({
     fontSize: moderateScale(16),
     fontFamily: FontFamily.CircularStd_Regular,
   },
-  OrContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop:verticalScale(30),
-    gap: 10,
-  },
-  orLines: {
-    height: verticalScale(1),
-    backgroundColor: '#CDD1D0',
-    width: moderateScale(100),
-    opacity: 0.3,
-  },
-  orTitle: {
-    color: CommonColors.textSecondary,
-  },
   ButtonContainer: {
     justifyContent: 'center',
     alignItems: 'center',

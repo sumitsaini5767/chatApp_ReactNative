@@ -39,14 +39,7 @@ const OnBoarding = () => {
 
         {/* subtitile section */}
         <Text style={styles.subtitle}>{t("Our_Chat")}</Text>
-        <SocialLogin />
-        {/* or container */}
-        <View style={styles.OrContainer}>
-          <View style={styles.orLines} />
-          <Text style={styles.orTitle}>{t('OR')}</Text>
-          <View style={styles.orLines} />
-        </View>
-
+        <SocialLogin isGoogle={true}/>
         {/* button */}
         <View style={styles.ButtonContainer}>
           <TouchableOpacity

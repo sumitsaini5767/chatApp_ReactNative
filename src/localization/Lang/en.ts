@@ -21,10 +21,19 @@ export default {
     Easily_Quickly: "easily & quickly",
     Our_Chat: "Our chat app is the perfect way to stay connected with friends and family.",
     SignUpWith: "Sign up with Email",
-    Get_Chatting_With:'Get chatting with friends and family today by signing up for our chat app!',
-    YourName:"Your name",
-    ConfirmPassword:"Confirm Password",
-    CreateAnAccount:"Create an account",
-    search:"Search",
-    WriteYourMessage:"Write your message"
+    Get_Chatting_With: 'Get chatting with friends and family today by signing up for our chat app!',
+    YourName: "Your name",
+    ConfirmPassword: "Confirm Password",
+    CreateAnAccount: "Create an account",
+    search: "Search",
+    WriteYourMessage: "Write your message",
+    EnterCorrectName: "Please Enter a Correct Name",
+    EmptyName: "Please Enter Name",
+    EnterCorrectEmail: "Please Enter Correct Email",
+    EmptyEmail: "Please Enter Email",
+    EnterCorrectPassword: "Password must be at least 6 characters",
+    EmptyPassword: "Please Enter Passoword",
+    EmptyConfirmPassword: "Please Enter Confirm Password",
+    ConfirmPasswordSame: "Confirm Passoword Should Be Same as Password"
+
 };

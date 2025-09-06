@@ -1,5 +1,8 @@
 import React, { useCallback, useState } from 'react';
 import {
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
   Text,
   TouchableOpacity,
   View,
@@ -13,8 +16,10 @@ import {
 } from '../../../components/Componets';
 import { styles } from './style';
 import { useNavigation } from '@react-navigation/native';
-import { login} from '../../../Redux/actions/userDetail';
+import { login } from '../../../Redux/actions/userDetail';
 import { useTranslation } from 'react-i18next';
+import { showError } from '../../../utils/helperFunction';
+import { verticalScale } from '../../../styles/scaling';
 
 const Login = () => {
   const navigation = useNavigation();
@@ -34,52 +39,60 @@ const Login = () => {
     }));
   };
   const onLogin = () => {
-    login(state)
+    if (!email || !password) {
+      showError("Eamil And Password Is Required")
+      return;
+    }
+    login(state);
   }
   return (
     <WrapperContainer
       contentContainerStyle={styles.mainContainerStyle}
       useScroll
     >
-      <Backbutton onPress={handleGoBack} />
-      <Text style={styles.topHeading}>{t('LogInToChatbox')}</Text>
-      <Text style={styles.bottomHeading}>
-        {t('WelcomeBack')}
-      </Text>
-      <SocialLogin
-        imageContainerStyle={styles.socialImageContainer}
-        isdark
-      />
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : 'height'}
+        keyboardVerticalOffset={Platform.OS === "ios" ? verticalScale(64) : verticalScale(30)}
+      >
+        <ScrollView
+          keyboardShouldPersistTaps="handled"
+          showsVerticalScrollIndicator={false}
+        >
+          <Backbutton onPress={handleGoBack} />
+          <Text style={styles.topHeading}>{t('LogInToChatbox')}</Text>
+          <Text style={styles.bottomHeading}>
+            {t('WelcomeBack')}
+          </Text>
+          <SocialLogin
+            imageContainerStyle={styles.socialImageContainer}
+            isGoogle={true}
+            isdark
+          />
+          <UserInput
+            inputContainerStyle={styles.inputContainerStyle}
+            lable={t('YourEmail')}
+            value={email}
+            onChangeText={(text) => updateState('email', text)}
+          />
 
-      {/* OR separator */}
-      <View style={styles.OrContainer}>
-        <View style={styles.orLines} />
-        <Text style={styles.orTitle}>{t('OR')}</Text>
-        <View style={styles.orLines} />
-      </View>
+          <UserInput
+            inputContainerStyle={styles.inputContainerStyle}
+            lable={t('Password')}
+            secureTextEntry
+            value={password}
+            onChangeText={(text) => updateState('password', text)}
+            focusable
+          />
 
-      <UserInput
-        inputContainerStyle={styles.inputContainerStyle}
-        lable={t('YourEmail')}
-        value={email}
-        onChangeText={(text) => updateState('email', text)}
-      />
-
-      <UserInput
-        inputContainerStyle={styles.inputContainerStyle}
-        lable={t('Password')}
-        secureTextEntry
-        value={password}
-        onChangeText={(text) => updateState('password', text)}
-        focusable
-      />
-
-      <View style={styles.buttonStyle}>
-        <Button label={t('login')} onPress={onLogin} />
-        <TouchableOpacity style={styles.forgetPassword}>
-          <Text style={styles.forgetPasswordText}>{t('ForgotPassword')}</Text>
-        </TouchableOpacity>
-      </View>
+          <View style={styles.buttonStyle}>
+            <Button label={t('login')} onPress={onLogin} />
+            <TouchableOpacity style={styles.forgetPassword}>
+              <Text style={styles.forgetPasswordText}>{t('ForgotPassword')}</Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </WrapperContainer>
   );
 };

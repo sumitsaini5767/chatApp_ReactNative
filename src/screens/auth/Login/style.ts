@@ -1,7 +1,7 @@
-import {Dimensions, StyleSheet} from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 import FontFamily from '../../../styles/FontFamily';
-import {CommonColors} from '../../../styles/Colors';
-import {moderateScale, verticalScale} from '../../../styles/scaling';
+import { CommonColors } from '../../../styles/Colors';
+import { moderateScale, verticalScale } from '../../../styles/scaling';
 
 const height = Dimensions.get('screen').height;
 export const styles = StyleSheet.create({
@@ -25,29 +25,12 @@ export const styles = StyleSheet.create({
   socialImageContainer: {
     borderColor: 'black',
   },
-  OrContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: verticalScale(30),
-    gap: moderateScale(10),
-  },
-  orLines: {
-    height: moderateScale(1),
-    backgroundColor: '#CDD1D0',
-    width: '45%',
-    opacity: 0.3,
-  },
-  orTitle: {
-    color: CommonColors.textSecondary,
-  },
   inputContainerStyle: {
     marginTop: verticalScale(30)
   },
   buttonStyle: {
-    marginHorizontal: moderateScale(30),
-    position: 'absolute',
-    top: height - verticalScale(180),
+    marginTop: verticalScale(50),
+    marginBottom: verticalScale(10),
     width: '100%'
   },
   forgetPassword: {

@@ -13,12 +13,12 @@ export const styles = StyleSheet.create({
     fontFamily:FontFamily.CarosSoftBold
   },
   inputStyle: {
-    marginVertical:8,
+    marginTop:verticalScale(5),
     color:CommonColors.black
   },
   validation:{
     color:CommonColors.red,
-    marginVertical:verticalScale(10)
+    marginTop:verticalScale(5)
   }
 
 });

@@ -67,7 +67,7 @@ const Login = () => {
           <SocialLogin
             imageContainerStyle={styles.socialImageContainer}
             isGoogle={true}
-            isdark
+            isdark={true}
           />
           <UserInput
             inputContainerStyle={styles.inputContainerStyle}

@@ -93,7 +93,7 @@ export default function ChatScreen() {
       <View style={{ height: isKeyboardVisible ? height - keyboardHeight : height }}>
         <View style={styles.header}>
           <Backbutton />
-          <Avatar name={targetUser?.name as string} size={45} />
+          <Avatar name={targetUser?.name as string} size={45} imageUri={targetUser?.image}/>
           <View style={{ flex: 1 }}>
             <Text style={styles.username}>{targetUser?.name || 'User'}</Text>
             {isTyping ? <Text style={styles.status}>Typing...</Text>

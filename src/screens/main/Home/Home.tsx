@@ -86,7 +86,7 @@ export default function Home() {
         </TouchableOpacity>
         <Text style={styles.headline}>{t("Home")}</Text>
         <TouchableOpacity>
-          <Avatar name={user?.name as string} />
+          <Avatar name={user?.name as string} imageUri={user?.image}/>
         </TouchableOpacity>
       </View>
       {/* <View style={styles.statusSection}>

@@ -29,7 +29,7 @@ const ChatItem = (item: ChatMessage) => {
   let formattedDate = DateTimeConversion(`${item?.timestamp}`);
   return (
     <TouchableOpacity style={styles.chatItemContainer} onPress={handleChatPress}>
-      <Avatar name={item?.user?.name} />
+      <Avatar name={item?.user?.name} imageUri={item?.user?.image}/>
       <View style={styles.chatContentContainer}>
         <View style={styles.chatHeader}>
           <Text style={styles.chatUserName}>{item?.user?.name}</Text>

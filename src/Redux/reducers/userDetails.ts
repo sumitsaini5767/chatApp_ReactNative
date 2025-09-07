@@ -5,6 +5,7 @@ interface UserState {
     name?: string;
     email?: string;
     _id?:string;
+    image?:string;
 }
 
 const initialState: UserState = {

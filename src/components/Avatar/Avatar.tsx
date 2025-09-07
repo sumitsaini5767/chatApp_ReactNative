@@ -67,6 +67,7 @@ const styles = StyleSheet.create<Styles>({
         justifyContent: 'center',
         alignItems: 'center',
         marginRight: moderateScale(10),
+        marginTop:moderateScale(8)
     },
     initial: {
         color: '#fff',
@@ -74,6 +75,9 @@ const styles = StyleSheet.create<Styles>({
     },
     image: {
         resizeMode: 'cover',
+        alignSelf: "center",
+        marginRight: moderateScale(10),
+        marginTop:moderateScale(8)
     },
 });
 

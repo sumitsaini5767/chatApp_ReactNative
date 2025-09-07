@@ -35,7 +35,7 @@ const Settings = () => {
                 showsVerticalScrollIndicator={false}
                 style={styles.lowerConatiner}>
                 <View style={styles.profile}>
-                    <Avatar name={user?.name as string} size={80} />
+                    <Avatar name={user?.name as string} size={80} imageUri={user?.image}/>
                     <Text style={styles.profileText}>{user?.name}</Text>
                     <Text style={styles.profileDecs}>{user?.email}</Text>
                 </View>

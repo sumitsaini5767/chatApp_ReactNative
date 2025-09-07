@@ -3,9 +3,16 @@ import React
 import React_RCTAppDelegate
 import ReactAppDependencyProvider
 import FirebaseCore // <- this is the correct module for FirebaseApp.configure()
+import GoogleSignIn  // <- this is the correct module for GIDSignIn
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
+
+   override func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+    // Add any other URL handlers you're using (e.g. Facebook SDK)
+    return ApplicationDelegate.shared.application(app, open: url, options: options) ||
+           GIDSignIn.sharedInstance.handle(url)
+  }
   var window: UIWindow?
 
   var reactNativeDelegate: ReactNativeDelegate?

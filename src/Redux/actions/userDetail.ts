@@ -1,7 +1,7 @@
 import store from "../store";
 import { emptyUserdetails, setUser } from "../reducers/userDetails";
 import { getApi, postApi } from "../../utils/apiCall";
-import { GET_MESSAGES, GET_CHATS, LOGIN_URL, SINGUP_URL, FIND_USER } from "../../Config/Urls";
+import { GET_MESSAGES, GET_CHATS, LOGIN_URL, SINGUP_URL, FIND_USER, GOOGLE_SIGNUP } from "../../Config/Urls";
 import { AxiosRequestHeaders } from "axios";
 import { deleteItem, getItem, setItem } from "../../localStorage/mmkv";
 import { Platform } from "react-native";
@@ -24,6 +24,23 @@ export const signUp = async (data: any) => {
         }
     }
     const res = await postApi(SINGUP_URL, newData, header as AxiosRequestHeaders);
+    setUserAction(res?.data);
+    return res;
+}
+
+export const googleSignIn = async (token: string) => {
+    const header = {
+        Accept: 'application/json',
+        Authorization: `Bearer ${token}`,
+    };
+    const newData = {
+        deviceInfo: {
+            deviceId: getItem('deviceId'),
+            deviceType: Platform.OS,
+            fcmToken: getItem('fcmToken'),
+        }
+    }
+    const res = await postApi(GOOGLE_SIGNUP, newData, header as AxiosRequestHeaders);
     setUserAction(res?.data);
     return res;
 }

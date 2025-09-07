@@ -67,16 +67,13 @@ export const forgroundHandler = async () => {
 }
 export const backgroundhandler = () => {
     setBackgroundMessageHandler(messaging, async remoteMessage => {
-        // console.log('Message handled in the background!', remoteMessage);
     });
 }
 export const OnClickNotif = () => {
     onNotificationOpenedApp(messaging, remoteMessage => {
-        // console.log('Notification caused app to open from background:', remoteMessage.notification);
     });
     getInitialNotification(messaging).then(remoteMessage => {
         if (remoteMessage) {
-            // console.log('Notification caused app to open from quit state:', remoteMessage.notification);
         }
     });
 }

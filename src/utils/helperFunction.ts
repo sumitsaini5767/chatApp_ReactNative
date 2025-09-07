@@ -19,7 +19,6 @@ export const DateTimeConversion = (date: string) => {
         minute: '2-digit',
         hour12: true,
     });
-    console.log(formatted,"data")
     if(formatted == 'Invalid Date') return false;
     return formatted;
 }

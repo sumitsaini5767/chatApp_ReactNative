@@ -81,7 +81,7 @@ const Signup = () => {
     });
 
     if (!hasError) {
-      signUp(state);
+      signUp({...state,email:email.toLowerCase()}); 
     }
   };
   return (

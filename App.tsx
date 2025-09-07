@@ -6,12 +6,13 @@ import store from './src/Redux/store';
 import { resetAllDataToRedux } from './src/utils/helperFunction';
 import { connectSocket, disconnectSocket } from './src/utils/sockets';
 import { initialWindowMetrics, SafeAreaProvider } from 'react-native-safe-area-context';
+import { ApiUrl } from './src/Config/Urls';
 // Ignore all logs
 LogBox.ignoreAllLogs(true);
 function App(): React.JSX.Element {
   useEffect(() => {
     resetAllDataToRedux();
-    connectSocket("http://10.0.2.2:3000").then(socket => {
+    connectSocket(ApiUrl).then(socket => {
       console.log("socketConnected", socket?.id);
     })
     return () => {

@@ -46,11 +46,12 @@ export const getApi = async (
         const token = getAuthToken();
         const finalHeaders: AxiosRequestConfig['headers'] = {
             'Content-Type': 'application/json',
+            ...(token ? { Authorization: `Bearer ${token}` } : {}),
             ...(headers || {}),
-            ...(token ? { Authorization: `Bearer ${token}` } : {})
         };
         console.log("header++++", finalHeaders);
         const res = await axios.get(url, { headers: finalHeaders });
+        console.log(res.data,'responce');
         return res.data;
     } catch (error: unknown) {
         return handleError(error, url);
@@ -68,11 +69,12 @@ export const postApi = async (
         const token = getAuthToken();
         const finalHeaders: AxiosRequestConfig['headers'] = {
             'Content-Type': 'application/json',
+            ...(token ? { Authorization: `Bearer ${token}` } : {}),
             ...(headers || {}),
-            ...(token ? { Authorization: `Bearer ${token}` } : {})
         };
         console.log("header++++", finalHeaders);
         const res = await axios.post(url, data, { headers: finalHeaders });
+        console.log(res.data,'responce');
         showSuccess(res.data.message);
         return res.data;
     } catch (error: unknown) {

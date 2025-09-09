@@ -8,14 +8,13 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import React, { useCallback } from 'react';
-import { Avatar, ChatItem, WrapperContainer } from '../../../components/Componets';
+import { Avatar, ChatItem, ChatUserShimmer, WrapperContainer } from '../../../components/Componets';
 import { styles } from './styles';
 import imagepath from '../../../constants/imagepath';
 import { ChatMessage, User } from '../../../constants/Allinterface';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { MainStackParamList } from '../../../navigations/types';
-import { statusList } from '../../../constants/DummyData';
 import { CommonColors } from '../../../styles/Colors';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
@@ -23,6 +22,8 @@ import { RootState } from '../../../Redux/store';
 import { useChats } from '../../../hooks/useChat';
 import { useSocket } from '../../../hooks/useSocket';
 import Feather from 'react-native-vector-icons/Feather';
+import { verticalScale } from '../../../styles/scaling';
+
 type NavigationProp = NativeStackNavigationProp<MainStackParamList, 'UserStatus'>;
 export default function Home() {
   const navigation = useNavigation<NavigationProp>();
@@ -86,7 +87,7 @@ export default function Home() {
         </TouchableOpacity>
         <Text style={styles.headline}>{t("Home")}</Text>
         <TouchableOpacity>
-          <Avatar name={user?.name as string} imageUri={user?.image}/>
+          <Avatar name={user?.name as string} imageUri={user?.image} />
         </TouchableOpacity>
       </View>
       {/* <View style={styles.statusSection}>
@@ -102,7 +103,12 @@ export default function Home() {
       </View> */}
       <View style={styles.chatSection}>
         {isLoading ?
-          <ActivityIndicator size={'large'} color={CommonColors.black} />
+          <View>
+            <ChatUserShimmer />
+            <ChatUserShimmer style={{marginTop:verticalScale(20)}}/>
+            <ChatUserShimmer style={{marginTop:verticalScale(20)}}/>
+            <ChatUserShimmer style={{marginTop:verticalScale(20)}}/>
+          </View>
           : <FlatList
             data={allUsers}
             renderItem={renderChatItem}

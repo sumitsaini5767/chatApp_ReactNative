@@ -1,7 +1,7 @@
 import store from "../store";
 import { emptyUserdetails, setUser } from "../reducers/userDetails";
 import { getApi, postApi } from "../../utils/apiCall";
-import { GET_MESSAGES, GET_CHATS, LOGIN_URL, SINGUP_URL, FIND_USER, GOOGLE_SIGNUP } from "../../Config/Urls";
+import { GET_MESSAGES, GET_CHATS, LOGIN_URL, SINGUP_URL, FIND_USER, SOCIAL_SIGNUP } from "../../Config/Urls";
 import { AxiosRequestHeaders } from "axios";
 import { deleteItem, getItem, setItem } from "../../localStorage/mmkv";
 import { Platform } from "react-native";
@@ -28,7 +28,7 @@ export const signUp = async (data: any) => {
     return res;
 }
 
-export const googleSignIn = async (token: string) => {
+export const socialLogin = async (token: string) => {
     const header = {
         Accept: 'application/json',
         Authorization: `Bearer ${token}`,
@@ -40,7 +40,7 @@ export const googleSignIn = async (token: string) => {
             fcmToken: getItem('fcmToken'),
         }
     }
-    const res = await postApi(GOOGLE_SIGNUP, newData, header as AxiosRequestHeaders);
+    const res = await postApi(SOCIAL_SIGNUP, newData, header as AxiosRequestHeaders);
     setUserAction(res?.data);
     return res;
 }

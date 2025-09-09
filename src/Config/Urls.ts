@@ -8,7 +8,7 @@ const getFullUrl = (url: string) => {
 }
 export const SINGUP_URL = getFullUrl('/auth/signup');
 export const LOGIN_URL = getFullUrl('/auth/login');
-export const GOOGLE_SIGNUP = getFullUrl('/auth/social/GoogleSignup');
+export const SOCIAL_SIGNUP = getFullUrl('/auth/socialSignup');
 export const GET_CHATS = getFullUrl('/message/myChats');
 export const GET_MESSAGES = getFullUrl('/message/getMessage');
 export const FIND_USER = getFullUrl('/message/findUser');

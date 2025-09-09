@@ -38,6 +38,7 @@ export const useChatMessages = ({ roomId, currentUser, targetUser }: RouteParams
             if (page === 1) {
                 setChatMessages(data?.messages?.reverse() ?? []);
                 setTotalPages(data?.totalPages ?? 1);
+                scrollToEnd();
             } else {
                 setChatMessages((prev: Message[]) => [
                     ...(data?.messages?.reverse() ?? []),

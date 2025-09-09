@@ -112,8 +112,6 @@ export default function ChatScreen() {
             }
             showsVerticalScrollIndicator={false}
             contentContainerStyle={styles.messagesContainer}
-            onContentSizeChange={scrollToEnd}
-            onLayout={scrollToEnd}
             onScroll={({ nativeEvent }) => {
               if (nativeEvent.contentOffset.y <= 0 && !isLoadingMore) {
                 loadMoreMessages();

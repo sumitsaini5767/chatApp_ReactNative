@@ -10,8 +10,8 @@ import React, { useState } from 'react';
 import { styles } from './style';
 import imagepath from '../../constants/imagepath';
 import { useTranslation } from 'react-i18next';
-import { googleLogin } from '../../utils/socialLogins';
-import { googleSignIn } from '../../Redux/actions/userDetail';
+import { logInWithGoogle } from '../../utils/socialLogins';
+import { socialLogin } from '../../Redux/actions/userDetail';
 import { CommonColors } from '../../styles/Colors';
 interface props {
   containerStyle?: ViewStyle;
@@ -35,9 +35,9 @@ const SocialLogin: React.FC<props> = ({
     if (type === 'google') {
       try {
         setIsLoading(true);
-        const token = await googleLogin();
+        const token = await logInWithGoogle();
         if (!!token) {
-          googleSignIn(token as string);
+          socialLogin(token as string);
         }
       } catch (error) {
         console.log(error, "error in social login");
@@ -69,7 +69,7 @@ const SocialLogin: React.FC<props> = ({
           style={[styles.socialImageContainer, imageContainerStyle]}>
           <Image source={isdark ? imagepath.darkappleIcon : imagepath.appleIcon} style={styles.SocialImage} />
         </TouchableOpacity>}
-        {isLoading && <ActivityIndicator size='large' color={isdark?CommonColors.black:CommonColors.white} />}
+        {isLoading && <ActivityIndicator size='large' color={isdark ? CommonColors.black : CommonColors.white} />}
       </View>
       {/* OR separator */}
       <View style={styles.OrContainer}>

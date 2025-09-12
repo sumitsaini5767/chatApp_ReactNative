@@ -42,7 +42,6 @@ export const styles = StyleSheet.create({
     heading: {
         fontSize: moderateScale(16),
         fontWeight: 'bold',
-        marginVertical: verticalScale(6),
         marginBottom: moderateScale(20)
     },
     emptyImage: {

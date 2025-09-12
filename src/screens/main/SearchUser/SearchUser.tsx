@@ -4,7 +4,7 @@ import {
   TouchableOpacity, FlatList, ListRenderItem,
   ActivityIndicator
 } from 'react-native';
-import { Backbutton, WrapperContainer, ChatItem } from '../../../components/Componets';
+import { Backbutton, WrapperContainer, ChatItem, ChatUserShimmer } from '../../../components/Componets';
 import { CommonColors } from '../../../styles/Colors';
 import imagepath from '../../../constants/imagepath';
 import { styles } from './styles';
@@ -14,7 +14,7 @@ import { searchUser } from '../../../Redux/actions/userDetail';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../Redux/store';
 import { debounce } from '../../../utils/helperFunction';
-import { moderateScale } from '../../../styles/scaling';
+import { moderateScale, verticalScale } from '../../../styles/scaling';
 
 const SearchUser = () => {
   const [search, setSearch] = useState('');
@@ -25,7 +25,7 @@ const SearchUser = () => {
 
   const handleSearch = async (text: string) => {
     try {
-      if(!text) return;
+      if (!text) return;
       setIsLoading(true);
       const res = await searchUser(`?userId=${user?._id}&search=${text}`);
       setSearchUsers(res?.result);
@@ -83,7 +83,12 @@ const SearchUser = () => {
         </TouchableOpacity>}
       </View>
       {isLoading ?
-        <ActivityIndicator size={'large'} color={CommonColors.black} />
+        <View style={{ marginTop: verticalScale(30) }}>
+          <ChatUserShimmer />
+          <ChatUserShimmer style={{ marginTop: verticalScale(20) }} />
+          <ChatUserShimmer style={{ marginTop: verticalScale(20) }} />
+          <ChatUserShimmer style={{ marginTop: verticalScale(20) }} />
+        </View>
         : <FlatList
           data={searchUsers}
           renderItem={renderChatItem}

@@ -105,9 +105,9 @@ export default function Home() {
         {isLoading ?
           <View>
             <ChatUserShimmer />
-            <ChatUserShimmer style={{marginTop:verticalScale(20)}}/>
-            <ChatUserShimmer style={{marginTop:verticalScale(20)}}/>
-            <ChatUserShimmer style={{marginTop:verticalScale(20)}}/>
+            <ChatUserShimmer style={{ marginTop: verticalScale(20) }} />
+            <ChatUserShimmer style={{ marginTop: verticalScale(20) }} />
+            <ChatUserShimmer style={{ marginTop: verticalScale(20) }} />
           </View>
           : <FlatList
             data={allUsers}
@@ -121,7 +121,7 @@ export default function Home() {
             refreshing={refreshing}
             onRefresh={handleRefresh}
             ListFooterComponent={
-              isLoading ? <ActivityIndicator size="small" color="#000" /> : null
+              isLoading ? <ChatUserShimmer /> : null
             }
             ListEmptyComponent={() =>
               <View style={styles.emptyContainer}>

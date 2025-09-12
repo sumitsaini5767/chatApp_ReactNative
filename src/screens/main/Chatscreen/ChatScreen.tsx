@@ -21,6 +21,7 @@ import { DateTimeConversion } from '../../../utils/helperFunction';
 import { useChatMessages } from '../../../hooks/useChatMessages';
 import { useChatMessageSocket } from '../../../hooks/useSocket';
 import { Avatar } from '../../../components/Componets';
+import ChatShimmer from '../../../components/shimmers/ChatShimmer';
 
 interface Message {
   _id?: string;
@@ -50,6 +51,7 @@ export default function ChatScreen() {
     messageText,
     viewabilityConfig,
     flatListRef,
+    isLoding,
     loadMoreMessages,
     handleMessageSeen,
     scrollToEnd,
@@ -93,7 +95,7 @@ export default function ChatScreen() {
       <View style={{ height: isKeyboardVisible ? height - keyboardHeight : height }}>
         <View style={styles.header}>
           <Backbutton />
-          <Avatar name={targetUser?.name as string} size={45} imageUri={targetUser?.image}/>
+          <Avatar name={targetUser?.name as string} size={45} imageUri={targetUser?.image} />
           <View style={{ flex: 1 }}>
             <Text style={styles.username}>{targetUser?.name || 'User'}</Text>
             {isTyping ? <Text style={styles.status}>Typing...</Text>
@@ -101,7 +103,7 @@ export default function ChatScreen() {
           </View>
         </View>
         <View style={{ flex: 1 }}>
-          <FlatList
+          {isLoding ? <ChatShimmer /> : <FlatList
             ref={flatListRef}
             data={chatMessages}
             renderItem={renderMessage}
@@ -121,6 +123,7 @@ export default function ChatScreen() {
             onViewableItemsChanged={onViewableItemsChanged}
             viewabilityConfig={viewabilityConfig}
           />
+          }
         </View>
         <View style={styles.inputBar}>
           <TextInput

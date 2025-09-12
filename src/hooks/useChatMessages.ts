@@ -30,6 +30,7 @@ export const useChatMessages = ({ roomId, currentUser, targetUser }: RouteParams
     const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
     const [keyboardHeight, setKeyboardHeight] = useState(0);
     const [messageText, setMessageText] = useState("");
+    const [isLoding,setIsLoding] = useState (false);
 
     const fetchUserMessages = async () => {
         try {
@@ -131,6 +132,7 @@ export const useChatMessages = ({ roomId, currentUser, targetUser }: RouteParams
         messageText,
         viewabilityConfig,
         flatListRef,
+        isLoding,
         loadMoreMessages,
         handleMessageSeen,
         scrollToEnd,

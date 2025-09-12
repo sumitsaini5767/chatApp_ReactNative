@@ -9,3 +9,4 @@ export { default as ChatItem } from './ChatItem/ChatItem';
 export { default as AlertPopup } from './AlertPopup/AlertPopup';
 export { default as Avatar } from './Avatar/Avatar';
 export { default as ChatUserShimmer } from './shimmers/ChatUserShimmer';
+export { default as chatShimmmer } from './shimmers/ChatShimmer';

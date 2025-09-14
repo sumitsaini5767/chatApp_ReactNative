@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { FlatList, Keyboard } from "react-native";
+import { AppState, FlatList, Keyboard } from "react-native";
 import { getMessages } from "../Redux/actions/userDetail";
 import { markAsRead, sendMessage, stopTyping, typing } from "../utils/sockets";
 
@@ -30,12 +30,14 @@ export const useChatMessages = ({ roomId, currentUser, targetUser }: RouteParams
     const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
     const [keyboardHeight, setKeyboardHeight] = useState(0);
     const [messageText, setMessageText] = useState("");
-    const [isLoding,setIsLoding] = useState (false);
+    const [isLoding, setIsLoding] = useState(false);
+    const [currentAppState, setCurrentAppState] = useState(AppState.currentState);
 
     const fetchUserMessages = async () => {
         try {
+            setIsLoding(true);
             const data = await getMessages({ roomId, page });
-
+            setIsLoding(false);
             if (page === 1) {
                 setChatMessages(data?.messages?.reverse() ?? []);
                 setTotalPages(data?.totalPages ?? 1);
@@ -68,30 +70,6 @@ export const useChatMessages = ({ roomId, currentUser, targetUser }: RouteParams
         if (messageId) markAsRead(roomId, currentUser?._id, messageId);
     };
 
-    useEffect(() => {
-        fetchUserMessages();
-    }, [page]);
-
-    useEffect(() => {
-        const show = Keyboard.addListener("keyboardDidShow", (e) => {
-            setIsKeyboardVisible(true);
-            setKeyboardHeight(e.endCoordinates.height);
-            scrollToEnd();
-            typing(roomId, currentUser?._id);
-        });
-
-        const hide = Keyboard.addListener("keyboardDidHide", () => {
-            setIsKeyboardVisible(false);
-            setKeyboardHeight(0);
-            stopTyping(roomId, currentUser?._id);
-        });
-
-        return () => {
-            show.remove();
-            hide.remove();
-        };
-    }, [currentUser?._id, roomId]);
-
     const handleSend = () => {
         const trimmed = messageText.trim();
         if (!trimmed) return;
@@ -121,6 +99,39 @@ export const useChatMessages = ({ roomId, currentUser, targetUser }: RouteParams
 
     const viewabilityConfig = useRef({ itemVisiblePercentThreshold: 60 }).current;
 
+    useEffect(() => {
+        fetchUserMessages();
+    }, [page]);
+
+    useEffect(() => {
+        const show = Keyboard.addListener("keyboardDidShow", (e) => {
+            setIsKeyboardVisible(true);
+            setKeyboardHeight(e.endCoordinates.height);
+            scrollToEnd();
+            typing(roomId, currentUser?._id);
+        });
+
+        const hide = Keyboard.addListener("keyboardDidHide", () => {
+            setIsKeyboardVisible(false);
+            setKeyboardHeight(0);
+            stopTyping(roomId, currentUser?._id);
+        });
+
+        return () => {
+            show.remove();
+            hide.remove();
+        };
+    }, [currentUser?._id, roomId]);
+
+    useEffect(() => {
+        const subscription = AppState.addEventListener("change", (nextAppState) => {
+            setCurrentAppState(nextAppState);
+        });
+        return () => {
+            subscription.remove();
+        };
+    }, []);
+
     return {
         chatMessages,
         totalPages,
@@ -133,6 +144,7 @@ export const useChatMessages = ({ roomId, currentUser, targetUser }: RouteParams
         viewabilityConfig,
         flatListRef,
         isLoding,
+        currentAppState,
         loadMoreMessages,
         handleMessageSeen,
         scrollToEnd,

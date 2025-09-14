@@ -34,6 +34,7 @@ export default {
     EnterCorrectPassword: "Password must be at least 6 characters",
     EmptyPassword: "Please Enter Passoword",
     EmptyConfirmPassword: "Please Enter Confirm Password",
-    ConfirmPasswordSame: "Confirm Passoword Should Be Same as Password"
-
+    ConfirmPasswordSame: "Confirm Passoword Should Be Same as Password",
+    Areyousureyouwanttologout:"Are you sure you want to logout?",
+    Cancel:"Cancel",
 };

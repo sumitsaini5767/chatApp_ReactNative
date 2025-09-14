@@ -81,6 +81,29 @@ export const postApi = async (
         return handleError(error, url);
     }
 }
+export const putApi = async (
+    url: string,
+    data: any,
+    headers: AxiosRequestHeaders | undefined,
+): Promise<any> => {
+    try {
+        console.log(url, "url++++");
+        console.log("data++++", data);
+        const token = getAuthToken();
+        const finalHeaders: AxiosRequestConfig['headers'] = {
+            'Content-Type': 'application/json',
+            ...(token ? { Authorization: `Bearer ${token}` } : {}),
+            ...(headers || {}),
+        };
+        console.log("header++++", finalHeaders);
+        const res = await axios.put(url, data, { headers: finalHeaders });
+        console.log(res.data,'responce');
+        showSuccess(res.data.message);
+        return res.data;
+    } catch (error: unknown) {
+        return handleError(error, url);
+    }
+}
 
 
 

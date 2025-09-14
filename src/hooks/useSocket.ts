@@ -46,6 +46,7 @@ export const useSocket = (userId?: string, onChatsUpdate?: (chats: any[]) => voi
 
 export const useChatMessageSocket = (
     route: any,
+    currentAppState: any,
     setChatMessages: (prev: any) => void,
     scrollToEnd: () => void,
     handleMessageSeen: (messageId: string) => void
@@ -55,13 +56,21 @@ export const useChatMessageSocket = (
     const [isTyping, setIsTyping] = useState(false);
 
     useEffect(() => {
+        if (currentAppState != "active") {
+            leaveRoom(roomId, currentUser?._id);
+        }else {
+            joinRoom(roomId);
+        }
+    }, [currentAppState])
+
+    useEffect(() => {
         activeUsers((data: any) => {
             setroomActiveUsers(data);
         })
         onMessageReceived((data: any) => {
             setChatMessages((prev: Message[]) => [...prev, data]);
             scrollToEnd();
-            if (!data.isRead && data.receiver === currentUser?._id) {
+            if (!data?.isRead && data?.receiver === currentUser?._id) {
                 handleMessageSeen(data._id);
             }
         });

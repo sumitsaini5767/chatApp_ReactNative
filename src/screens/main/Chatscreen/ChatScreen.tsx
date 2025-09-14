@@ -52,6 +52,7 @@ export default function ChatScreen() {
     viewabilityConfig,
     flatListRef,
     isLoding,
+    currentAppState,
     loadMoreMessages,
     handleMessageSeen,
     scrollToEnd,
@@ -64,7 +65,7 @@ export default function ChatScreen() {
   const {
     roomActiveUsers,
     isTyping,
-  } = useChatMessageSocket(route.params, setChatMessages, scrollToEnd, handleMessageSeen);
+  } = useChatMessageSocket(route.params, currentAppState, setChatMessages, scrollToEnd, handleMessageSeen);
 
   const renderMessage = ({ item }: { item: Message }) => {
     const isCurrentUser = item.sender === currentUser?._id;

@@ -1,7 +1,7 @@
 import store from "../store";
 import { emptyUserdetails, setUser } from "../reducers/userDetails";
-import { getApi, postApi } from "../../utils/apiCall";
-import { GET_MESSAGES, GET_CHATS, LOGIN_URL, SINGUP_URL, FIND_USER, SOCIAL_SIGNUP } from "../../Config/Urls";
+import { getApi, postApi, putApi } from "../../utils/apiCall";
+import { GET_MESSAGES, GET_CHATS, LOGIN_URL, SINGUP_URL, FIND_USER, SOCIAL_SIGNUP, LOGOUT } from "../../Config/Urls";
 import { AxiosRequestHeaders } from "axios";
 import { deleteItem, getItem, setItem } from "../../localStorage/mmkv";
 import { Platform } from "react-native";
@@ -62,9 +62,17 @@ export const login = async (data: any) => {
     return res;
 }
 
-export const logout = () => {
-    deleteItem('userData');
-    store.dispatch(emptyUserdetails());
+export const logout = async () => {
+    const header = {
+        Accept: 'application/json',
+    };
+    const res = await putApi(LOGOUT, {}, header as AxiosRequestHeaders);
+    if (!!res) {
+        deleteItem('userData');
+        store.dispatch(emptyUserdetails());
+        return res;
+    }
+    return;
 }
 export const getMyChats = async (params: string) => {
     const header = {

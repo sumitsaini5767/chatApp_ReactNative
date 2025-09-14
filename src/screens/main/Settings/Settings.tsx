@@ -1,4 +1,4 @@
-import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Alert, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import { Avatar, WrapperContainer } from '../../../components/Componets'
 import { CommonColors } from '../../../styles/Colors'
@@ -25,6 +25,22 @@ const Settings = () => {
         changeAppLanguage(lang === 'हिन्दी' ? 'hi' : 'en');
     }
     const selectedLang = getLanguage();
+    const LogoutUser = () => {
+        Alert.alert(t("Logout"), t("Areyousureyouwanttologout"), [
+            {
+                text: t("Cancel"),
+                onPress: () => { },
+                style: 'cancel'
+            },
+            {
+                text: t("Logout"),
+                onPress: () => {
+                    logout();
+                },
+                style: 'destructive'
+            }
+        ])
+    }
     return (
         <WrapperContainer
             backgroundColor={CommonColors.black}>
@@ -35,7 +51,7 @@ const Settings = () => {
                 showsVerticalScrollIndicator={false}
                 style={styles.lowerConatiner}>
                 <View style={styles.profile}>
-                    <Avatar name={user?.name as string} size={80} imageUri={user?.image}/>
+                    <Avatar name={user?.name as string} size={80} imageUri={user?.image} />
                     <Text style={styles.profileText}>{user?.name}</Text>
                     <Text style={styles.profileDecs}>{user?.email}</Text>
                 </View>
@@ -52,7 +68,7 @@ const Settings = () => {
                         onSelect={changeLanguage}
                     />
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.container} onPress={logout}>
+                <TouchableOpacity style={styles.container} onPress={LogoutUser}>
                     <MaterialIcons name="logout" size={30} color="#333" />
                     <Text style={styles.lable}>{t("Logout")}</Text>
                 </TouchableOpacity>

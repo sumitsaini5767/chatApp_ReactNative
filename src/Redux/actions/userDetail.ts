@@ -1,7 +1,7 @@
 import store from "../store";
 import { emptyUserdetails, setUser } from "../reducers/userDetails";
 import { getApi, postApi, putApi } from "../../utils/apiCall";
-import { GET_MESSAGES, GET_CHATS, LOGIN_URL, SINGUP_URL, FIND_USER, SOCIAL_SIGNUP, LOGOUT } from "../../Config/Urls";
+import { GET_MESSAGES, GET_CHATS, LOGIN_URL, SINGUP_URL, FIND_USER, SOCIAL_SIGNUP, LOGOUT, EDITPROFILE } from "../../Config/Urls";
 import { AxiosRequestHeaders } from "axios";
 import { deleteItem, getItem, setItem } from "../../localStorage/mmkv";
 import { Platform } from "react-native";
@@ -94,5 +94,13 @@ export const searchUser = async (data: any) => {
         Accept: 'application/json',
     };
     const res = await getApi(FIND_USER + data, header as AxiosRequestHeaders);
+    return res;
+}
+export const editProfileApi = async (data: any) => {
+    const header = {
+        "Content-Type": "multipart/form-data",
+    };
+    const res = await postApi(EDITPROFILE, data, header as AxiosRequestHeaders);
+    setUserAction(res?.data);
     return res;
 }

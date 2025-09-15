@@ -86,7 +86,7 @@ export default function Home() {
           <Image source={imagepath.search} style={styles.searchImage} />
         </TouchableOpacity>
         <Text style={styles.headline}>{t("Home")}</Text>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('EditProfile')}>
           <Avatar name={user?.name as string} imageUri={user?.image} />
         </TouchableOpacity>
       </View>

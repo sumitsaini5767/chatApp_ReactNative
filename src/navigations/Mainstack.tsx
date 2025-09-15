@@ -5,6 +5,7 @@ import { MainStackParamList } from './types';
 import ChatScreen from '../screens/main/Chatscreen/ChatScreen';
 import UserStatus from '../screens/main/UserStatus/UserStatus';
 import SearchUser from '../screens/main/SearchUser/SearchUser';
+import EditProfile from '../screens/main/EditProfile/EditProfile';
 
 
 const Stack = createNativeStackNavigator<MainStackParamList>();
@@ -16,6 +17,7 @@ const MainStack = () => {
       <Stack.Screen name="Chat" component={ChatScreen} />
       <Stack.Screen name="UserStatus" component={UserStatus} />
       <Stack.Screen name="SearchUser" component={SearchUser} />
+      <Stack.Screen name="EditProfile" component={EditProfile} />
     </Stack.Navigator>
   );
 };

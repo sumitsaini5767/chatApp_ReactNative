@@ -14,3 +14,4 @@ export const GET_CHATS = getFullUrl('/message/myChats');
 export const GET_MESSAGES = getFullUrl('/message/getMessage');
 export const FIND_USER = getFullUrl('/message/findUser');
 export const LOGOUT = getFullUrl('/auth/logout');
+export const EDITPROFILE = getFullUrl('/auth/edituser');

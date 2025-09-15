@@ -9,6 +9,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   ActivityIndicator,
+  StatusBar,
 } from 'react-native';
 import { styles } from './styles';
 import imagepath from '../../../constants/imagepath';
@@ -93,6 +94,7 @@ export default function ChatScreen() {
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       style={styles.mainContainer}
     >
+      <StatusBar barStyle={'dark-content'} />
       <View style={{ height: isKeyboardVisible ? height - keyboardHeight : height }}>
         <View style={styles.header}>
           <Backbutton />

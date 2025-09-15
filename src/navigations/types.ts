@@ -19,6 +19,7 @@ export type MainStackParamList = {
   UserStatus: undefined;
   SearchUser: undefined;
   Settings: undefined;
+  EditProfile: undefined;
 };
 
 export type MainStackScreenProps<T extends keyof MainStackParamList> = 

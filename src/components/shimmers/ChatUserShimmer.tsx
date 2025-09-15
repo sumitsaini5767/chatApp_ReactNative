@@ -1,13 +1,13 @@
-import { StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native'
+import { StyleSheet, View, } from 'react-native'
 import React from 'react'
 import LinearGradient from 'react-native-linear-gradient';
 import { createShimmerPlaceholder } from 'react-native-shimmer-placeholder'
 import { moderateScale, verticalScale } from '../../styles/scaling';
 const ShimmerPlaceHolder = createShimmerPlaceholder(LinearGradient)
 
-const ChatUserShimmer = ({style}:{style?:any}) => {
+const ChatUserShimmer = ({ style }: { style?: any }) => {
     return (
-        <View style={{flexDirection: 'row',...style}}>
+        <View style={{ flexDirection: 'row', ...style }}>
             <ShimmerPlaceHolder
                 style={{
                     marginHorizontal: moderateScale(16),

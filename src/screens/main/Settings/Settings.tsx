@@ -6,7 +6,6 @@ import { styles } from './styles'
 import { useNavigation } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { MainStackParamList } from '../../../navigations/types';
-import imagepath from '../../../constants/imagepath'
 import Dropdown from '../../../components/Dropdown/Dropdown'
 import { changeAppLanguage } from '../../../utils/languageUtils'
 import { useTranslation } from 'react-i18next'
@@ -55,7 +54,7 @@ const Settings = () => {
                     <Text style={styles.profileText}>{user?.name}</Text>
                     <Text style={styles.profileDecs}>{user?.email}</Text>
                 </View>
-                <TouchableOpacity style={styles.container}>
+                <TouchableOpacity style={styles.container} onPress={() => navigation.navigate("EditProfile")}>
                     <MaterialIcons name="person" size={30} color="#333" />
                     <Text style={styles.lable}>{t("editProfile")}</Text>
                 </TouchableOpacity>

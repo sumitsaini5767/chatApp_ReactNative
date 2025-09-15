@@ -37,4 +37,13 @@ export default {
     ConfirmPasswordSame: "Confirm Passoword Should Be Same as Password",
     Areyousureyouwanttologout:"Are you sure you want to logout?",
     Cancel:"Cancel",
+    EditProfile:"Edit Profile",
+    Name:"Name",
+    CurrentPassword:"Current Password",
+    NewPassword:"New Password",
+    SaveChanges:"Save Changes",
+    ChangeProfilePhoto:"Change Profile Photo",
+    ChooseFrom:"Choose from",
+    TakePhoto:"Take Photo",
+    ChooseFromLibrary:"Choose from Library",
 };

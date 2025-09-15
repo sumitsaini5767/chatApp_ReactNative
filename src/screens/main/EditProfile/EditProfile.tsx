@@ -1,5 +1,5 @@
 import { KeyboardAvoidingView, Platform, ScrollView, Text, TouchableOpacity, View } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import { styles } from './style'
 import { Avatar, Backbutton, Button, UserInput, WrapperContainer } from '../../../components/Componets'
 import { CommonColors } from '../../../styles/Colors'
@@ -19,6 +19,7 @@ const EditProfile = () => {
     const user = useSelector((state: RootState) => state.userDetail);
     const [image, setImage] = React.useState<any>();
     const [isModal, setIsModal] = React.useState(false);
+    const [isLoading,setIsLoading] = useState(false);
     const [state, setState] = React.useState({
         name: user?.name || '',
         currentPassword: '',
@@ -70,10 +71,13 @@ const EditProfile = () => {
                     name: image.fileName || `photo.${image.uri.split('.').pop()}`,
                 });
             }
+            setIsLoading(true);
             const res = await editProfileApi(data);
             console.log("res==>", res);
         } catch (error) {
             console.log("Error==>", error);
+        } finally{
+            setIsLoading(false);
         }
     }
     return (
@@ -117,7 +121,11 @@ const EditProfile = () => {
                         onChangeText={(text) => updateState('newPassword', text)}
                         secureTextEntry
                     />
-                    <Button containerStyle={styles.button} label={t('SaveChanges')} onPress={submit} />
+                    <Button 
+                    isLoading={isLoading}
+                    containerStyle={styles.button} 
+                    label={t('SaveChanges')} 
+                    onPress={submit} />
                 </ScrollView>
             </KeyboardAvoidingView>
             <BottomSheetModal visible={isModal} onClose={() => setIsModal(false)}>

@@ -1,5 +1,5 @@
-export const ApiUrl = 'http://10.0.2.2:5055';
-// export const ApiUrl = 'https://backend-chatapp-285c.onrender.com';
+// export const ApiUrl = 'http://10.0.2.2:5055';
+export const ApiUrl = 'https://backend-chatapp-285c.onrender.com';
 // export const ApiUrl = 'https://backend-chatapp-1-f2fy.onrender.com';
 // const ApiUrl = 'http://192.168.204.156:3000 ';
 // const ApiUrl = 'https://19a685db4885.ngrok-free.app';

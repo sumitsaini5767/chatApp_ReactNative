@@ -10,7 +10,7 @@ interface Props {
 const Button: React.FC<Props> = ({ containerStyle, label, onPress, isLoading }) => {
   return (
     <TouchableOpacity style={[styles.container, containerStyle]} onPress={onPress}>
-      {isLoading ? <ActivityIndicator size='large' color="#fff" />
+      {isLoading ? <ActivityIndicator size='small' color="#fff" />
         : <Text style={styles.textStyle}>{label}</Text>}
     </TouchableOpacity>
   )

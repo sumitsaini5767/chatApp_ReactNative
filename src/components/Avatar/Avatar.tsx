@@ -32,7 +32,9 @@ const Avatar: React.FC<AvatarProps> = ({ name, imageUri, size = 50 }) => {
         return (
             <Image
                 source={{ uri: imageUri }}
-                style={[styles.image, { width: size, height: size, borderRadius: size / 2 }]}
+                style={[styles.image, { width: size, height: size, borderRadius: size / 2, 
+                    backgroundColor: getRandomColor(name)
+                }]}
                 resizeMode='cover'
             />
         );

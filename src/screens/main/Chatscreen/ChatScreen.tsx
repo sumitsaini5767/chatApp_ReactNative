@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { use } from 'react';
 import {
   View,
   Text,
@@ -23,6 +23,7 @@ import { useChatMessages } from '../../../hooks/useChatMessages';
 import { useChatMessageSocket } from '../../../hooks/useSocket';
 import { Avatar } from '../../../components/Componets';
 import ChatShimmer from '../../../components/shimmers/ChatShimmer';
+import { useAppStatus } from '../../../hooks/useAppStatus';
 
 interface Message {
   _id?: string;
@@ -42,6 +43,7 @@ type RouteParams = {
 export default function ChatScreen() {
   const { t } = useTranslation();
   const route = useRoute<RouteProp<{ params: RouteParams }, 'params'>>();
+  const appState = useAppStatus();
   const {
     chatMessages,
     isLoadingMore,
@@ -53,7 +55,6 @@ export default function ChatScreen() {
     viewabilityConfig,
     flatListRef,
     isLoding,
-    currentAppState,
     loadMoreMessages,
     handleMessageSeen,
     scrollToEnd,
@@ -61,12 +62,12 @@ export default function ChatScreen() {
     setMessageText,
     onViewableItemsChanged,
     setChatMessages
-  } = useChatMessages(route.params);
+  } = useChatMessages(route.params,appState);
 
   const {
     roomActiveUsers,
     isTyping,
-  } = useChatMessageSocket(route.params, currentAppState, setChatMessages, scrollToEnd, handleMessageSeen);
+  } = useChatMessageSocket(route.params, appState, setChatMessages, scrollToEnd, handleMessageSeen);
 
   const renderMessage = ({ item }: { item: Message }) => {
     const isCurrentUser = item.sender === currentUser?._id;
@@ -76,7 +77,9 @@ export default function ChatScreen() {
         <Text style={[styles.messageText, isCurrentUser ? styles.sent : styles.received]}>
           {item.message}
         </Text>
-        <View style={styles.messageStatus}>
+        <View style={[styles.messageStatus, isCurrentUser ?
+          { justifyContent: 'flex-end' }
+          : { justifyContent: 'flex-start' }]}>
           <Text style={[styles.time, isCurrentUser ? styles.sent : styles.received]}>
             {formatted}
           </Text>

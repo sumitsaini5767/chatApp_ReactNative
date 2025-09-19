@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { use, useEffect, useRef, useState } from "react";
 import { AppState, FlatList, Keyboard } from "react-native";
 import { getMessages } from "../Redux/actions/userDetail";
 import { markAsRead, sendMessage, stopTyping, typing } from "../utils/sockets";
@@ -20,7 +20,7 @@ type RouteParams = {
 
 type ViewableItem = { item: Message };
 
-export const useChatMessages = ({ roomId, currentUser, targetUser }: RouteParams) => {
+export const useChatMessages = ({ roomId, currentUser, targetUser }: RouteParams, appState?: string) => {
     const flatListRef = useRef<FlatList>(null);
 
     const [chatMessages, setChatMessages] = useState<Message[]>([]);
@@ -31,7 +31,6 @@ export const useChatMessages = ({ roomId, currentUser, targetUser }: RouteParams
     const [keyboardHeight, setKeyboardHeight] = useState(0);
     const [messageText, setMessageText] = useState("");
     const [isLoding, setIsLoding] = useState(false);
-    const [currentAppState, setCurrentAppState] = useState(AppState.currentState);
 
     const fetchUserMessages = async () => {
         try {
@@ -100,8 +99,10 @@ export const useChatMessages = ({ roomId, currentUser, targetUser }: RouteParams
     const viewabilityConfig = useRef({ itemVisiblePercentThreshold: 60 }).current;
 
     useEffect(() => {
-        fetchUserMessages();
-    }, [page]);
+        if(appState == 'active'){
+            fetchUserMessages();
+        }
+    }, [page,appState]);
 
     useEffect(() => {
         const show = Keyboard.addListener("keyboardDidShow", (e) => {
@@ -123,15 +124,6 @@ export const useChatMessages = ({ roomId, currentUser, targetUser }: RouteParams
         };
     }, [currentUser?._id, roomId]);
 
-    useEffect(() => {
-        const subscription = AppState.addEventListener("change", (nextAppState) => {
-            setCurrentAppState(nextAppState);
-        });
-        return () => {
-            subscription.remove();
-        };
-    }, []);
-
     return {
         chatMessages,
         totalPages,
@@ -144,7 +136,6 @@ export const useChatMessages = ({ roomId, currentUser, targetUser }: RouteParams
         viewabilityConfig,
         flatListRef,
         isLoding,
-        currentAppState,
         loadMoreMessages,
         handleMessageSeen,
         scrollToEnd,

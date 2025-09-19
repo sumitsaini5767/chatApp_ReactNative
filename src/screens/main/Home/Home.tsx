@@ -23,12 +23,14 @@ import { useChats } from '../../../hooks/useChat';
 import { useSocket } from '../../../hooks/useSocket';
 import Feather from 'react-native-vector-icons/Feather';
 import { verticalScale } from '../../../styles/scaling';
+import { useAppStatus } from '../../../hooks/useAppStatus';
 
 type NavigationProp = NativeStackNavigationProp<MainStackParamList, 'UserStatus'>;
 export default function Home() {
   const navigation = useNavigation<NavigationProp>();
   const { t } = useTranslation();
   const user = useSelector((state: RootState) => state.userDetail);
+  const appState = useAppStatus();
   const {
     allUsers,
     isLoading,
@@ -36,36 +38,36 @@ export default function Home() {
     handleRefresh,
     loadMoreChats,
     setAllusers,
-  } = useChats(user?._id);
+  } = useChats(user?._id, appState);
 
   useSocket(user?._id, setAllusers);
 
-  const renderStatus: ListRenderItem<User> = useCallback(({ item }) => {
-    return (
-      <TouchableOpacity
-        style={styles.statusContainer}
-        accessible={true}
-        accessibilityLabel={`View ${item.name}'s status`}
-        accessibilityRole="button"
-        onPress={() => { navigation.navigate('UserStatus') }}
-      >
-        <View style={styles.statusImageContainer}>
-          <View style={styles.statusBar}>
-            <Image
-              source={item.image}
-              style={styles.statusImage}
-            />
-          </View>
-          {item.isMyStatus && (
-            <View style={styles.addStatusButton}>
-              <Text style={styles.plusIcon}>+</Text>
-            </View>
-          )}
-        </View>
-        <Text style={styles.statusName} numberOfLines={1}>{item.name}</Text>
-      </TouchableOpacity>
-    );
-  }, []);
+  // const renderStatus: ListRenderItem<User> = useCallback(({ item }) => {
+  //   return (
+  //     <TouchableOpacity
+  //       style={styles.statusContainer}
+  //       accessible={true}
+  //       accessibilityLabel={`View ${item.name}'s status`}
+  //       accessibilityRole="button"
+  //       onPress={() => { navigation.navigate('UserStatus') }}
+  //     >
+  //       <View style={styles.statusImageContainer}>
+  //         <View style={styles.statusBar}>
+  //           <Image
+  //             source={item.image}
+  //             style={styles.statusImage}
+  //           />
+  //         </View>
+  //         {item.isMyStatus && (
+  //           <View style={styles.addStatusButton}>
+  //             <Text style={styles.plusIcon}>+</Text>
+  //           </View>
+  //         )}
+  //       </View>
+  //       <Text style={styles.statusName} numberOfLines={1}>{item.name}</Text>
+  //     </TouchableOpacity>
+  //   );
+  // }, []);
   const renderChatItem: ListRenderItem<ChatMessage> = useCallback(({ item }) => {
     return (
       <ChatItem

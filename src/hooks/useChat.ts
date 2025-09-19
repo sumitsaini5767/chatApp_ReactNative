@@ -1,18 +1,18 @@
 import { useState, useEffect, useCallback } from 'react';
 import { getMyChats } from '../Redux/actions/userDetail';
 
-export const useChats = (userId?: string) => {
+export const useChats = (userId?: string, appState?: string) => {
     const [allUsers, setAllusers] = useState<any[]>([]);
     const [pageNo, setPageNo] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [isLoading, setIsLoading] = useState(false);
     const [refreshing, setRefreshing] = useState(false);
 
-    const fetchChats = useCallback(async () => {
+    const fetchChats = useCallback(async (reset?: boolean) => {
         if (!userId || pageNo > totalPages) return;
         setIsLoading(true);
         const res = await getMyChats(`?userId=${userId}&pageNo=${pageNo}`);
-        if (pageNo === 1) {
+        if (pageNo === 1 || reset) {
             setAllusers(res?.allChats?.chats ?? []);
             setTotalPages(res?.allChats?.totalPages);
         } else {
@@ -23,12 +23,15 @@ export const useChats = (userId?: string) => {
     }, [pageNo, userId, totalPages]);
 
     useEffect(() => {
-        fetchChats();
-    }, [pageNo, fetchChats]);
+        if (appState === "active") {
+            fetchChats();
+        }
+    }, [pageNo, appState]);
 
     const handleRefresh = () => {
         setRefreshing(true);
         setPageNo(1);
+        fetchChats(true);
     };
 
     const loadMoreChats = () => {

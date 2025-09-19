@@ -132,7 +132,5 @@ export const styles = StyleSheet.create({
   },
   messageStatus:{
     flexDirection:"row",
-    justifyContent:"space-around",
-    alignItems:"center",
   }
 }); 

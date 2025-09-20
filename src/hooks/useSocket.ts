@@ -9,6 +9,7 @@ import {
     onRecentChats,
     typingStatus
 } from '../utils/sockets';
+import { insertMessage, updateMessage } from '../Database/localDatabase';
 
 type RouteParams = {
     roomId: string;
@@ -69,6 +70,7 @@ export const useChatMessageSocket = (
         })
         onMessageReceived((data: any) => {
             setChatMessages((prev: Message[]) => [...prev, data]);
+            insertMessage(data as any);
             scrollToEnd();
             if (!data?.isRead && data?.receiver === currentUser?._id) {
                 handleMessageSeen(data._id);
@@ -87,6 +89,7 @@ export const useChatMessageSocket = (
                         : msg
                 )
             );
+            updateMessage(data.messageId,{isRead: data.isRead})
         });
         return () => {
             offEvent('receive_message');

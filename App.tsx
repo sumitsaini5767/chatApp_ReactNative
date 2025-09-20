@@ -7,10 +7,14 @@ import { resetAllDataToRedux } from './src/utils/helperFunction';
 import { connectSocket, disconnectSocket } from './src/utils/sockets';
 import { initialWindowMetrics, SafeAreaProvider } from 'react-native-safe-area-context';
 import { ApiUrl } from './src/Config/Urls';
+import { initDB } from './src/Database/localDatabase';
 // Ignore all logs
 LogBox.ignoreAllLogs(true);
 function App(): React.JSX.Element {
   useEffect(() => {
+    (async () => {
+      await initDB();
+    })()
     resetAllDataToRedux();
     connectSocket(ApiUrl).then(socket => {
       console.log("socketConnected", socket?.id);

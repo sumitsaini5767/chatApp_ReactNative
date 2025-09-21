@@ -14,6 +14,7 @@ import { logout } from '../../../Redux/actions/userDetail'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../../Redux/store'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { clearTables } from '../../../Database/localDatabase'
 type NavigationProp = NativeStackNavigationProp<MainStackParamList, 'Settings'>;
 const Settings = () => {
     const user = useSelector((state: RootState) => state.userDetail);
@@ -33,7 +34,8 @@ const Settings = () => {
             },
             {
                 text: t("Logout"),
-                onPress: () => {
+                onPress: async() => {
+                    await clearTables();
                     logout();
                 },
                 style: 'destructive'

@@ -22,7 +22,7 @@ import { RootState } from '../../../Redux/store';
 import { useChats } from '../../../hooks/useChat';
 import { useSocket } from '../../../hooks/useSocket';
 import Feather from 'react-native-vector-icons/Feather';
-import { verticalScale } from '../../../styles/scaling';
+import { moderateScale, verticalScale } from '../../../styles/scaling';
 import { useAppStatus } from '../../../hooks/useAppStatus';
 
 type NavigationProp = NativeStackNavigationProp<MainStackParamList, 'UserStatus'>;
@@ -123,7 +123,14 @@ export default function Home() {
             refreshing={refreshing}
             onRefresh={handleRefresh}
             ListFooterComponent={
-              isLoading ? <ChatUserShimmer /> : null
+              isLoading ? <ChatUserShimmer style={{
+                marginTop: verticalScale(10)
+              }}
+                profileStyle={{
+                  marginHorizontal: 0,
+                  marginRight: moderateScale(10)
+                }}
+              /> : null
             }
             ListEmptyComponent={() =>
               <View style={styles.emptyContainer}>

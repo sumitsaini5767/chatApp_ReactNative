@@ -19,6 +19,19 @@ export const initDB = async (): Promise<SQLiteDatabase> => {
       isRead INTEGER DEFAULT 0
     );`
     );
+
+    await db.executeSql(`
+  CREATE TABLE IF NOT EXISTS conversations (
+    roomId TEXT PRIMARY KEY,
+    lastMessage TEXT,
+    timestamp INTEGER,
+    unreadCount INTEGER,
+    userId TEXT,
+    userName TEXT,
+    userEmail TEXT,
+    userImage TEXT
+  );
+`);
     return db;
 };
 
@@ -126,6 +139,79 @@ export const updateMessage = async (
     console.log(`✅ Updated message ${messageId} with fields:`, fields);
 };
 
+export const addConversationToDb = async (apiData: any) => {
+    console.log(apiData, "data==>")
+    const database = await getDB();
+    const timestamp = new Date(apiData.timestamp).getTime();
+    await database.executeSql(
+        `INSERT OR REPLACE INTO conversations 
+      (roomId, lastMessage, timestamp, unreadCount, userId, userName, userEmail, userImage)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+        [
+            apiData.roomId,
+            apiData.lastMessage,
+            timestamp,
+            apiData.unreadCount,
+            apiData.user._id,
+            apiData.user.name,
+            apiData.user.email,
+            apiData.user.image,
+        ]
+    );
+    console.log(`✅ Inserted ${apiData._id} conversations(s)`);
+};
+
+export const getConversations = async (): Promise<any[]> => {
+    const database = await getDB();
+    const [results] = await database.executeSql(
+        `SELECT * FROM conversations ORDER BY timestamp DESC`
+    );
+
+    return results.rows.raw().map((row) => ({
+        lastMessage: row.lastMessage,
+        roomId: row.roomId,
+        timestamp: new Date(row.timestamp).toISOString(),
+        unreadCount: row.unreadCount,
+        user: {
+            _id: row.userId,
+            name: row.userName,
+            email: row.userEmail,
+            image: row.userImage,
+        },
+        _id: row.roomId, // match API shape
+    }));
+};
+
+export const updateConversationOnNewMessage = async (newMessage: any) => {
+    const database = await getDB();
+
+    const timestamp =
+        typeof newMessage.timestamp === "string"
+            ? new Date(newMessage.timestamp).getTime()
+            : newMessage.timestamp || Date.now();
+
+    await database.executeSql(
+        `UPDATE conversations 
+     SET lastMessage = ?, 
+         timestamp = ?, 
+         unreadCount = ? 
+     WHERE roomId = ?`,
+        [newMessage.lastMessage, timestamp, newMessage.unreadCount, newMessage.roomId]
+    );
+
+    console.log(`✅ Conversation ${newMessage.roomId} updated with new message`);
+};
+
+export const clearTables = async () => {
+  try {
+    const database = await getDB();
+    await database.executeSql(`DELETE FROM messages;`);
+    await database.executeSql(`DELETE FROM conversations;`);
+    console.log("✅ All tables cleared successfully");
+  } catch (error) {
+    console.error("❌ Error clearing tables:", error);
+  }
+};
 
 export const dropDB = async () => {
     try {

@@ -47,7 +47,6 @@ export const useChatMessages = ({ roomId, currentUser, targetUser }: RouteParams
                 // dropDB();
                 scrollToEnd();
             } else {
-                console.log(chatMessages, "data===>");
                 setChatMessages((prev: Message[]) => [
                     ...(data?.messages?.reverse() ?? []),
                     ...prev,

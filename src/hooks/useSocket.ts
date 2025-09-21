@@ -9,7 +9,8 @@ import {
     onRecentChats,
     typingStatus
 } from '../utils/sockets';
-import { insertMessage, updateMessage } from '../Database/localDatabase';
+import { insertMessage, updateConversationOnNewMessage, updateMessage } from '../Database/localDatabase';
+import { useInternet } from './useInternet';
 
 type RouteParams = {
     roomId: string;
@@ -27,22 +28,25 @@ interface Message {
 }
 
 export const useSocket = (userId?: string, onChatsUpdate?: (chats: any[]) => void) => {
+    const isOnline = useInternet(4000);
     useEffect(() => {
-        if (!userId) return;
+        if (isOnline && userId) {
+            joinRoom(`${userId}`);
 
-        joinRoom(`${userId}`);
-
-        if (onChatsUpdate) {
-            onRecentChats((data: any) => {
-                onChatsUpdate(data?.chats);
-            });
+            if (onChatsUpdate) {
+                onRecentChats((data: any) => {
+                    onChatsUpdate(data?.chats);
+                    data?.chats?.map((message: any) => updateConversationOnNewMessage(message));
+                });
+            }
         }
-
         return () => {
-            leaveRoom(`${userId}`);
-            offEvent('recent_chats');
+            if (userId) {
+                leaveRoom(`${userId}`);
+                offEvent('recent_chats');
+            }
         };
-    }, [userId, onChatsUpdate]);
+    }, [userId, onChatsUpdate, isOnline]);
 };
 
 export const useChatMessageSocket = (
@@ -59,7 +63,7 @@ export const useChatMessageSocket = (
     useEffect(() => {
         if (currentAppState != "active") {
             leaveRoom(roomId, currentUser?._id);
-        }else {
+        } else {
             joinRoom(roomId);
         }
     }, [currentAppState])
@@ -89,7 +93,7 @@ export const useChatMessageSocket = (
                         : msg
                 )
             );
-            updateMessage(data.messageId,{isRead: data.isRead})
+            updateMessage(data.messageId, { isRead: data.isRead })
         });
         return () => {
             offEvent('receive_message');

@@ -5,7 +5,7 @@ import { createShimmerPlaceholder } from 'react-native-shimmer-placeholder'
 import { moderateScale, verticalScale } from '../../styles/scaling';
 const ShimmerPlaceHolder = createShimmerPlaceholder(LinearGradient)
 
-const ChatUserShimmer = ({ style }: { style?: any }) => {
+const ChatUserShimmer = ({ style ,profileStyle}: { style?: any ,profileStyle?:any}) => {
     return (
         <View style={{ flexDirection: 'row', ...style }}>
             <ShimmerPlaceHolder
@@ -13,7 +13,8 @@ const ChatUserShimmer = ({ style }: { style?: any }) => {
                     marginHorizontal: moderateScale(16),
                     borderRadius: moderateScale(50),
                     width: moderateScale(50),
-                    height: moderateScale(50)
+                    height: moderateScale(50),
+                    ...profileStyle
                 }}
             />
             <View>

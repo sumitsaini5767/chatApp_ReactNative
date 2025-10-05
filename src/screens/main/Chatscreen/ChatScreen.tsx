@@ -10,6 +10,7 @@ import {
   Platform,
   ActivityIndicator,
   StatusBar,
+  useColorScheme,
 } from 'react-native';
 import { styles } from './styles';
 import imagepath from '../../../constants/imagepath';
@@ -44,6 +45,7 @@ export default function ChatScreen() {
   const { t } = useTranslation();
   const route = useRoute<RouteProp<{ params: RouteParams }, 'params'>>();
   const appState = useAppStatus();
+  const colorScheme = useColorScheme();
   const {
     chatMessages,
     isLoadingMore,
@@ -62,7 +64,7 @@ export default function ChatScreen() {
     setMessageText,
     onViewableItemsChanged,
     setChatMessages
-  } = useChatMessages(route.params,appState);
+  } = useChatMessages(route.params, appState);
 
   const {
     roomActiveUsers,
@@ -97,7 +99,11 @@ export default function ChatScreen() {
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       style={styles.mainContainer}
     >
-      <StatusBar barStyle={'dark-content'} />
+      <StatusBar
+        barStyle={colorScheme === 'dark' ? 'light-content' : 'dark-content'}
+        backgroundColor={colorScheme === 'dark' ? '#000' : '#fff'}
+        translucent={Platform.OS === 'ios'} 
+      />
       <View style={{ height: isKeyboardVisible ? height - keyboardHeight : height }}>
         <View style={styles.header}>
           <Backbutton />

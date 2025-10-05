@@ -112,6 +112,7 @@ export const styles = StyleSheet.create({
     borderTopWidth: moderateScale(1),
     borderTopColor: '#E5E5E5',
     backgroundColor: '#fff',
+    marginBottom:verticalScale(10),
   },
   input: {
     flex: 1,

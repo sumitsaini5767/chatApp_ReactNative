@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
     activeUsers,
     joinRoom,
@@ -11,6 +11,7 @@ import {
 } from '../utils/sockets';
 import { insertMessage, updateConversationOnNewMessage, updateMessage } from '../Database/localDatabase';
 import { useInternet } from './useInternet';
+import Sound from "react-native-sound";
 
 type RouteParams = {
     roomId: string;
@@ -59,6 +60,23 @@ export const useChatMessageSocket = (
     const { roomId, currentUser, targetUser } = route as RouteParams;
     const [roomActiveUsers, setroomActiveUsers] = useState<string[]>([]);
     const [isTyping, setIsTyping] = useState(false);
+    const messageSound = useRef<Sound | null>(null);
+
+    useEffect(() => {
+        messageSound.current = new Sound('message.mp3', Sound.MAIN_BUNDLE, (error) => {
+            if (error) console.log('Failed to load sound', error);
+        });
+        return () => {
+            messageSound.current?.release();
+        };
+    }, []);
+
+
+    const playMessageSound = () => {
+        messageSound.current?.stop(() => {
+            messageSound.current?.play();
+        });
+    };
 
     useEffect(() => {
         if (currentAppState != "active") {
@@ -75,6 +93,9 @@ export const useChatMessageSocket = (
         onMessageReceived((data: any) => {
             setChatMessages((prev: Message[]) => [...prev, data]);
             insertMessage(data as any);
+            if (currentAppState === "active" && data?.sender !== currentUser?._id) {
+                playMessageSound();
+            }
             scrollToEnd();
             if (!data?.isRead && data?.receiver === currentUser?._id) {
                 handleMessageSeen(data._id);

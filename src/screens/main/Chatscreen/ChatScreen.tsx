@@ -69,7 +69,7 @@ export default function ChatScreen() {
   const {
     roomActiveUsers,
     isTyping,
-  } = useChatMessageSocket(route.params, appState, setChatMessages, scrollToEnd, handleMessageSeen);
+  } = useChatMessageSocket(route.params, appState,setChatMessages,scrollToEnd,handleMessageSeen);
 
   const renderMessage = ({ item }: { item: Message }) => {
     const isCurrentUser = item.sender === currentUser?._id;
@@ -102,7 +102,7 @@ export default function ChatScreen() {
       <StatusBar
         barStyle={colorScheme === 'dark' ? 'light-content' : 'dark-content'}
         backgroundColor={colorScheme === 'dark' ? '#000' : '#fff'}
-        translucent={Platform.OS === 'ios'} 
+        translucent={Platform.OS === 'ios'}
       />
       <View style={{ height: isKeyboardVisible ? height - keyboardHeight : height }}>
         <View style={styles.header}>

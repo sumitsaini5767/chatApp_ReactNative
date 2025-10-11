@@ -2,6 +2,7 @@ import { StyleSheet } from "react-native";
 import { CommonColors } from "../../../styles/Colors";
 import FontFamily from "../../../styles/FontFamily";
 import { moderateScale, verticalScale } from "../../../styles/scaling";
+import { Colors } from "react-native/Libraries/NewAppScreen";
 
 export const styles = StyleSheet.create({
     upperContainer: {
@@ -81,10 +82,11 @@ export const styles = StyleSheet.create({
     },
     chatSection: {
         flex: 1,
-        backgroundColor: '#FFFFFF',
+        backgroundColor: Colors.white,
         borderTopLeftRadius: moderateScale(40),
         borderTopRightRadius: moderateScale(40),
-        paddingTop: verticalScale(16),
+        paddingTop: verticalScale(20),
+
     },
     chatListContainer: {
         paddingHorizontal: moderateScale(16),

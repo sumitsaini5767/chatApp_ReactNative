@@ -66,8 +66,10 @@ export const useChatMessages = ({ roomId, currentUser, targetUser }: RouteParams
         }
     };
 
-    const scrollToEnd = () => {
-        flatListRef.current?.scrollToEnd({ animated: true });
+    const scrollToEnd = (animated = true) => {
+        setTimeout(() => {
+            flatListRef.current?.scrollToEnd({ animated });
+        }, 100);
     };
 
     const handleMessageSeen = (messageId: string) => {

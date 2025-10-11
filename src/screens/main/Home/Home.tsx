@@ -103,43 +103,42 @@ export default function Home() {
           ItemSeparatorComponent={() => <View style={{ width: 16 }} />}
         />
       </View> */}
-      <View style={styles.chatSection}>
-        {isLoading ?
-          <View>
-            <ChatUserShimmer />
-            <ChatUserShimmer style={{ marginTop: verticalScale(20) }} />
-            <ChatUserShimmer style={{ marginTop: verticalScale(20) }} />
-            <ChatUserShimmer style={{ marginTop: verticalScale(20) }} />
-          </View>
-          : <FlatList
-            data={allUsers}
-            renderItem={renderChatItem}
-            keyExtractor={keyExtractor}
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={styles.chatListContainer}
-            ItemSeparatorComponent={() => <View style={{ height: 16 }} />}
-            onEndReached={loadMoreChats}
-            onEndReachedThreshold={0.5}
-            refreshing={refreshing}
-            onRefresh={handleRefresh}
-            ListFooterComponent={
-              isLoading ? <ChatUserShimmer style={{
-                marginTop: verticalScale(10)
+      {isLoading ?
+        <View>
+          <ChatUserShimmer />
+          <ChatUserShimmer style={{ marginTop: verticalScale(20) }} />
+          <ChatUserShimmer style={{ marginTop: verticalScale(20) }} />
+          <ChatUserShimmer style={{ marginTop: verticalScale(20) }} />
+        </View>
+        : <FlatList
+          data={allUsers}
+          renderItem={renderChatItem}
+          keyExtractor={keyExtractor}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.chatListContainer}
+          ItemSeparatorComponent={() => <View style={{ height: 16 }} />}
+          onEndReached={loadMoreChats}
+          onEndReachedThreshold={0.5}
+          style={styles.chatSection}
+          refreshing={refreshing}
+          onRefresh={handleRefresh}
+          ListFooterComponent={
+            isLoading ? <ChatUserShimmer style={{
+              marginTop: verticalScale(10)
+            }}
+              profileStyle={{
+                marginHorizontal: 0,
+                marginRight: moderateScale(10)
               }}
-                profileStyle={{
-                  marginHorizontal: 0,
-                  marginRight: moderateScale(10)
-                }}
-              /> : null
-            }
-            ListEmptyComponent={() =>
-              <View style={styles.emptyContainer}>
-                <Image source={imagepath.emptyMessage} style={styles.emptyImage} />
-                <Text style={styles.emptyText}>No messages yet!</Text>
-                <Text style={styles.emptyText}>Start chatting with your friends now.</Text>
-              </View>}
-          />}
-      </View>
+            /> : null
+          }
+          ListEmptyComponent={() =>
+            <View style={styles.emptyContainer}>
+              <Image source={imagepath.emptyMessage} style={styles.emptyImage} />
+              <Text style={styles.emptyText}>No messages yet!</Text>
+              <Text style={styles.emptyText}>Start chatting with your friends now.</Text>
+            </View>}
+        />}
       <TouchableOpacity style={styles.fab} onPress={() => navigation.navigate('SearchUser')}>
         <Feather name="plus" size={30} color="white" />
       </TouchableOpacity>

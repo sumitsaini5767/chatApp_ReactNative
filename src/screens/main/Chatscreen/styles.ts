@@ -1,14 +1,14 @@
 import { StyleSheet, Dimensions, StatusBar } from 'react-native';
 import { CommonColors } from '../../../styles/Colors';
-import { moderateScale,verticalScale } from '../../../styles/scaling';
+import { moderateScale, verticalScale } from '../../../styles/scaling';
 
 
 const { width } = Dimensions.get('window');
 
 export const styles = StyleSheet.create({
-  mainContainer:{
-    flex:1,
-    backgroundColor:CommonColors.white
+  mainContainer: {
+    flex: 1,
+    backgroundColor: CommonColors.white
   },
   header: {
     flexDirection: 'row',
@@ -17,12 +17,12 @@ export const styles = StyleSheet.create({
     borderBottomWidth: moderateScale(1),
     borderBottomColor: '#E5E5E5',
     backgroundColor: '#fff',
-    paddingTop:StatusBar.currentHeight
+    paddingTop: StatusBar.currentHeight
   },
   icon: {
     width: moderateScale(34),
     height: moderateScale(34),
-    marginHorizontal: moderateScale(8),
+    marginRight: moderateScale(5),
   },
   avatar: {
     width: moderateScale(40),
@@ -49,17 +49,17 @@ export const styles = StyleSheet.create({
   sent: {
     alignSelf: 'flex-end',
     backgroundColor: CommonColors.inputTextColor,
-    color:CommonColors.white,
-    borderTopRightRadius:moderateScale(10),
-    borderTopLeftRadius:moderateScale(10),
-    borderBottomLeftRadius:moderateScale(10)
+    color: CommonColors.white,
+    borderTopRightRadius: moderateScale(10),
+    borderTopLeftRadius: moderateScale(10),
+    borderBottomLeftRadius: moderateScale(10)
   },
   received: {
     alignSelf: 'flex-start',
     backgroundColor: '#E5E5E5',
-    borderTopRightRadius:moderateScale(10),
-    borderTopLeftRadius:moderateScale(10),
-    borderBottomRightRadius:moderateScale(10)
+    borderTopRightRadius: moderateScale(10),
+    borderTopLeftRadius: moderateScale(10),
+    borderBottomRightRadius: moderateScale(10)
   },
   messageText: {
     fontSize: moderateScale(14),
@@ -109,10 +109,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     padding: moderateScale(5),
-    borderTopWidth: moderateScale(1),
-    borderTopColor: '#E5E5E5',
     backgroundColor: '#fff',
-    marginBottom:verticalScale(10),
   },
   input: {
     flex: 1,
@@ -124,14 +121,20 @@ export const styles = StyleSheet.create({
     marginHorizontal: moderateScale(8),
     fontSize: moderateScale(14),
   },
-  seenImage:{
-    alignSelf:"flex-end",
-    width:moderateScale(12),
-    height:verticalScale(12),
-    marginLeft:moderateScale(5),
-    tintColor:CommonColors.white
+  seenImage: {
+    alignSelf: "flex-end",
+    width: moderateScale(12),
+    height: verticalScale(12),
+    marginLeft: moderateScale(5),
+    tintColor: CommonColors.white
   },
-  messageStatus:{
-    flexDirection:"row",
+  messageStatus: {
+    flexDirection: "row",
+  },
+  cameraIcon: {
+    alignItems: "center",
+    justifyContent: "center",
+    marginLeft: moderateScale(2),
+    padding: verticalScale(2),
   }
 }); 

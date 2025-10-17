@@ -12,6 +12,7 @@ import {
   StatusBar,
   NativeSyntheticEvent,
   NativeScrollEvent,
+  ImageBackground,
 } from 'react-native';
 import { styles } from './styles';
 import imagepath from '../../../constants/imagepath';
@@ -133,54 +134,58 @@ export default function ChatScreen() {
               )}
             </View>
           </View>
-          <View style={{ flex: 1 }}>
-            {isLoding ? <ChatShimmer /> : <FlatList
-              ref={flatListRef}
-              data={chatMessages}
-              renderItem={renderMessage}
-              keyExtractor={(_, index) => index.toString()}
-              showsHorizontalScrollIndicator={false}
-              ListHeaderComponent={() =>
-                isLoadingMore ? <ActivityIndicator size="small" color="#000" /> : null
-              }
-              showsVerticalScrollIndicator={false}
-              contentContainerStyle={styles.messagesContainer}
-              onScroll={({ nativeEvent }) => {
-                if (nativeEvent.contentOffset.y <= 0 && !isLoadingMore) {
-                  loadMoreMessages();
+          <ImageBackground source={imagepath.chatBackground} 
+            imageStyle={{ opacity: 0.1 }} 
+          style={styles.chatBackground}>
+            <View style={{ flex: 1 }}>
+              {isLoding ? <ChatShimmer /> : <FlatList
+                ref={flatListRef}
+                data={chatMessages}
+                renderItem={renderMessage}
+                keyExtractor={(_, index) => index.toString()}
+                showsHorizontalScrollIndicator={false}
+                ListHeaderComponent={() =>
+                  isLoadingMore ? <ActivityIndicator size="small" color="#000" /> : null
                 }
-                handleScroll({ nativeEvent } as NativeSyntheticEvent<NativeScrollEvent>);
-              }}
-              scrollEventThrottle={16}
-              onViewableItemsChanged={onViewableItemsChanged}
-              viewabilityConfig={viewabilityConfig}
-              ListFooterComponent={() => <>
-                {isTyping && <View style={styles.typingIndicatorContainer}>
-                  <TypingIndicator />
-                </View>}
-              </>}
-            />
-            }
-          </View>
-          <View
-            style={[
-              styles.inputBar,
-              {
-                paddingBottom: bottomInset,
-              },
-            ]}
-          >
-            <TextInput
-              style={styles.input}
-              placeholder={t('WriteYourMessage')}
-              placeholderTextColor={CommonColors.black}
-              value={messageText}
-              onChangeText={setMessageText}
-            />
-            <TouchableOpacity onPress={handleSend}>
-              <Image source={imagepath.send} style={styles.icon} />
-            </TouchableOpacity>
-          </View>
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={styles.messagesContainer}
+                onScroll={({ nativeEvent }) => {
+                  if (nativeEvent.contentOffset.y <= 0 && !isLoadingMore) {
+                    loadMoreMessages();
+                  }
+                  handleScroll({ nativeEvent } as NativeSyntheticEvent<NativeScrollEvent>);
+                }}
+                scrollEventThrottle={16}
+                onViewableItemsChanged={onViewableItemsChanged}
+                viewabilityConfig={viewabilityConfig}
+                ListFooterComponent={() => <>
+                  {isTyping && <View style={styles.typingIndicatorContainer}>
+                    <TypingIndicator />
+                  </View>}
+                </>}
+              />
+              }
+            </View>
+            <View
+              style={[
+                styles.inputBar,
+                {
+                  paddingBottom: bottomInset,
+                },
+              ]}
+            >
+              <TextInput
+                style={styles.input}
+                placeholder={t('WriteYourMessage')}
+                placeholderTextColor={CommonColors.black}
+                value={messageText}
+                onChangeText={setMessageText}
+              />
+              <TouchableOpacity onPress={handleSend}>
+                <Image source={imagepath.send} style={styles.icon} />
+              </TouchableOpacity>
+            </View>
+          </ImageBackground>
         </View>
       </KeyboardAvoidingView>
     </>

@@ -108,7 +108,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     padding: moderateScale(5),
-    backgroundColor: '#fff',
+    backgroundColor: 'transparent',
   },
   input: {
     flex: 1,
@@ -146,5 +146,10 @@ export const styles = StyleSheet.create({
     borderTopRightRadius: moderateScale(10),
     borderTopLeftRadius: moderateScale(10),
     borderBottomRightRadius: moderateScale(10)
+  },
+  chatBackground:{
+    flex: 1,
+    resizeMode: 'cover',
+
   }
 }); 

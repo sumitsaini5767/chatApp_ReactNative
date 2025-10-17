@@ -21,4 +21,5 @@ export default{
     emptyMessage:require('../assets/images/emptyMessage.png'),
     seen:require('../assets/images/seen.png'),
     emptySearch:require('../assets/images/emptySearch.png'),
+    chatBackground:require('../assets/images/chatBackground.jpg'),
 }

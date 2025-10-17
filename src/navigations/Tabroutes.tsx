@@ -11,11 +11,14 @@ import { CommonColors } from '../styles/Colors';
 import Home from '../screens/main/Home/Home';
 import Settings from '../screens/main/Settings/Settings';
 import { useTranslation } from 'react-i18next';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { CustomTabBar } from '../components/Componets';
 
 const Tab = createBottomTabNavigator();
 
 const TabRoutes = () => {
   const { t } = useTranslation();
+  const insets = useSafeAreaInsets()
   let options = (
     img: any,
     title?: string,
@@ -38,12 +41,18 @@ const TabRoutes = () => {
     }
   }
   return (
-    <Tab.Navigator screenOptions={{
-      headerShown: false,
-      tabBarHideOnKeyboard: true,
-    }} >
+    <Tab.Navigator
+      tabBar={(props) => <CustomTabBar {...props} />}
+      screenOptions={{
+        headerShown: false,
+        tabBarHideOnKeyboard: true,
+        tabBarShowLabel: true,
+        tabBarStyle: {
+          paddingBottom: insets.bottom
+        }
+      }} >
       <Tab.Screen name="Home" component={Home}
-        options={options(imagepath.message, t('Message'))} />
+        options={options(imagepath.message, t('Messages'))} />
       <Tab.Screen name="Settings" component={Settings}
         options={options(imagepath.settings, t('Settings'))} />
     </Tab.Navigator>

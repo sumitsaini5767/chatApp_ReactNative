@@ -10,3 +10,5 @@ export { default as AlertPopup } from './AlertPopup/AlertPopup';
 export { default as Avatar } from './Avatar/Avatar';
 export { default as ChatUserShimmer } from './shimmers/ChatUserShimmer';
 export { default as chatShimmmer } from './shimmers/ChatShimmer';
+export { default as CustomTabBar } from './CustomTabbar/CustomTabbar';
+export { default as TypingIndicator } from './TypingIndicator/TypingIndicator';

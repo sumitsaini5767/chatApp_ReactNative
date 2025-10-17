@@ -8,16 +8,15 @@ const { width } = Dimensions.get('window');
 export const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    backgroundColor: CommonColors.white
+    backgroundColor: CommonColors.white,
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: moderateScale(16),
+    padding: moderateScale(8),
     borderBottomWidth: moderateScale(1),
     borderBottomColor: '#E5E5E5',
     backgroundColor: '#fff',
-    paddingTop: StatusBar.currentHeight
   },
   icon: {
     width: moderateScale(34),
@@ -136,5 +135,16 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     marginLeft: moderateScale(2),
     padding: verticalScale(2),
+  },
+  typingIndicatorContainer:{
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: moderateScale(5),
+    marginVertical: verticalScale(2),
+    alignSelf: 'flex-start',
+    backgroundColor: '#E5E5E5',
+    borderTopRightRadius: moderateScale(10),
+    borderTopLeftRadius: moderateScale(10),
+    borderBottomRightRadius: moderateScale(10)
   }
 }); 

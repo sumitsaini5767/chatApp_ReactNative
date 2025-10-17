@@ -86,7 +86,6 @@ export const styles = StyleSheet.create({
         borderTopLeftRadius: moderateScale(40),
         borderTopRightRadius: moderateScale(40),
         paddingTop: verticalScale(20),
-
     },
     chatListContainer: {
         paddingHorizontal: moderateScale(16),

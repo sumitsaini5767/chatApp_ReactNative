@@ -1,5 +1,5 @@
 import { use, useEffect, useRef, useState } from "react";
-import { AppState, FlatList, Keyboard } from "react-native";
+import { AppState, FlatList, Keyboard, NativeScrollEvent, NativeSyntheticEvent } from "react-native";
 import { getMessages } from "../Redux/actions/userDetail";
 import { markAsRead, sendMessage, stopTyping, typing } from "../utils/sockets";
 import { dropDB, getMessagesByRoom, insertMessage } from "../Database/localDatabase";
@@ -34,6 +34,16 @@ export const useChatMessages = ({ roomId, currentUser, targetUser }: RouteParams
     const [messageText, setMessageText] = useState("");
     const [isLoding, setIsLoding] = useState(false);
 
+    const [isAtBottom, setIsAtBottom] = useState(false);
+    const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+        const { contentOffset, contentSize, layoutMeasurement } = event.nativeEvent;
+        const paddingToBottom = 20;
+        const atBottom =
+            contentOffset.y + layoutMeasurement.height >=
+            contentSize.height - paddingToBottom;
+        setIsAtBottom(atBottom);
+    };
+
     const fetchUserMessages = async (localMessages?: any) => {
         try {
             localMessages?.length <= 0 && setIsLoding(true);
@@ -44,7 +54,6 @@ export const useChatMessages = ({ roomId, currentUser, targetUser }: RouteParams
                 setTotalPages(data?.totalPages ?? 1);
                 (localMessages[localMessages.length - 1]?._id !== data?.messages[data?.messages.length - 1]?._id) &&
                     data?.messages.map((m: Message) => insertMessage(m as any));
-                // dropDB();
                 scrollToEnd();
             } else {
                 setChatMessages((prev: Message[]) => [
@@ -150,6 +159,8 @@ export const useChatMessages = ({ roomId, currentUser, targetUser }: RouteParams
         viewabilityConfig,
         flatListRef,
         isLoding,
+        isAtBottom,
+        handleScroll,
         loadMoreMessages,
         handleMessageSeen,
         scrollToEnd,

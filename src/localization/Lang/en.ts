@@ -11,7 +11,7 @@ export default {
     Search: 'Search',
     People: 'People',
     Home: 'Home',
-    Message: "Message",
+    Messages: "Messages",
     Settings: "Settings",
     Logout: "Logout",
     editProfile: "Edit Profile",

@@ -1,4 +1,4 @@
-import React, { use } from 'react';
+import React, { useEffect } from 'react';
 import {
   View,
   Text,
@@ -10,7 +10,8 @@ import {
   Platform,
   ActivityIndicator,
   StatusBar,
-  useColorScheme,
+  NativeSyntheticEvent,
+  NativeScrollEvent,
 } from 'react-native';
 import { styles } from './styles';
 import imagepath from '../../../constants/imagepath';
@@ -22,9 +23,11 @@ import { RouteProp, useRoute } from '@react-navigation/native';
 import { DateTimeConversion } from '../../../utils/helperFunction';
 import { useChatMessages } from '../../../hooks/useChatMessages';
 import { useChatMessageSocket } from '../../../hooks/useSocket';
-import { Avatar } from '../../../components/Componets';
+import { Avatar, TypingIndicator } from '../../../components/Componets';
 import ChatShimmer from '../../../components/shimmers/ChatShimmer';
 import { useAppStatus } from '../../../hooks/useAppStatus';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import useDynamicBottomInset from '../../../hooks/useDynamicBottomInset';
 
 interface Message {
   _id?: string;
@@ -45,7 +48,8 @@ export default function ChatScreen() {
   const { t } = useTranslation();
   const route = useRoute<RouteProp<{ params: RouteParams }, 'params'>>();
   const appState = useAppStatus();
-  const colorScheme = useColorScheme();
+  const insets = useSafeAreaInsets()
+  const bottomInset = useDynamicBottomInset();
   const {
     chatMessages,
     isLoadingMore,
@@ -57,6 +61,8 @@ export default function ChatScreen() {
     viewabilityConfig,
     flatListRef,
     isLoding,
+    isAtBottom,
+    handleScroll,
     loadMoreMessages,
     handleMessageSeen,
     scrollToEnd,
@@ -69,7 +75,13 @@ export default function ChatScreen() {
   const {
     roomActiveUsers,
     isTyping,
-  } = useChatMessageSocket(route.params, appState,setChatMessages,scrollToEnd,handleMessageSeen);
+  } = useChatMessageSocket(route.params, appState, setChatMessages, scrollToEnd, handleMessageSeen);
+
+
+  useEffect(() => {
+    isAtBottom && scrollToEnd();
+  }, [chatMessages, isTyping]);
+
 
   const renderMessage = ({ item }: { item: Message }) => {
     const isCurrentUser = item.sender === currentUser?._id;
@@ -95,61 +107,82 @@ export default function ChatScreen() {
   };
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-      style={styles.mainContainer}
-    >
+    <>
       <StatusBar
-        barStyle={colorScheme === 'dark' ? 'light-content' : 'dark-content'}
-        backgroundColor={colorScheme === 'dark' ? '#000' : '#fff'}
-        translucent={Platform.OS === 'ios'}
+        backgroundColor={CommonColors.white}
+        barStyle={"dark-content"}
+        translucent
       />
-      <View style={{ height: isKeyboardVisible ? height - keyboardHeight : height }}>
-        <View style={styles.header}>
-          <Backbutton />
-          <Avatar name={targetUser?.name as string} size={45} imageUri={targetUser?.image} />
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        style={{
+          ...styles.mainContainer,
+          paddingTop: insets.top / 1.8,
+        }}
+      >
+        <View style={{ height: isKeyboardVisible ? height - keyboardHeight : height }}>
+          <View style={styles.header}>
+            <Backbutton />
+            <Avatar name={targetUser?.name as string} size={45} imageUri={targetUser?.image} />
+            <View style={{ flex: 1 }}>
+              <Text style={styles.username}>{targetUser?.name || 'User'}</Text>
+              {roomActiveUsers.includes(targetUser?._id) ? (
+                <Text style={[styles.status, { color: '#0b6d00' }]}>Online</Text>
+              ) : (
+                <Text style={[styles.status, { color: '#999' }]}>Offline</Text>
+              )}
+            </View>
+          </View>
           <View style={{ flex: 1 }}>
-            <Text style={styles.username}>{targetUser?.name || 'User'}</Text>
-            {isTyping ? <Text style={styles.status}>Typing...</Text>
-              : roomActiveUsers.includes(targetUser?._id) && <Text style={styles.status}>online</Text>}
+            {isLoding ? <ChatShimmer /> : <FlatList
+              ref={flatListRef}
+              data={chatMessages}
+              renderItem={renderMessage}
+              keyExtractor={(_, index) => index.toString()}
+              showsHorizontalScrollIndicator={false}
+              ListHeaderComponent={() =>
+                isLoadingMore ? <ActivityIndicator size="small" color="#000" /> : null
+              }
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={styles.messagesContainer}
+              onScroll={({ nativeEvent }) => {
+                if (nativeEvent.contentOffset.y <= 0 && !isLoadingMore) {
+                  loadMoreMessages();
+                }
+                handleScroll({ nativeEvent } as NativeSyntheticEvent<NativeScrollEvent>);
+              }}
+              scrollEventThrottle={16}
+              onViewableItemsChanged={onViewableItemsChanged}
+              viewabilityConfig={viewabilityConfig}
+              ListFooterComponent={() => <>
+                {isTyping && <View style={styles.typingIndicatorContainer}>
+                  <TypingIndicator />
+                </View>}
+              </>}
+            />
+            }
+          </View>
+          <View
+            style={[
+              styles.inputBar,
+              {
+                paddingBottom: bottomInset,
+              },
+            ]}
+          >
+            <TextInput
+              style={styles.input}
+              placeholder={t('WriteYourMessage')}
+              placeholderTextColor={CommonColors.black}
+              value={messageText}
+              onChangeText={setMessageText}
+            />
+            <TouchableOpacity onPress={handleSend}>
+              <Image source={imagepath.send} style={styles.icon} />
+            </TouchableOpacity>
           </View>
         </View>
-        <View style={{ flex: 1 }}>
-          {isLoding ? <ChatShimmer /> : <FlatList
-            ref={flatListRef}
-            data={chatMessages}
-            renderItem={renderMessage}
-            keyExtractor={(_, index) => index.toString()}
-            showsHorizontalScrollIndicator={false}
-            ListHeaderComponent={() =>
-              isLoadingMore ? <ActivityIndicator size="small" color="#000" /> : null
-            }
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={styles.messagesContainer}
-            onScroll={({ nativeEvent }) => {
-              if (nativeEvent.contentOffset.y <= 0 && !isLoadingMore) {
-                loadMoreMessages();
-              }
-            }}
-            scrollEventThrottle={16}
-            onViewableItemsChanged={onViewableItemsChanged}
-            viewabilityConfig={viewabilityConfig}
-          />
-          }
-        </View>
-        <View style={styles.inputBar}>
-          <TextInput
-            style={styles.input}
-            placeholder={t('WriteYourMessage')}
-            placeholderTextColor={CommonColors.black}
-            value={messageText}
-            onChangeText={setMessageText}
-          />
-          <TouchableOpacity onPress={handleSend}>
-            <Image source={imagepath.send} style={styles.icon} />
-          </TouchableOpacity>
-        </View>
-      </View>
-    </KeyboardAvoidingView>
+      </KeyboardAvoidingView>
+    </>
   );
 }

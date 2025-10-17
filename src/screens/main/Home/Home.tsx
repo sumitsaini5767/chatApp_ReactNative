@@ -24,6 +24,7 @@ import { useSocket } from '../../../hooks/useSocket';
 import Feather from 'react-native-vector-icons/Feather';
 import { moderateScale, verticalScale } from '../../../styles/scaling';
 import { useAppStatus } from '../../../hooks/useAppStatus';
+import Animated, { FadeInUp } from 'react-native-reanimated';
 
 type NavigationProp = NativeStackNavigationProp<MainStackParamList, 'UserStatus'>;
 export default function Home() {
@@ -104,19 +105,20 @@ export default function Home() {
         />
       </View> */}
       {isLoading ?
-        <View>
+        <View style={styles.chatSection}>
           <ChatUserShimmer />
           <ChatUserShimmer style={{ marginTop: verticalScale(20) }} />
           <ChatUserShimmer style={{ marginTop: verticalScale(20) }} />
           <ChatUserShimmer style={{ marginTop: verticalScale(20) }} />
         </View>
-        : <FlatList
+        : <Animated.FlatList
+          entering={FadeInUp}
           data={allUsers}
           renderItem={renderChatItem}
           keyExtractor={keyExtractor}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.chatListContainer}
-          ItemSeparatorComponent={() => <View style={{ height: 16 }} />}
+          ItemSeparatorComponent={() => <View style={{ height:verticalScale(10) }} />}
           onEndReached={loadMoreChats}
           onEndReachedThreshold={0.5}
           style={styles.chatSection}
@@ -130,7 +132,7 @@ export default function Home() {
                 marginHorizontal: 0,
                 marginRight: moderateScale(10)
               }}
-            /> : null
+            /> : <View style={{height:verticalScale(70)}}></View>
           }
           ListEmptyComponent={() =>
             <View style={styles.emptyContainer}>

@@ -25,9 +25,9 @@ export const useChats = (userId?: string, appState?: string) => {
             }
             localConversation?.length <= 0 && setIsLoading(false);
             setRefreshing(false);
-            localConversation[localConversation.length - 1]?._id !== conversations[conversations.length - 1]?._id
+            localConversation.length < conversations.length
                 && conversations?.map((con: any) => addConversationToDb(con))
-        } catch (error) {
+        } catch (error) { 
             console.log(error,"error==>");
         }
     }, [pageNo, userId, totalPages]);

@@ -28,7 +28,7 @@ interface Message {
     isRead?: boolean
 }
 
-export const useSocket = (userId?: string, onChatsUpdate?: (chats: any[]) => void) => {
+export const useSocket = (userId?: string, onChatsUpdate?: (chats: any[]) => void, currentAppState?: string) => {
     const isOnline = useInternet(4000);
     useEffect(() => {
         if (isOnline && userId) {
@@ -48,13 +48,20 @@ export const useSocket = (userId?: string, onChatsUpdate?: (chats: any[]) => voi
             }
         };
     }, [userId, onChatsUpdate, isOnline]);
+
+    useEffect(() => {
+        if (currentAppState != "active") {
+            leaveRoom(`${userId}`);
+        } else {
+            joinRoom(`${userId}`);
+        }
+    }, [currentAppState])
 };
 
 export const useChatMessageSocket = (
     route: any,
     currentAppState: any,
     setChatMessages: (prev: any) => void,
-    scrollToEnd: () => void,
     handleMessageSeen: (messageId: string) => void
 ) => {
     const { roomId, currentUser, targetUser } = route as RouteParams;
@@ -91,13 +98,14 @@ export const useChatMessageSocket = (
             setroomActiveUsers(data);
         })
         onMessageReceived((data: any) => {
-            setChatMessages((prev: Message[]) => [...prev, data]);
-            insertMessage(data as any);
+            console.log('data==>', data);
+            setChatMessages((prev: Message[]) => [data, ...prev]);
+            // Ensure roomId is included when inserting message
+            insertMessage({ ...data, roomId } as any);
             if (currentAppState === "active" && data?.sender !== currentUser?._id) {
                 playMessageSound();
             }
-            scrollToEnd();
-            if (!data?.isRead && data?.receiver === currentUser?._id) {
+            if (!data?.isRead && data?.receiver === currentUser?._id && data?._id) {
                 handleMessageSeen(data._id);
             }
         });
@@ -123,7 +131,7 @@ export const useChatMessageSocket = (
             offEvent('read_update');
             leaveRoom(roomId, currentUser?._id);
         };
-    }, []);
+    }, [roomId, currentUser?._id, targetUser?._id, currentAppState, setChatMessages, handleMessageSeen]);
 
     return {
         roomActiveUsers,

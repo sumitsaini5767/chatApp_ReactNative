@@ -62,11 +62,8 @@ export default function ChatScreen() {
     viewabilityConfig,
     flatListRef,
     isLoding,
-    isAtBottom,
-    handleScroll,
     loadMoreMessages,
     handleMessageSeen,
-    scrollToEnd,
     handleSend,
     setMessageText,
     onViewableItemsChanged,
@@ -76,12 +73,8 @@ export default function ChatScreen() {
   const {
     roomActiveUsers,
     isTyping,
-  } = useChatMessageSocket(route.params, appState, setChatMessages, scrollToEnd, handleMessageSeen);
+  } = useChatMessageSocket(route.params, appState, setChatMessages, handleMessageSeen);
 
-
-  useEffect(() => {
-    isAtBottom && scrollToEnd();
-  }, [chatMessages, isTyping]);
 
 
   const renderMessage = ({ item }: { item: Message }) => {
@@ -134,36 +127,33 @@ export default function ChatScreen() {
               )}
             </View>
           </View>
-          <ImageBackground source={imagepath.chatBackground} 
-            imageStyle={{ opacity: 0.1 }} 
-          style={styles.chatBackground}>
+          <ImageBackground source={imagepath.chatBackground}
+            imageStyle={{ opacity: 0.1 }}
+            style={styles.chatBackground}>
             <View style={{ flex: 1 }}>
-              {isLoding ? <ChatShimmer /> : <FlatList
-                ref={flatListRef}
-                data={chatMessages}
-                renderItem={renderMessage}
-                keyExtractor={(_, index) => index.toString()}
-                showsHorizontalScrollIndicator={false}
-                ListHeaderComponent={() =>
-                  isLoadingMore ? <ActivityIndicator size="small" color="#000" /> : null
-                }
-                showsVerticalScrollIndicator={false}
-                contentContainerStyle={styles.messagesContainer}
-                onScroll={({ nativeEvent }) => {
-                  if (nativeEvent.contentOffset.y <= 0 && !isLoadingMore) {
-                    loadMoreMessages();
+              {isLoding ? <ChatShimmer /> :
+                <FlatList
+                  ref={flatListRef}
+                  data={chatMessages}
+                  inverted
+                  renderItem={renderMessage}
+                  keyExtractor={(_, index) => index.toString()}
+                  showsHorizontalScrollIndicator={false}
+                  ListFooterComponent={() =>
+                    isLoadingMore ? <ActivityIndicator size='large' color="#000" /> : null
                   }
-                  handleScroll({ nativeEvent } as NativeSyntheticEvent<NativeScrollEvent>);
-                }}
-                scrollEventThrottle={16}
-                onViewableItemsChanged={onViewableItemsChanged}
-                viewabilityConfig={viewabilityConfig}
-                ListFooterComponent={() => <>
-                  {isTyping && <View style={styles.typingIndicatorContainer}>
-                    <TypingIndicator />
-                  </View>}
-                </>}
-              />
+                  showsVerticalScrollIndicator={false}
+                  contentContainerStyle={styles.messagesContainer}
+                  onEndReached={loadMoreMessages}
+                  onEndReachedThreshold={0.2}
+                  onViewableItemsChanged={onViewableItemsChanged}
+                  viewabilityConfig={viewabilityConfig}
+                  ListHeaderComponent={() => <>
+                    {isTyping && <View style={styles.typingIndicatorContainer}>
+                      <TypingIndicator />
+                    </View>}
+                  </>}
+                />
               }
             </View>
             <View

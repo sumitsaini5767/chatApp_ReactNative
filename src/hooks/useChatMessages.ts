@@ -1,8 +1,8 @@
-import { use, useEffect, useRef, useState } from "react";
-import { AppState, FlatList, Keyboard, NativeScrollEvent, NativeSyntheticEvent } from "react-native";
+import { useEffect, useRef, useState, useCallback } from "react";
+import { FlatList, Keyboard, } from "react-native";
 import { getMessages } from "../Redux/actions/userDetail";
 import { markAsRead, sendMessage, stopTyping, typing } from "../utils/sockets";
-import { dropDB, getMessagesByRoom, insertMessage } from "../Database/localDatabase";
+import { getMessagesByRoom, insertMessage, updateMessage } from "../Database/localDatabase";
 
 interface Message {
     _id?: string;
@@ -34,39 +34,64 @@ export const useChatMessages = ({ roomId, currentUser, targetUser }: RouteParams
     const [messageText, setMessageText] = useState("");
     const [isLoding, setIsLoding] = useState(false);
 
-    const [isAtBottom, setIsAtBottom] = useState(false);
-    const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-        const { contentOffset, contentSize, layoutMeasurement } = event.nativeEvent;
-        const paddingToBottom = 20;
-        const atBottom =
-            contentOffset.y + layoutMeasurement.height >=
-            contentSize.height - paddingToBottom;
-        setIsAtBottom(atBottom);
+    // Separate function to handle message comparison and database updates
+    const syncMessagesWithLocalDB = async (incomingMessages: Message[], localMessages: any[], roomId: string) => {
+        if (!incomingMessages || !Array.isArray(incomingMessages)) return;
+
+        // Create a map of local messages by _id for quick lookup
+        const localMessagesMap = new Map(
+            localMessages.map((m: any) => [m._id, m])
+        );
+
+        for (const incomingMessage of incomingMessages) {
+            if (!incomingMessage._id) continue;
+
+            const localMessage = localMessagesMap.get(incomingMessage._id);
+
+            if (!localMessage) {
+                // New message - insert it
+                insertMessage({ ...incomingMessage, roomId } as any);
+            } else {
+                // Message exists - only check isRead status (main field that changes)
+                const incomingIsRead = incomingMessage.isRead ?? false;
+                const localIsRead = localMessage.isRead ?? false;
+
+                if (incomingIsRead !== localIsRead) {
+                    // Only update if isRead status has changed
+                    await updateMessage(incomingMessage._id, { isRead: incomingIsRead });
+                    console.log(`Updated message ${incomingMessage._id} isRead status:`, incomingIsRead);
+                }
+            }
+        }
     };
 
-    const fetchUserMessages = async (localMessages?: any) => {
+    const fetchUserMessages = useCallback(async (localMessages: any[] = [], currentPage: number) => {
         try {
-            localMessages?.length <= 0 && setIsLoding(true);
-            const data = await getMessages({ roomId, page });
-            localMessages?.length <= 0 && setIsLoding(false);
-            if (page === 1) {
-                setChatMessages(data?.messages.reverse() ?? []);
+            // Only show loading if no local messages and not loading more
+            localMessages?.length <= 0 && currentPage === 1 && setIsLoding(true);
+            const data = await getMessages({ roomId, page: currentPage });
+            console.log(currentPage,"data==>",data,localMessages);
+            localMessages?.length <= 0 && currentPage === 1 && setIsLoding(false);
+            if (currentPage === 1) {
+                setChatMessages(data?.messages ?? []);
                 setTotalPages(data?.totalPages ?? 1);
-                (localMessages[localMessages.length - 1]?._id !== data?.messages[data?.messages.length - 1]?._id) &&
-                    data?.messages.map((m: Message) => insertMessage(m as any));
-                scrollToEnd();
+                // Sync messages with local DB
+                await syncMessagesWithLocalDB(data?.messages ?? [], localMessages, roomId);
             } else {
                 setChatMessages((prev: Message[]) => [
-                    ...(data?.messages?.reverse() ?? []),
                     ...prev,
+                    ...(data?.messages ?? []),
                 ]);
             }
         } catch (e) {
             console.warn("getMessages failed:", e);
+            if (localMessages.length === 0 && currentPage === 1) {
+                setIsLoding(false);
+            }
         } finally {
             setIsLoadingMore(false);
         }
-    };
+    }, [roomId]);
 
     const loadMoreMessages = () => {
         if (!isLoadingMore && page < totalPages) {
@@ -75,15 +100,9 @@ export const useChatMessages = ({ roomId, currentUser, targetUser }: RouteParams
         }
     };
 
-    const scrollToEnd = (animated = true) => {
-        setTimeout(() => {
-            flatListRef.current?.scrollToEnd({ animated });
-        }, 100);
-    };
-
-    const handleMessageSeen = (messageId: string) => {
+    const handleMessageSeen = useCallback((messageId: string) => {
         if (messageId) markAsRead(roomId, currentUser?._id, messageId);
-    };
+    }, [roomId, currentUser?._id]);
 
     const handleSend = () => {
         const trimmed = messageText.trim();
@@ -94,19 +113,28 @@ export const useChatMessages = ({ roomId, currentUser, targetUser }: RouteParams
             sender: currentUser?._id,
             message: trimmed,
             timestamp: new Date().toISOString(),
+            roomId: roomId,
         };
 
         sendMessage(messageData);
         setMessageText("");
-        scrollToEnd();
     };
+
+    // Use refs to store latest values to avoid stale closures
+    const handleMessageSeenRef = useRef(handleMessageSeen);
+    const currentUserIdRef = useRef(currentUser?._id);
+
+    useEffect(() => {
+        handleMessageSeenRef.current = handleMessageSeen;
+        currentUserIdRef.current = currentUser?._id;
+    }, [handleMessageSeen, currentUser?._id]);
 
     const onViewableItemsChanged = useRef(
         ({ viewableItems }: { viewableItems: ViewableItem[] }) => {
             for (const v of viewableItems) {
                 const m = v.item;
-                if (!m.isRead && m.receiver === currentUser?._id && m._id) {
-                    handleMessageSeen(m._id);
+                if (!m.isRead && m.receiver === currentUserIdRef.current && m._id) {
+                    handleMessageSeenRef.current(m._id);
                 }
             }
         }
@@ -114,24 +142,34 @@ export const useChatMessages = ({ roomId, currentUser, targetUser }: RouteParams
 
     const viewabilityConfig = useRef({ itemVisiblePercentThreshold: 60 }).current;
 
+    // Effect for initial load (page === 1)
     useEffect(() => {
         (async () => {
             let localMessages: any[] = [];
-            if (page == 1) {
+            if (page === 1) {
                 localMessages = await getMessagesByRoom(roomId);
-                localMessages.length > 0 && setChatMessages(localMessages as Message[]);
+                console.log('localMessages==>', localMessages);
+                if (localMessages.length > 0) {
+                    setChatMessages(localMessages.reverse() as Message[]);
+                }
             }
-            if (appState == 'active') {
-                fetchUserMessages(localMessages);
+            if (appState === 'active' && page === 1) {
+                fetchUserMessages(localMessages, 1);
             }
         })()
-    }, [page, appState]);
+    }, [appState, roomId]);
+
+    // Separate effect for pagination (page > 1)
+    useEffect(() => {
+        if (page > 1 && isLoadingMore && appState === 'active') {
+            fetchUserMessages([], page);
+        }
+    }, [page, isLoadingMore, appState, fetchUserMessages]);
 
     useEffect(() => {
         const show = Keyboard.addListener("keyboardDidShow", (e) => {
             setIsKeyboardVisible(true);
             setKeyboardHeight(e.endCoordinates.height);
-            scrollToEnd();
             typing(roomId, currentUser?._id);
         });
 
@@ -159,11 +197,8 @@ export const useChatMessages = ({ roomId, currentUser, targetUser }: RouteParams
         viewabilityConfig,
         flatListRef,
         isLoding,
-        isAtBottom,
-        handleScroll,
         loadMoreMessages,
         handleMessageSeen,
-        scrollToEnd,
         handleSend,
         setMessageText,
         onViewableItemsChanged,

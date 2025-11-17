@@ -41,7 +41,7 @@ export default function Home() {
     setAllusers,
   } = useChats(user?._id, appState);
 
-  useSocket(user?._id, setAllusers);
+  useSocket(user?._id, setAllusers,appState);
 
   // const renderStatus: ListRenderItem<User> = useCallback(({ item }) => {
   //   return (

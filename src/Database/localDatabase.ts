@@ -75,14 +75,16 @@ export const insertMessage = async (msg: Message | Message[]) => {
                     m.isRead ? 1 : 0,
                 ]
             );
+            // Keep only the last 20 messages per room
             await tx.executeSql(
                 `DELETE FROM messages 
-                 WHERE id NOT IN (
+                 WHERE roomId = ? 
+                 AND id NOT IN (
                    SELECT id FROM messages 
                    WHERE roomId = ? 
                    ORDER BY timestamp DESC 
                    LIMIT 20
-                 ) AND roomId = ?`,
+                 )`,
                 [m.roomId, m.roomId]
             );
         }
@@ -98,9 +100,8 @@ export const getMessagesByRoom = async (
     const [results] = await database.executeSql(
         `SELECT * FROM messages 
      WHERE roomId = ? 
-     ORDER BY timestamp ASC 
-     LIMIT ?`,
-        [roomId, limit]
+     ORDER BY timestamp ASC `,
+        [roomId]
     );
 
     return results.rows.raw().map((row) => ({
@@ -203,14 +204,14 @@ export const updateConversationOnNewMessage = async (newMessage: any) => {
 };
 
 export const clearTables = async () => {
-  try {
-    const database = await getDB();
-    await database.executeSql(`DELETE FROM messages;`);
-    await database.executeSql(`DELETE FROM conversations;`);
-    console.log("✅ All tables cleared successfully");
-  } catch (error) {
-    console.error("❌ Error clearing tables:", error);
-  }
+    try {
+        const database = await getDB();
+        await database.executeSql(`DELETE FROM messages;`);
+        await database.executeSql(`DELETE FROM conversations;`);
+        console.log("✅ All tables cleared successfully");
+    } catch (error) {
+        console.error("❌ Error clearing tables:", error);
+    }
 };
 
 export const dropDB = async () => {
